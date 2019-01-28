@@ -18,11 +18,11 @@ const User = formBuilder.struct({
 });
 
 class LoginScreen extends React.Component {
-  handleSubmit = () => {
+  handleSubmit = async () => {
     const { navigate } = this.props.navigation;
     let user = this.refs.form.getValue(); // capture input from form
-    let username = getUser(user.email); // look up the username in the database 
-    navigate('Main', { username }); // transition to the MainScreen component
+    let username = await getUser(user.email); // look up the username in the database 
+    navigate('Main', { username: username }); // transition to the MainScreen component
   }
 
   render() {

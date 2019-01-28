@@ -3,6 +3,7 @@
   Connects to our sqlite service to retrieve data for the frontend
 */
 
+import { Platform } from 'react-native';
 import SQLite from 'react-native-sqlite-storage';
 
 // callbacks for SQL operations
@@ -11,15 +12,19 @@ const errorCB = (err) => { console.log('SQL Error: ' + err); }
 
 const openDB = () => {
   // the template is located in ~/android/app/src/main/assets/ for android and 
-  // [some future location] for ios
-  return SQLite.openDatabase({name: 'test.db', createFromLocation: 'sql_template.sqlite' }, openCB, errorCB);
+  // ~/ios/Library for iOS
+  let pathToDB = Platform.OS == 'ios' ? 
+    {name: 'test.db', location: 'Libary/Databases'} : { name: 'test.db', createFromLocation: 'sql_template.sqlite' };
+
+  return SQLite.openDatabase(pathToDB, openCB, errorCB);
 }
 
 // add a user's data to the database after using the Register Form
 // TODO: password should be encrypted 
 export const addUser = user => {
   let { username, email, password } = user; 
-  let query = `INSERT INTO users (username, email, password) VALUES ('${username}', '${email}', '${password}')`;
+  let query = `INSERT INTO users (username, email, password) VALUES 
+              ('${username}', '${email}', '${password}')`;
   let db = openDB();
 
   return new Promise((resolve, reject) => {
