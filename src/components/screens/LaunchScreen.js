@@ -6,7 +6,7 @@ import {
 } from 'react-native';
 import PropTypes from 'prop-types';
 import LaunchStyles from '../styles/LaunchStyles';
-import { createTables } from '../../database/User';
+import { createTables } from '../../database/Init';
 
 
 class LaunchScreen extends React.Component {
