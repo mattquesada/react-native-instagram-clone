@@ -1,0 +1,30 @@
+PODS:
+  - React (0.58.1):
+    - React/Core (= 0.58.1)
+  - react-native-sqlite-storage (3.3.9):
+    - React
+  - React/Core (0.58.1):
+    - yoga (= 0.58.1.React)
+  - yoga (0.58.1.React)
+
+DEPENDENCIES:
+  - React (from `../node_modules/react-native`)
+  - react-native-sqlite-storage (from `../node_modules/react-native-sqlite-storage`)
+  - yoga (from `../node_modules/react-native/ReactCommon/yoga`)
+
+EXTERNAL SOURCES:
+  React:
+    :path: "../node_modules/react-native"
+  react-native-sqlite-storage:
+    :path: "../node_modules/react-native-sqlite-storage"
+  yoga:
+    :path: "../node_modules/react-native/ReactCommon/yoga"
+
+SPEC CHECKSUMS:
+  React: 9b873b38b92ed8012d7cdf3b965477095ed364c4
+  react-native-sqlite-storage: 848fb96c0b6d17b3f70e169ac41f84434cdad94c
+  yoga: 0885622311729a02c2bc02dca97167787a51488b
+
+PODFILE CHECKSUM: 24e628972d2f479c92a4212dfaff7c059ef755e6
+
+COCOAPODS: 1.5.3

@@ -27,11 +27,12 @@ class RegisterScreen extends React.Component {
 
     //ToastAndroid.show(addUser(user), ToastAndroid.short); // add the user and display success
     let status = await addUser(user);
-    console.log(status);
+    console.log(user);
 
     let username = await getUser(user.email); // look up the username in the database
+    console.log(username);
     
-    navigate('Main', { username: username }); // transition to the MainScreen component
+    navigate('Main', { username }); // transition to the MainScreen component
   }
 
   render() {
