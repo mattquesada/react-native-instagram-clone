@@ -20,6 +20,15 @@ const User = formBuilder.struct({
   password: formBuilder.String
 });
 
+// Customize form
+const FormOptions = {
+  fields: {
+    password: {
+      secureTextEntry: true
+    }
+  }
+}
+
 class RegisterScreen extends React.Component {
  handleSubmit = async () => {
     const { navigate } = this.props.navigation;
@@ -38,7 +47,7 @@ class RegisterScreen extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <RegisterForm ref='form' type={User} />
+        <RegisterForm ref='form' type={User} options={FormOptions}/>
         <Button title="Sign Up" onPress={this.handleSubmit} />
       </View>
     )
