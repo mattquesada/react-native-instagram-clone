@@ -8,7 +8,6 @@ import PropTypes from 'prop-types';
 import LaunchStyles from '../styles/LaunchStyles';
 import { createTables } from '../../database/Init';
 
-
 class LaunchScreen extends React.Component {
   componentDidMount() {
     createTables() // create the database tables if they don't exist yet
