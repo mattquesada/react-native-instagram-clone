@@ -17,7 +17,13 @@ Instagram clone built with react-native and sqlite3. Brought to you by the White
 
 1. Plug in your Android device or launch the Android Debugger from Android Studio. To verify that you have a valid device integrated, run the command `adb devices` to display all connected devices.
 
-2. Run the command ```react-native run-android``` to build the app and load to your device or debugger. If this process returns errors, you may need to import the project into    Android Studio and sync Gradle files before running ```react-native run-android``` again.
+2. Import the `android` subfolder located inside the main directory into Android Studio to sync Gradle files. 
+
+3. In order to gather the dependencies needed for react-native-sqlite-storage, modify the `build.gradle` file for react-native-sqlite-storage by changing the line `compile 'com.facebook.react:react-native:0.14.+'` to `implementation 'com.facebook.react:react-native:0.58.+'`. 
+
+4. Re-sync gradle files build the project manually in Android Studio.
+
+2. Run the command ```react-native run-android``` in your terminal to build the app and load to your device or debugger. 
 
 3. The debugging interface is available with ```react-native log-android```.
 
