@@ -11,13 +11,35 @@ const openCB = () => { console.log('Database OPENED'); }
 const errorCB = (err) => { console.log('SQL Error: ' + err); }
 
 // Creates the tables inside of the SQLite database
-export const createTables = () => {
+/*export const createTables = () => {
   let db = openDB();
   let query = `CREATE TABLE IF NOT EXISTS users 
               ('userID' INTEGER NOT NULL PRIMARY KEY,
                'username' TEXT NOT NULL, 
                'email' TEXT NOT NULL, 
                'password' TEXT NOT NULL)`;
+  return new Promise((resolve, reject) => {
+    db.transaction(tx => {
+      tx.executeSql(query, [], resolve(successCB), reject(errorCB));
+    });
+  })
+}
+*/
+//Extended createTables functino
+export const createTables = () => {
+  let db = openDB();
+  let query = `CREATE TABLE IF NOT EXISTS users 
+              ('userID'         INTEGER     IDENTITY      PRIMARY KEY,
+               'username'       TEXT        NOT NULL, 
+               'email'          TEXT        NOT NULL, 
+               'password'       TEXT        NOT NULL,
+               'biography'      TEXT        DEFAULT 'SAY SOMETHING ABOUT YOURSELF!',
+               'profileImage'   VARBINARY,
+               'PostCount'      INTEGER     DEFAULT 0,
+               'followingCount' INTEGER     DEFAULT 0,
+               'followersCount' INTEGER     DEFAULT 0,
+               'isPrivate'      BOOLEAN     DEFAULT FALSE
+               )`;
   return new Promise((resolve, reject) => {
     db.transaction(tx => {
       tx.executeSql(query, [], resolve(successCB), reject(errorCB));
