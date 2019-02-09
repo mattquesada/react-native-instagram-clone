@@ -1,204 +1,105 @@
-/* 
-* Contains functions for registering new users / verifying current users
-* Connects to our sqlite service to retrieve data for the frontend
-*/
+
 
 import { openDB } from './Init';
-
-// add a user's data to the database after using the Register Form
-// TODO: password should be encrypted 
-
 
 /*     -- TABLE OF CONTENTS --
        -- format : functionName (input variables) => [outputFieldNames]
      
      Currently implemented:
-     addUser (username) => [null]      /Creates new user when registering/
-     AddImage (username, imageFile) => [null]
-     getUserID (username) => [userID]  /mostly internal use/
-     addFollowing (ownUsername, toFollowUsername) => [null]
-     removeFollow (ownUsername, toUnfollowUsername) => [null]
-     updateBio (username, bio) => [null]
-     AddComment (ownUsername, comment, commentedUsername, commentedUserImageID) => [null]
-     AddLike    (ownUsername, commentedUsername, CommentedUserImageID) => [null]
-     searchForUser (textString)  => [username, userID] /might not need userID/
-     getUserInfo (username) => [username, userID, profileImage, follwersCount, followingCount, postCount, biography]
-    //to build userpage, makes the next 3 kind of irrelevant
-     getLastImageID (username) => [imageID] 
-     getUserFollowingNumber (username) => [followingCount]
-     getUserFollowedByNumber (username) => [follwersCount]
-     getPostCount (username) => [postCount]
-    
-     getFollwingList (username) => [username, userID]  //LIST : UNIMPLEMENTED
-     GetImageFile (username, imageID) => [imageID, imageFile, totalLikes, datePosted, caption]
+     addUser(user struct) => [null]
+     addImage(username, imagefile, caption) => [null]     //currently probs won't work due to not knowing how to insert file
+     addFollow(ownUsername, toFollowUsername) => [null]
+     removeFollow(ownUsername, toFollowUsername) => [null]
+     getUserID(username) => [useID] //mostly for internal use
+     getUserInfo(username) => [userID, username, biography, profileImage, postCount, followersCount, followingCount]
+     searchForUsers(keyword) => [userID, username, profileImage]
 
-     sendGenericQuery (query) => [null]   /sends query without returning anything/
-     getGenericOneRowQuery (query) => [genericOneRow]  /get one specific row from generic query/
+     sendGenericQuery(query) => [null]   /send generic query that doesn't expect a return table
+     getGenericOneRowQuery(query) => [genericOneRow]  /get one specific row from generic query/
+     getGenericListQUery(query) => [genericItem1 , ... , genericItemN] /get all rows that match query
+
 
 */
-
-
-//Extended addUser Query
 export const addUser = user => {
   let {username, email, password } = user;
   let insertUserQuery = `INSERT INTO users (username, email, password) VALUES 
               ('${username}', '${email}', '${password}');`;
-    let userID = getUserID(username).userID;
-    let imageTableName = `imageTable_${userID}`;
-    let createImageTableQuery = `CREATE TABLE IF NOT EXISTS ${imageTableName}
-                   ('imageID'    INTEGER            IDENTITY    PRIMARY KEY,
-                    'imageFile'  VARBINARY,
-                    'totalLikes' INTEGER            DEFAULT 0,
-                    'datePosted' DATE               DEFAULT GETDATE,
-                    'caption'    TEXT              DEFAULT ' ' 
-                    );`; //GETDATE WON'T WORK + VARBINARY ISNT VARBINARY(MAX)
-    let followingTableName = 'isFollowing_' + userID;
-    let createFollowingTableQuery = `CREATE TABLE IF NOT EXISTS ${followingTableName}
-                    ('userID'    INTEGER           NOT NULL   PRIMARY KEY,
-                     'username'  TEXT              NOT NULL, 
-                     FOREIGN KEY ('userID')        REFERENCES users(${userID})   ON DELETE CASCADE
-                    );`;
-    let followedByTableName = 'isFollowedBy_' + userID;
-    let createFollowedByTableQuery = `CREATE TABLE IF NOT EXISTS ${followedByTableName}
-                    ('userID'    INTEGER           NOT NULL   PRIMARY KEY,
-                     'username'  TEXT              NOT NULL, 
-                     FOREIGN KEY ('userID')        REFERENCES users(${userID})   ON DELETE CASCADE
-                    );`;
-    sendGenericQuery(insertUserQuery);
-    sendGenericQuery(createImageTableQuery);
-    sendGenericQuery(createFollowingTableQuery);
-    return sendGenericQuery(createFollowedByTableQuery);
+  return sendGenericQuery(insertUserQuery);
+
 }
 
-export const addImage = (image, username, caption) => {
+
+
+export const addImage = (username, image, caption) => {
   let userID = getUserID(username).userID;
-  let tablename = 'imageTable_' + userID;
-  let addImageQuery = `INSERT INTO '${tablename}'
-                       (imageFile, caption)
-                       (${image}, ${caption})`;
-  let incrementPostNumberQuery = `UPDATE users
+  let addImageQuery = `INSERT into image_Database (userID, username, caption, imageFile) VALUES
+             (${userID}, '${username}', '${caption}',${image});`;
+    let incrementPostNumberQuery = `UPDATE users
                                   SET postCount = postCount + 1
                                   WHERE  userID = ${userID}`;
-  let imageID = getLastimageID(tablename); //PROBABLY WON'T WORK, TRY JUST GETTING POSTCOUNT FROM USER
-  let createCommentTableQuery = `CREATE TABLE IF NOT EXISTS commentsFor_${userID}_${imageID}
-                                ('commentID' INTEGER     NOT NULL     IDENTITY PRIMARY KEY, 
-                                 'comment'   TEXT        DEFAULT ' ',
-                                 'user'      TEXT        REFERENCES users ON DELETE CASCADE
-                                )`;
-  let createLikeTableQuery = `CREATE TABLE IF NOT EXISTS likesFor_${userID}_${imageID}
-                              ('username   TEXT  PRIMARY KEY,
-                              REFERENCES users ON DELETE CASCADE,
-                               )`;
-  
-  sendGenericQuery(addImageQuery);
-  sendGenericQuery(incrementPostNumberQuery);
-  sendGenericQuery(createCommentTableQuery);
-  return sendGenericQuery(createLikeTableQuery);
+    sendGenericQuery(incrementPostNumberQuery);
+  return new Promise( (resolve, reject) => { //IDK how to send image file so I left it like this but NEEDS FIXIN'
+    db.transaction(tx => {
+      tx.executeSql(addImageQuery, [image], (tx, results) => {
+        let selectedUserID = results.rows.item(0);
+        resolve(selectedUserID);
+      }, (err) => { 
+        reject(err); 
+      });
+    });
+  });
 }
 
-export const addFollowing = (ownUsername, toFollowUsername) => {
-  let toFollowID = getUserID(toFollowUsername).userID;
+export const addFollow = (ownUsername, toFollowUsername) => {
   let ownUserID = getUserID(ownUsername).userID;
-  let AddToFollowingTableQuery = `INSERT INTO isFollowing_${ownUserID} (userID, username) VALUES
-                                  (${toFollowID}, ${toFollowUsername});`;
-  let incrementfollowingQuery = `UPDATE users
-                                 SET followingCount = followingCount + 1
-                                 WHERE userID = ${ownUserID};`;
-  let incrementFollowersQuery = `UPDATE users
-                                 SET followersCount = followersCount + 1
-                                 WHERE userID = ${toFollowID};`;
-  let AddToFollowedByTableQuery = `INSERT INTO isFollowedBy_${toFollowID} (userID, username) VALUES
-                                  (${toFollowID}, ${toFollowUsername});`;
-  sendGenericQuery(AddToFollowingTableQuery);
-  sendGenericQuery(incrementfollowingQuery);
-  sendGenericQuery(AddToFollowedByTableQuery);
-  return sendGenericQuery(incrementFollowersQuery);
+  let toFollowUserID = getUserID(toFollowUsername).userID;
+  let addFollowQuery = `INSERT INTO following_database 
+              (followUserID, followUsername, isFollowedUserID, isFollowedUsername) VALUES
+              (${ownUserID}), '${ownUsername}', ${toFollowUserID}, '${toFollowUsername}');  `;
+  let updateFollowerCount = `UPDATE users
+                 SET followersCount = followersCount + 1
+                 WHERE userID = ${toFollowUserID};`;
+  let updateFollowingCount =`UPDATE users
+                 SET followeingCount = followersCount + 1
+                 WHERE userID = ${ownUserID};`;
+  sendGenericQuery(addFollowQuery);
+  sendGenericQuery(updateFollowingCount);
+  return sendGenericQuery(updateFollowerCount);
 }
 
 export const removeFollow = (ownUsername, toUnfollowUsername) => {
-  let toUnfollowID = getUserID(toFollowUsername).userID;
-  let ownUserID = getUserID(ownUsername).userID;
-  let removeFollowedByQuery = `DELETE FROM isFollowedBy_${toUnfollowID} WHERE userID = ${ownUserID};`;
-  let removeFollowQuery = `DELETE FROM isFollowing_${ownUserID} WHERE userID = ${toUnfollowID}; `;
-  let decrementfollowingQuery = `UPDATE users
-                                 SET followingCount = followingCount - 1
-                                 WHERE userID = ${ownUserID};`;
-  let decrementFollowersQuery = `UPDATE users
-                                 SET followersCount = followersCount - 1
-                                 WHERE userID = ${toUnfollowID};`;
+  let removeFollowQuery = `DELETE FROM following_database 
+               WHERE followUsername = '${ownUsername}' AND isFollowedUsername = '${toUnfollowUsername}' `;
+  let updateFollowerCount = `UPDATE users
+                 SET followersCount = followersCount - 1
+                 WHERE userID = ${toUnfollowUserID};`;
+  let updateFollowingCount =`UPDATE users
+                 SET followingCount = followersCount - 1
+                 WHERE userID = ${ownUserID};`;
   sendGenericQuery(removeFollowQuery);
-  sendGenericQuery(decrementfollowingQuery);
-  sendGenericQuery(removeFollowedByQuery);
-  return sendGenericQuery(decrementFollowersQuery);
+  sendGenericQuery(updateFollowingCount);
+  return sendGenericQuery(updateFollowerCount);
 }
 
-export const changeBio = (username, newBio) => {
-  let changeBioQuery = `UPDATE users
-                        SET  'biography' = ${newBio}
-                        WHERE username = ${username};`
-  return sendGenericQuery(changeBioQuery);
+export const updateBio = (username, newBio) => {
+  let userID = getUserID(username).userID;
+  let updateBioQuery = `INSERT INTO users (biography) VALUES ('${newBio}');`;
+  return sendGenericQuery(updateBioQuery);
 }
 
-export const AddComment = (ownUsername, comment, commentedUsername, commentedUserImageID) => {
-  let commentedUserID = getUserID(commentedUsername).userID;
-  let AddCommentQuery = `INSERT INTO commentsFor_${commentedUserID}_${commentedUserImageID} 
-                         (username, comment) VALUES
-                         (${ownUsername}, ${comment});`;
-  //TODO: PARSE COMMENT FOR HASHTAGS AND UPLOAD THEM + IMAGEOWNERID + IMAGEID
-  return sendGenericQuery(AddCommentQuery);
-}
-
-export const AddLike = (ownUsername, commentedUsername, commentedUserImageID) => {
-  let commentedUserID = getUserID(commentedUsername).userID;
-  let likeTableQuery = `INSERT INTO likesFor_${commentedUserID}_${commentedUserImageID}
-                        (username) VALUES (${ownUsername});`;
-  return sendGenericQuery(likeTableQuery);
-}
-
-
-export const searchForUser = (textQuery) => {
-  let findUserQuery = `SELECT (username, userID, profileImage) FROM users WHERE username = ${text} OR email = ${text};`;
-  return getGenericOneRowQuery(findUserQuery);
-}
-
-
-// ---------- GET functions for building user page  ------------
-export const getUserInfo = (username) => {
-  let getUserInfoQuery = `SELECT (username, userID, profileImage, follwersCount, followingCount, postCount, biography) 
-                          FROM users WHERE username = ${username};`;
+export const getUserInfo = (username) =>  {
+  let getUserInfoQuery = `SELECT (userID, username, biography, profileImage, postCount, followersCount, followingCount)
+              FROM users
+              WHERE users.username = '${username}' `;
   return getGenericOneRowQuery(getUserInfoQuery);
 }
 
-export const getLastimageID = (tablename, db) => {
-  let getImageQuery = `SELECT MAX(imageID) FROM '${tablename}'`;
-  return getGenericOneRowQuery(getImageQuery); //WHAT'S THE FIELD NAME TO UNWRAP??
+export const searchForUser = (keyword) => {
+  let findUsersQuery = `SELECT (userID, username, profileImage) 
+                        FROM users
+                        WHERE users.username ='${keyword}' OR users.email = '${keyword}'; `;
+  return getGenericListQuery(findUsersQuery);
 }
-
-
-export const getUserFollowersNumber = (username) => {
-  let userID = getUserID(username).userID;
-  let follwersNumberQuery = `SELECT COUNT(*) FROM isFollowedBy_${userID};`;
-  return getGenericOneRowQuery(follwersNumberQuery);
-}
-
-export const getUserFollowingNumber = (username) => {
-  let userID = getUserID(username).userID;
-  let followingNumberQuery = `SELECT COUNT(*) FROM isFollowing_${userID};`;
-  return getGenericOneRowQuery(followingNumberQuery);
-}
-
-export const getPostCount = (username) => {
-  let postCountQuery = `SELECT postCount FROM users WHERE username = ${username};`;
-  return getGenericOneRowQuery(postCountQuery);
-}
-
-
-export const GetImageFile = (username ,imageID) => {
-  let userID = getUserID(username).userID;
-  let getImageQuery = `SELECT * FROM imageTable_${userID} WHERE imageID = ${imageID};`;
-  return getGenericOneRowQuery(getImageQuery);
-}
-
 
 
 export const getUserID = username => {
@@ -215,54 +116,20 @@ export const getUserID = username => {
     });
   });
 };
-
-
-export const getFollwingList = (username) => {
-  let userID = getUserID(username);
-  let getFollwingListQuery = `SELECT * FROM isFollowing_${userID};`;
-  return getGenericListQuery(getFollwingListQuery);
-}
-
-// get a user's data after using the Login Form or after completing Register Form
-// TODO: might want to perform select on a different identifier than email
-export const getUser = email => {
-  let query = `SELECT * FROM users WHERE email =?`;
+export const getUsername = username => {
+  let query = `SELECT users.username FROM users WHERE users.username = '${username}'`;
   let db = openDB();
-
   return new Promise( (resolve, reject) => {
     db.transaction(tx => {
-      tx.executeSql(query, [email], (tx, results) => {
-        let selectedUser = results.rows.item(0);
-        resolve(selectedUser.username);
+      tx.executeSql(query, [], (tx, results) => {
+        let selectedUserID = results.rows.item(0);
+        resolve(results);
       }, (err) => { 
         reject(err); 
       });
     });
   });
 };
-
-
-
-//TODO: UNIMPLEMENTED
-export const validateEmailPasswordCombination = (email, password) => {
-  let validateQuery = `SELECT (username) FROM users `
-}
-
-
-
-//Function to reduce clutter; Sends generic query to database that doesn't return anything
-export const sendGenericQuery = query => {
-  let db = openDB();
-  return new Promise( (resolve, reject) => {
-    db.transaction(tx => {
-      tx.executeSql(query, [], (tx, results) => {
-        resolve('success');
-      }, (err) => { 
-        reject(err); 
-      });
-    });
-  });
-}
 
 //Function to reduce clutter; Sends generic query that returns exactly one row. 
 //WARNING: Does not know what type of table returned: needs to be handled externally.
@@ -279,6 +146,7 @@ export const getGenericOneRowQuery = query => {
   });
 }
 
+
 export const getGenericListQuery = query => {
   let db = openDB();
   return new Promise((resolve, reject) => {
@@ -291,3 +159,36 @@ export const getGenericListQuery = query => {
       });
   });
 }
+
+export const sendGenericQuery = query => {
+  let db = openDB();
+  return new Promise( (resolve, reject) => {
+    db.transaction(tx => {
+      tx.executeSql(query, [], (tx, results) => {
+        resolve('success');
+      }, (err) => { 
+        reject(err); 
+      });
+    });
+  });
+}
+
+export const getAllUsernames = word => {
+  query = `SELECT username FROM users`;
+  return getGenericListQuery(query);
+}
+export const getUser = email => {
+  let query = `SELECT * FROM users WHERE email =?`;
+  let db = openDB();
+
+  return new Promise( (resolve, reject) => {
+    db.transaction(tx => {
+      tx.executeSql(query, [email], (tx, results) => {
+        let selectedUser = results.rows.item(0);
+        resolve(selectedUser.username);
+      }, (err) => { 
+        reject(err); 
+      });
+    });
+  });
+};

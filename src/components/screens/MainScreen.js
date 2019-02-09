@@ -7,10 +7,10 @@ import * as databaseIO from '../../database/User';
 class MainScreen extends React.Component {
   render() {
     const username = this.props.navigation.getParam('username', 'user');
-
+    const userID = databaseIO.getUsername(username)[0];
     return (
       <View style={styles.container}>
-        <Text> Hello {username}! </Text>
+        <Text> Hello {username}! Your UserID is: {userID} </Text>
       </View>
     );
   }
