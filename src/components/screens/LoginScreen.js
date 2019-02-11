@@ -1,7 +1,8 @@
 import React from 'react';
 import {
   View,
-  Button
+  Button,
+  Alert
 } from 'react-native';
 import PropTypes from 'prop-types';
 import LoginStyles from '../styles/LoginStyles';
@@ -13,7 +14,7 @@ const LoginForm = formBuilder.form.Form;
 
 // User object to capture the inputs from the Login Form
 const User = formBuilder.struct({
-  email: formBuilder.String,
+  username: formBuilder.String,
   password: formBuilder.String
 });
 
@@ -26,12 +27,29 @@ const FormOptions = {
   }
 }
 
+// Alert message for invalid user
+const raiseUsernameAlert = () => {
+  return Alert.alert(
+    'Error: username not found',
+    'Please try again'
+    [
+      { text: 'OK' }
+    ]
+  );
+};
+
 class LoginScreen extends React.Component {
   handleSubmit = async () => {
     const { navigate } = this.props.navigation;
-    let user = this.refs.form.getValue(); // capture input from form
-    let username = await getUser(user.email); // look up the username in the database 
-    navigate('Main', { username }); // transition to the MainScreen component
+    let input = this.refs.form.getValue(); // capture form input
+
+    getUser(input.username) // search for user in db
+      .then(user => { // if found, load main page
+        navigate('Main', { username: user.username });
+      })
+      .catch(err => { // if not found, display error 
+        raiseUsernameAlert();
+      });  
   }
 
   render() {
