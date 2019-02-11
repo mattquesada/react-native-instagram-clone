@@ -1,13 +1,18 @@
 // icon imports
 import homeIcon from './images/home.png';
-import userIcon from './images/user.png';
+import profileIcon from './images/profile.png';
 import uploadIcon from './images/upload.png';
 import searchIcon from './images/search.png';
+import userPlaceholder from './images/user-placeholder.png';
 
 // map images to their location in the assets folder
-export const mainImages = {
+export const navbarIcons = {
   homeIcon,
-  userIcon,
+  profileIcon,
   uploadIcon,
   searchIcon
+};
+
+export const profileIcons = {
+  userPlaceholder
 };
