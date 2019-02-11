@@ -32,16 +32,15 @@ const FormOptions = {
 class RegisterScreen extends React.Component {
  handleSubmit = async () => {
     const { navigate } = this.props.navigation;
-    let user = this.refs.form.getValue(); // capture input from form
-
-    //ToastAndroid.show(addUser(user), ToastAndroid.short); // add the user and display success
-    let status = await addUser(user);
-    console.log(user);
-
-    let username = await getUser(user.email); // look up the username in the database
-    console.log(username);
+    let input = this.refs.form.getValue(); // capture input from form
     
-    navigate('Main', { username }); // transition to the MainScreen component
+    // create new user row in the users table
+    let status = await addUser(input);
+    console.log(status);
+
+    let user = await getUser(input.username); // look up the username in the database
+
+    navigate('Main', { username: user.username }); // transition to the MainScreen component
   }
 
   render() {
