@@ -11,7 +11,7 @@ class MainScreen extends React.Component {
     const username = this.props.navigation.getParam('username', 'user');
     return (
       <View style={styles.container}>
-        <Navbar />
+        <Navbar navigation={this.props.navigation} />
         <Text style={{margin: 10}}>Hello {username}!</Text>
       </View>
     );

@@ -16,7 +16,7 @@ import searchIcon from '../../assets/images/search.png';
 const Navbar = props => {
   return (
     <View style={styles.iconBar}>
-      <TouchableHighlight >
+      <TouchableHighlight onPress={() => props.navigation.navigate('Profile')}> 
         <Image source={userIcon} style={styles.iconFirst}/>
       </TouchableHighlight>
       <TouchableHighlight>
@@ -35,7 +35,7 @@ const Navbar = props => {
 const styles = NavbarStyles;
 
 Navbar.propTypes = {
-  routes: PropTypes.array.isRequired // allows us to mount other screens from the navbar
+  navigation: PropTypes.object.isRequired  // allows us to mount other screens from the navbar
 }
 
 export default Navbar;
