@@ -15,6 +15,7 @@ import LaunchScreen from './src/components/screens/LaunchScreen';
 import LoginScreen from './src/components/screens/LoginScreen';
 import RegisterScreen from './src/components/screens/RegisterScreen';
 import MainScreen from './src/components/screens/MainScreen';
+import ProfileScreen from './src/components/screens/ProfileScreen';
 
 type Props = {};
 class App extends React.Component<Props> {
@@ -29,7 +30,8 @@ const Routes = createStackNavigator(
     Launch: LaunchScreen,
     Login: LoginScreen,
     Register: RegisterScreen,
-    Main: MainScreen
+    Main: MainScreen,
+    Profile: ProfileScreen
   },
   {
     initialRouteName: 'Launch'
