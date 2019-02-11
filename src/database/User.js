@@ -41,3 +41,21 @@ export const getUser = username => {
     });
   });
 };
+
+export const updateBiography = (username, biography) => {
+  let query = ` UPDATE users 
+                SET biography = '${biography}'
+                WHERE username = '${username}' 
+              `;
+  let db = openDB();
+
+  return new Promise((resolve, reject) =>{
+    db.transaction(tx => {
+      tx.executeSql(query, [], (tx, results) => {
+        resolve('biography updated successfully');
+      }, (err) => {
+        reject(err);
+      });
+    });
+  }); 
+};

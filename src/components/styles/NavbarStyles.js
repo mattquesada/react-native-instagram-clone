@@ -2,7 +2,6 @@ import { StyleSheet } from 'react-native';
 
 const NavbarStyles = StyleSheet.create({
   iconBar: {
-    //height: config.styleConstants.rowHeight,
     height: 70,
     width: 100 + '%',
     borderTopWidth: StyleSheet.hairlineWidth,
