@@ -22,8 +22,13 @@ class MainScreen extends React.Component {
     switch (selectedIcon) {
       case 'profile':
         navigate('Profile', {username: this.state.username});
+        break;
+      case 'search':
+        navigate('Search', {username: this.state.username});
+        break;
       default:
         console.log('navbar selection error');
+        break;
     }
   }
 

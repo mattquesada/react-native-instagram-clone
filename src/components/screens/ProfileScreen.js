@@ -40,8 +40,13 @@ class ProfileScreen extends React.Component {
     switch (selectedIcon) {
       case 'home':
         navigate('Main', { username: this.state.username });
+        break;
+      case 'search':
+        navigate('Search', { username: this.state.username });
+        break;
       default:
         console.log('navbar selection error');
+        break;
     }
   }
 

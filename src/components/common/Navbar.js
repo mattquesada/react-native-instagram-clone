@@ -29,7 +29,7 @@ const Navbar = props => {
           style={styles.icon}
         />
       </TouchableOpacity>
-      <TouchableOpacity>
+      <TouchableOpacity onPress={() => props.onNavbarSelect('search')}>
         <Image  
           source={navbarIcons.searchIcon} 
           style={styles.icon}

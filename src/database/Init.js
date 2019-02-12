@@ -13,7 +13,7 @@ const errorCB = (err) => { console.log('SQL Error: ' + err); }
 export const createTables = () => {
   let db = openDB();
   let createUserBaseQuery = `CREATE TABLE IF NOT EXISTS users 
-              ('userID'         INTEGER     IDENTITY      PRIMARY KEY,
+              ('userID'         INTEGER     PRIMARY KEY,
                'username'       TEXT        NOT NULL, 
                'email'          TEXT        NOT NULL, 
                'password'       TEXT        NOT NULL,
@@ -52,7 +52,7 @@ export const createTables = () => {
                               FOREIGN KEY  (userID) REFERENCES users,
                               FOREIGN KEY  (imageID) REFERENCES image_database
                              );`;
-  let createFollowingBaseQuery = `CREATE TABLE IF NOT EXISTS following_Database
+  let createFollowingBaseQuery = `CREATE TABLE IF NOT EXISTS following_database
                                   ('followUserID' INTEGER,
                                    'followUsername' TEXT,
                                    'isFollowedUserID' INTEGER,
