@@ -23,7 +23,7 @@ const Navbar = props => {
           style={styles.icon}
         />
       </TouchableOpacity>
-      <TouchableOpacity>
+      <TouchableOpacity onPress={() => props.onNavbarSelect('home')}>
         <Image  
           source={navbarIcons.homeIcon} 
           style={styles.icon}

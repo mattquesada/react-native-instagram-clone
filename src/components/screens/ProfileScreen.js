@@ -38,8 +38,8 @@ class ProfileScreen extends React.Component {
   onNavbarSelect = (selectedIcon) => {
     let { navigate } = this.props.navigation;
     switch (selectedIcon) {
-      case 'profile':
-        navigate('Profile', { username: this.state.username });
+      case 'home':
+        navigate('Main', { username: this.state.username });
       default:
         console.log('navbar selection error');
     }
