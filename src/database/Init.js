@@ -53,13 +53,10 @@ export const createTables = () => {
                               FOREIGN KEY  (imageID) REFERENCES image_database
                              );`;
   let createFollowingBaseQuery = `CREATE TABLE IF NOT EXISTS following_database
-                                  ('followUserID' INTEGER,
+                                  (
+                                   'ID' INTEGER PRIMARY KEY,
                                    'followUsername' TEXT,
-                                   'isFollowedUserID' INTEGER,
-                                   'isFollowedUsername' TEXT,
-                                   CONSTRAINT pk_following PRIMARY KEY (followUserID, isFollowedUserID),
-                                   FOREIGN KEY (followUsername)   REFERENCES users,
-                                   FOREIGN KEY (isFollowedUserID) REFERENCES users
+                                   'isFollowedUsername' TEXT
                                   );`;
   sendGenericQuery(createUserBaseQuery);
   sendGenericQuery(createLikeBaseQuery);

@@ -143,3 +143,99 @@ export const getFollowers = username => {
     });
   });
 };
+
+export const addImage = (username, image, caption) => {
+  let userID = getUserID(username).userID;
+  let incrementPostNumberQuery = `UPDATE users
+                                  SET postCount = postCount + 1
+                                  WHERE  userID = ${userID};`;
+  sendGenericQuery(incrementPostNumberQuery);
+  let getpostCountQuery = `SELECT postCount FROM users WHERE users.userID = ${userID}`
+  let postCount = getGenericOneRowQuery(getpostCountQuery)['postCount'];
+  let addImageQuery = `INSERT into image_Database (userID, imageID, username, caption, imageFile) VALUES
+             (${userID}, ${postCount}, '${username}', '${caption}',${image});`;
+  return new Promise((resolve, reject) => { //IDK how to send image file so I left it like this but NEEDS FIXIN'
+    db.transaction(tx => {
+      tx.executeSql(addImageQuery, [image], (tx, results) => {
+        let selectedUserID = results.rows.item(0);
+        resolve(selectedUserID);
+      }, (err) => {
+        reject(err);
+      });
+    });
+  });
+}
+
+export const updateBio = (username, newBio) => {
+  let userID = getUserID(username).userID;
+  let updateBioQuery = `INSERT INTO users (biography) VALUES ('${newBio}');`;
+  return sendGenericQuery(updateBioQuery);
+}
+
+export const getUserInfo = (username) => {
+  let getUserInfoQuery = `SELECT (userID, username, biography, profileImage, postCount, followersCount, followingCount)
+              FROM users
+              WHERE users.username = '${username}' `;
+  return getGenericOneRowQuery(getUserInfoQuery);
+}
+
+export const searchForUser = (keyword) => {
+  let findUsersQuery = `SELECT (userID, username, profileImage) 
+                        FROM users
+                        WHERE users.username ='${keyword}' OR users.email = '${keyword}'; `;
+  return getGenericListQuery(findUsersQuery);
+}
+
+export const getUserID = username => {
+  let query = `SELECT users.userID FROM users WHERE users.username = '${username}'`;
+  let db = openDB();
+  return new Promise((resolve, reject) => {
+    db.transaction(tx => {
+      tx.executeSql(query, [], (tx, results) => {
+        let selectedUserID = results.rows.item(0);
+        resolve(selectedUserID);
+      }, (err) => {
+        reject(err);
+      });
+    });
+  });
+};
+
+export const setHashtag = (hashtag, userID, imageID) => {
+  let hashtagQuery = `INSERT INTO hashtag_Database (hashtag, userID, imageID) 
+                      VALUES ('${hashtag}', ${userID}, ${imageID});`;
+  return sendGenericQuery(hashtagQuery);
+}
+
+export const getHashtagContainedInfo = (hashtag) => {
+  let getHashInfoQuery = `Select userID, imageID FROM hashtag_Database WHERE hashtag_Database.hashtag = ${hashtag}`;
+  return getGenericListQuery(getHashInfoQuery);
+}
+
+//Function to reduce clutter; Sends generic query that returns exactly one row. 
+//WARNING: Does not know what type of table returned: needs to be handled externally.
+export const getGenericOneRowQuery = query => {
+  let db = openDB();
+  return new Promise((resolve, reject) => {
+    db.transaction(tx => {
+      tx.executeSql(query, [], (tx, results) => {
+        resolve(results.rows.item(0));
+      }, (err) => {
+        reject('SQL Error: ' + err);
+      });
+    });
+  });
+}
+
+export const getGenericListQuery = query => {
+  let db = openDB();
+  return new Promise((resolve, reject) => {
+    db.transaction(tx => {
+      tx.executeSql(query, [], (tx, results) => {
+        resolve(results);
+      }, (err) => {
+        reject('SQL Error: ' + err);
+      });
+    });
+  });
+}
