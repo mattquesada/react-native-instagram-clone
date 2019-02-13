@@ -42,6 +42,27 @@ export const getUser = username => {
   });
 };
 
+export const getAllUsernames = currentUsername => {
+  let query = `SELECT username FROM users`;
+  let db = openDB();
+
+  return new Promise((resolve, reject) => {
+    db.transaction(tx => {
+      tx.executeSql(query, [], (tx, results) => {
+        let usernames = []; // push all usernames 
+        for (let i = 0; i < results.rows.length; i++) {
+          let foundUsername = results.rows.item(i).username;
+          if (currentUsername !== foundUsername)
+            usernames.push(foundUsername);
+        }
+        resolve(usernames);
+      }, (err) => {
+        reject(err);
+      });
+    });
+  });
+}
+
 export const updateBiography = (username, biography) => {
   let query = ` UPDATE users 
                 SET biography = '${biography}'
@@ -58,4 +79,67 @@ export const updateBiography = (username, biography) => {
       });
     });
   }); 
+};
+
+export const sendGenericQuery = query => {
+  let db = openDB();
+  return new Promise((resolve, reject) => {
+    db.transaction(tx => {
+      tx.executeSql(query, [], (tx, results) => {
+        resolve('success');
+      }, (err) => {
+        reject(err);
+      });
+    });
+  });
+}
+
+export const addFollow = (ownUsername, toFollowUsername) => {
+  let addFollowQuery = `INSERT INTO following_database 
+              (followUsername, isFollowedUsername) VALUES
+              ('${ownUsername}', '${toFollowUsername}')`;
+  let updateFollowerCount = `UPDATE users
+                 SET followersCount = followersCount + 1
+                 WHERE username = '${toFollowUsername}';`;
+  let updateFollowingCount = `UPDATE users
+                 SET followingCount = followingCount + 1
+                 WHERE username = '${ownUsername}';`;
+  sendGenericQuery(updateFollowingCount);
+  sendGenericQuery(updateFollowerCount);
+  return sendGenericQuery(addFollowQuery);
+};
+
+export const removeFollow = (ownUsername, toUnfollowUsername) => {
+  let removeFollowQuery = `DELETE FROM following_database 
+               WHERE followUsername = '${ownUsername}' AND isFollowedUsername = '${toUnfollowUsername}' `;
+  let updateFollowerCount = `UPDATE users
+                 SET followersCount = followersCount - 1
+                 WHERE username = '${toUnfollowUsername}'`;
+  let updateFollowingCount = `UPDATE users
+                 SET followingCount = followingCount - 1
+                 WHERE username = '${ownUsername}'`;
+  sendGenericQuery(updateFollowingCount);
+  sendGenericQuery(updateFollowerCount);
+  return sendGenericQuery(removeFollowQuery);
+};
+
+export const getFollowers = username => {
+  let query = ` SELECT isFollowedUsername 
+                FROM following_database
+                WHERE followUsername = '${username}'`;
+  let db = openDB();
+
+  return new Promise((resolve, reject) => {
+    db.transaction(tx => {
+      tx.executeSql(query, [], (tx, results) => {
+        let followers = []; // push all usernames 
+        for (let i = 0; i < results.rows.length; i++) {
+          followers.push(results.rows.item(i).isFollowedUsername)
+        }
+        resolve(followers);
+      }, (err) => {
+        reject(err);
+      });
+    });
+  });
 };

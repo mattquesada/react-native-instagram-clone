@@ -7,7 +7,10 @@ import PropTypes from 'prop-types';
 import Navbar from '../common/Navbar';
 
 // sqlite query imports 
-import { getUser, updateBiography } from '../../database/User';
+import { 
+  getUser,
+  updateBiography,
+} from '../../database/User';
 
 // picture imports 
 import { profileIcons } from '../../assets/config';
@@ -40,8 +43,13 @@ class ProfileScreen extends React.Component {
     switch (selectedIcon) {
       case 'home':
         navigate('Main', { username: this.state.username });
+        break;
+      case 'search':
+        navigate('Search', { username: this.state.username });
+        break;
       default:
         console.log('navbar selection error');
+        break;
     }
   }
 
@@ -58,6 +66,11 @@ class ProfileScreen extends React.Component {
       .catch( err => {
         console.log(err);
       });
+  }
+
+  getFollowing = () => {
+    let { navigate } = this.props.navigation;
+    navigate('Followers', { username: this.state.username });
   }
 
   render() {
@@ -102,6 +115,11 @@ class ProfileScreen extends React.Component {
             }
           </View>
         </View>
+        <Button
+          title="Following"
+          onPress={() => this.getFollowing()}
+          color='#3195F3'
+        /> 
       </View>
     );
   }
