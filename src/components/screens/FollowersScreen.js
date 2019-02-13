@@ -62,9 +62,9 @@ class FollowersScreen extends React.Component {
       <View>
         <Navbar onNavbarSelect={this.onNavbarSelect} />
         <View>
-          {this.state.followers.map(follower => {
+          {this.state.followers.map( (follower, key) => {
             return (
-              <View style={styles.userPanel}>
+              <View style={styles.userPanel} key={key}>
                 <Text style={styles.usernameText}>
                   {follower}
                 </Text>

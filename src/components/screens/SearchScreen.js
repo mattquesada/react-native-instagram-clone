@@ -54,9 +54,9 @@ class SearchScreen extends React.Component {
       <View>
         <Navbar onNavbarSelect={this.onNavbarSelect} />
         <View>
-          {this.state.foundUsernames.map(username => {
+          {this.state.foundUsernames.map((username, key) => {
               return (
-                <View style={styles.userPanel}>
+                <View style={styles.userPanel} key={key}>
                   <Text style={styles.usernameText}>
                     {username}
                   </Text>
