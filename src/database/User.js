@@ -107,4 +107,39 @@ export const addFollow = (ownUsername, toFollowUsername) => {
   sendGenericQuery(updateFollowingCount);
   sendGenericQuery(updateFollowerCount);
   return sendGenericQuery(addFollowQuery);
-}
+};
+
+export const removeFollow = (ownUsername, toUnfollowUsername) => {
+  let removeFollowQuery = `DELETE FROM following_database 
+               WHERE followUsername = '${ownUsername}' AND isFollowedUsername = '${toUnfollowUsername}' `;
+  let updateFollowerCount = `UPDATE users
+                 SET followersCount = followersCount - 1
+                 WHERE username = '${toUnfollowUsername}'`;
+  let updateFollowingCount = `UPDATE users
+                 SET followingCount = followingCount - 1
+                 WHERE username = '${ownUsername}'`;
+  sendGenericQuery(updateFollowingCount);
+  sendGenericQuery(updateFollowerCount);
+  return sendGenericQuery(removeFollowQuery);
+};
+
+export const getFollowers = username => {
+  let query = ` SELECT isFollowedUsername 
+                FROM following_database
+                WHERE followUsername = '${username}'`;
+  let db = openDB();
+
+  return new Promise((resolve, reject) => {
+    db.transaction(tx => {
+      tx.executeSql(query, [], (tx, results) => {
+        let followers = []; // push all usernames 
+        for (let i = 0; i < results.rows.length; i++) {
+          followers.push(results.rows.item(i).isFollowedUsername)
+        }
+        resolve(followers);
+      }, (err) => {
+        reject(err);
+      });
+    });
+  });
+};

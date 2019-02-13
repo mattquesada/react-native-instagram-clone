@@ -7,7 +7,10 @@ import PropTypes from 'prop-types';
 import Navbar from '../common/Navbar';
 
 // sqlite query imports 
-import { getUser, updateBiography } from '../../database/User';
+import { 
+  getUser,
+  updateBiography,
+} from '../../database/User';
 
 // picture imports 
 import { profileIcons } from '../../assets/config';
@@ -65,6 +68,11 @@ class ProfileScreen extends React.Component {
       });
   }
 
+  getFollowing = () => {
+    let { navigate } = this.props.navigation;
+    navigate('Followers', { username: this.state.username });
+  }
+
   render() {
     return (
       <View>
@@ -107,6 +115,11 @@ class ProfileScreen extends React.Component {
             }
           </View>
         </View>
+        <Button
+          title="Following"
+          onPress={() => this.getFollowing()}
+          color='#3195F3'
+        /> 
       </View>
     );
   }
