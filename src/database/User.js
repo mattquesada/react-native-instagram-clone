@@ -13,10 +13,12 @@ import { openDB } from './Init';
      getUserID(username) => [useID] //mostly for internal use
      getUserInfo(username) => [userID, username, biography, profileImage, postCount, followersCount, followingCount]
      searchForUsers(keyword) => [userID, username, profileImage]
+     setHashtag(hashtag, userID, imageID) => [null]
+     getHashtagContainedInfo(hashtag) => [(userID, ImageID), ..., (userID, ImageID)]
 
      sendGenericQuery(query) => [null]   /send generic query that doesn't expect a return table
      getGenericOneRowQuery(query) => [genericOneRow]  /get one specific row from generic query/
-     getGenericListQUery(query) => [genericItem1 , ... , genericItemN] /get all rows that match query
+     getGenericListQuery(query) => [genericItem1 , ... , genericItemN] /get all rows that match query
 
 
 */
@@ -32,12 +34,14 @@ export const addUser = user => {
 
 export const addImage = (username, image, caption) => {
   let userID = getUserID(username).userID;
-  let addImageQuery = `INSERT into image_Database (userID, username, caption, imageFile) VALUES
-             (${userID}, '${username}', '${caption}',${image});`;
-    let incrementPostNumberQuery = `UPDATE users
+  let incrementPostNumberQuery = `UPDATE users
                                   SET postCount = postCount + 1
-                                  WHERE  userID = ${userID}`;
-    sendGenericQuery(incrementPostNumberQuery);
+                                  WHERE  userID = ${userID};`;
+  sendGenericQuery(incrementPostNumberQuery);
+  let getpostCountQuery = `SELECT postCount FROM users WHERE users.userID = ${userID}`
+  let postCount = getGenericOneRowQuery(getpostCountQuery)['postCount'];
+  let addImageQuery = `INSERT into image_Database (userID, imageID, username, caption, imageFile) VALUES
+             (${userID}, ${postCount}, '${username}', '${caption}',${image});`;
   return new Promise( (resolve, reject) => { //IDK how to send image file so I left it like this but NEEDS FIXIN'
     db.transaction(tx => {
       tx.executeSql(addImageQuery, [image], (tx, results) => {
@@ -50,12 +54,13 @@ export const addImage = (username, image, caption) => {
   });
 }
 
+
 export const addFollow = (ownUsername, toFollowUsername) => {
   let ownUserID = getUserID(ownUsername).userID;
   let toFollowUserID = getUserID(toFollowUsername).userID;
   let addFollowQuery = `INSERT INTO following_database 
               (followUserID, followUsername, isFollowedUserID, isFollowedUsername) VALUES
-              (${ownUserID}), '${ownUsername}', ${toFollowUserID}, '${toFollowUsername}');  `;
+              (${ownUserID}), '${ownUsername}', ${toFollowUserID}, '${toFollowUsername}');`;
   let updateFollowerCount = `UPDATE users
                  SET followersCount = followersCount + 1
                  WHERE userID = ${toFollowUserID};`;
@@ -116,20 +121,18 @@ export const getUserID = username => {
     });
   });
 };
-export const getUsername = username => {
-  let query = `SELECT users.username FROM users WHERE users.username = '${username}'`;
-  let db = openDB();
-  return new Promise( (resolve, reject) => {
-    db.transaction(tx => {
-      tx.executeSql(query, [], (tx, results) => {
-        let selectedUserID = results.rows.item(0);
-        resolve(results);
-      }, (err) => { 
-        reject(err); 
-      });
-    });
-  });
-};
+
+export const setHashtag = (hashtag, userID, imageID) =>{
+  let hashtagQuery = `INSERT INTO hashtag_Database (hashtag, userID, imageID) 
+                      VALUES ('${hashtag}', ${userID}, ${imageID});`;
+  return sendGenericQuery(hashtagQuery);
+}
+
+export const getHashtagContainedInfo = (hashtag) => {
+  let getHashInfoQuery = `Select userID, imageID FROM hashtag_Database WHERE hashtag_Database.hashtag = ${hashtag}`;
+  return getGenericListQuery(getHashInfoQuery);
+}
+
 
 //Function to reduce clutter; Sends generic query that returns exactly one row. 
 //WARNING: Does not know what type of table returned: needs to be handled externally.
