@@ -1,4 +1,4 @@
-/* 
+/*
 * Contains functions for registering new users / verifying current users
 * Connects to our sqlite service to retrieve data for the frontend
 */
@@ -6,10 +6,10 @@
 import { openDB } from './Init';
 
 // add a user's data to the database after using the Register Form
-// TODO: password should be encrypted 
+// TODO: password should be encrypted
 export const addUser = user => {
   let { username, email, password } = user;
-  let query = `INSERT INTO users (username, email, password) VALUES 
+  let query = `INSERT INTO users (username, email, password) VALUES
               ('${username}', '${email}', '${password}')`;
   let db = openDB();
 
@@ -26,7 +26,7 @@ export const addUser = user => {
 
 // get a user's data after using the Login Form or after completing Register Form
 // TODO: might want to perform select on a different identifier than email
-export const getUser = username => {
+export const getUser = (username) => {
   let query = `SELECT * FROM users WHERE username ='${username}'`;
   let db = openDB();
 
@@ -49,7 +49,7 @@ export const getAllUsernames = currentUsername => {
   return new Promise((resolve, reject) => {
     db.transaction(tx => {
       tx.executeSql(query, [], (tx, results) => {
-        let usernames = []; // push all usernames 
+        let usernames = []; // push all usernames
         for (let i = 0; i < results.rows.length; i++) {
           let foundUsername = results.rows.item(i).username;
           if (currentUsername !== foundUsername)
@@ -64,9 +64,9 @@ export const getAllUsernames = currentUsername => {
 }
 
 export const updateBiography = (username, biography) => {
-  let query = ` UPDATE users 
+  let query = ` UPDATE users
                 SET biography = '${biography}'
-                WHERE username = '${username}' 
+                WHERE username = '${username}'
               `;
   let db = openDB();
 
@@ -78,7 +78,7 @@ export const updateBiography = (username, biography) => {
         reject(err);
       });
     });
-  }); 
+  });
 };
 
 export const sendGenericQuery = query => {
@@ -95,7 +95,7 @@ export const sendGenericQuery = query => {
 }
 
 export const addFollow = (ownUsername, toFollowUsername) => {
-  let addFollowQuery = `INSERT INTO following_database 
+  let addFollowQuery = `INSERT INTO following_database
               (followUsername, isFollowedUsername) VALUES
               ('${ownUsername}', '${toFollowUsername}')`;
   let updateFollowerCount = `UPDATE users
@@ -110,7 +110,7 @@ export const addFollow = (ownUsername, toFollowUsername) => {
 };
 
 export const removeFollow = (ownUsername, toUnfollowUsername) => {
-  let removeFollowQuery = `DELETE FROM following_database 
+  let removeFollowQuery = `DELETE FROM following_database
                WHERE followUsername = '${ownUsername}' AND isFollowedUsername = '${toUnfollowUsername}' `;
   let updateFollowerCount = `UPDATE users
                  SET followersCount = followersCount - 1
@@ -124,7 +124,7 @@ export const removeFollow = (ownUsername, toUnfollowUsername) => {
 };
 
 export const getFollowers = username => {
-  let query = ` SELECT isFollowedUsername 
+  let query = ` SELECT isFollowedUsername
                 FROM following_database
                 WHERE followUsername = '${username}'`;
   let db = openDB();
@@ -132,7 +132,7 @@ export const getFollowers = username => {
   return new Promise((resolve, reject) => {
     db.transaction(tx => {
       tx.executeSql(query, [], (tx, results) => {
-        let followers = []; // push all usernames 
+        let followers = []; // push all usernames
         for (let i = 0; i < results.rows.length; i++) {
           followers.push(results.rows.item(i).isFollowedUsername)
         }
@@ -152,7 +152,7 @@ export const addImage = (username, image, caption) => {
   sendGenericQuery(incrementPostNumberQuery);
   let getpostCountQuery = `SELECT postCount FROM users WHERE users.userID = ${userID}`
   let postCount = getGenericOneRowQuery(getpostCountQuery)['postCount'];
-  let addImageQuery = `INSERT into image_Database (userID, imageID, username, caption, imageFile) VALUES
+  let addImageQuery = `INSERT into image_database (userID, imageID, username, caption, imageFile) VALUES
              (${userID}, ${postCount}, '${username}', '${caption}',${image});`;
   return new Promise((resolve, reject) => { //IDK how to send image file so I left it like this but NEEDS FIXIN'
     db.transaction(tx => {
@@ -180,7 +180,7 @@ export const getUserInfo = (username) => {
 }
 
 export const searchForUser = (keyword) => {
-  let findUsersQuery = `SELECT (userID, username, profileImage) 
+  let findUsersQuery = `SELECT userID, username, profileImage
                         FROM users
                         WHERE users.username ='${keyword}' OR users.email = '${keyword}'; `;
   return getGenericListQuery(findUsersQuery);
@@ -202,7 +202,7 @@ export const getUserID = username => {
 };
 
 export const setHashtag = (hashtag, userID, imageID) => {
-  let hashtagQuery = `INSERT INTO hashtag_Database (hashtag, userID, imageID) 
+  let hashtagQuery = `INSERT INTO hashtag_Database (hashtag, userID, imageID)
                       VALUES ('${hashtag}', ${userID}, ${imageID});`;
   return sendGenericQuery(hashtagQuery);
 }
@@ -212,7 +212,7 @@ export const getHashtagContainedInfo = (hashtag) => {
   return getGenericListQuery(getHashInfoQuery);
 }
 
-//Function to reduce clutter; Sends generic query that returns exactly one row. 
+//Function to reduce clutter; Sends generic query that returns exactly one row.
 //WARNING: Does not know what type of table returned: needs to be handled externally.
 export const getGenericOneRowQuery = query => {
   let db = openDB();

@@ -12,10 +12,21 @@ const errorCB = (err) => { console.log('SQL Error: ' + err); }
 //Extended createTables function
 export const createTables = () => {
   let db = openDB();
-  let createUserBaseQuery = `CREATE TABLE IF NOT EXISTS users 
+  /*let dropTableQuery = `Drop table users`;
+  let dropTableImageQuery = `Drop table image_database`;
+  let dropTableFollowersQuery = `Drop table following_database`;
+  let dropTableCommentQuery = `Drop table comment_database`;
+  let dropTableLikesQuery = `Drop table likes_database`;
+  sendGenericQuery(dropTableQuery);
+  sendGenericQuery(dropTableImageQuery);
+  sendGenericQuery(dropTableFollowersQuery);
+  sendGenericQuery(dropTableLikesQuery);
+  sendGenericQuery(dropTableCommentQuery);*/
+
+  let createUserBaseQuery = `CREATE TABLE IF NOT EXISTS users
               ('userID'         INTEGER     PRIMARY KEY,
-               'username'       TEXT        NOT NULL, 
-               'email'          TEXT        NOT NULL, 
+               'username'       TEXT        NOT NULL,
+               'email'          TEXT        NOT NULL,
                'password'       TEXT        NOT NULL,
                'biography'      TEXT        DEFAULT 'SAY SOMETHING ABOUT YOURSELF!',
                'profileImage'   VARBINARY,
@@ -44,7 +55,7 @@ export const createTables = () => {
                              ('userID'     INTEGER,
                               'imageID'    INTEGER,
                               'likeID'     INTEGER,
-                              'username'   TEXT, 
+                              'username'   TEXT,
                               CONSTRAINT pk_likes PRIMARY KEY (userID, imageID, likeID)
                              );`;
   let createFollowingBaseQuery = `CREATE TABLE IF NOT EXISTS following_database
@@ -61,7 +72,7 @@ export const createTables = () => {
 }
 
 export const openDB = () => {
-  // the template is located in ~/android/app/src/main/assets/ for android and 
+  // the template is located in ~/android/app/src/main/assets/ for android and
   // ~/ios/ecs165Instagram/www for iOS
   let pathToDB = Platform.OS == 'ios' ?
     { name: 'test.db' } : { name: 'test.db', createFromLocation: 'sql_template.sqlite' };
@@ -80,4 +91,3 @@ export const sendGenericQuery = query => {
     });
   });
 }
-

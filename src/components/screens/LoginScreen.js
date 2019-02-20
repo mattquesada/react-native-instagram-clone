@@ -45,7 +45,7 @@ class LoginScreen extends React.Component {
 
     databaseIO.getUser(input.username) // search for user in db
       .then(user => { // if found, load main page
-        navigate('Main', { username: user.username });
+        navigate('Main', { username: user});
       })
       .catch(err => { // if not found, display error
         raiseUsernameAlert();

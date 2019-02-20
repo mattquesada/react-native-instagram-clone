@@ -2,7 +2,9 @@ import React from 'react';
 import { View, Text } from 'react-native';
 import PropTypes from 'prop-types';
 import MainStyles from '../styles/MainStyles';
-import * as databaseIO from '../../database/User'
+import * as databaseIO from '../../database/User';
+
+import { Platform } from 'react-native';
 // custom component imports
 import Navbar from '../common/Navbar';
 
@@ -33,19 +35,14 @@ class MainScreen extends React.Component {
   }
 
   render() {
-    const username = this.props.navigation.getParam('username', 'user');
-    let userInfo = databaseIO.getUser(username);
-    let derivedUsername = JSON.stringify(userInfo.username);
-    if (JSON.stringify(userInfo.username) !='{}'){
-      derivedUsername = JSON.stringify(userInfo.username) + " with JSON";
-    }
-    else {
-      derivedUsername = username;
-    }
+    const user = this.props.navigation.getParam('username', 'user');
+    //let userInfo = databaseIO.getUser(username);
+
+
     return (
       <View style={styles.container}>
         <Navbar onNavbarSelect={this.onNavbarSelect} />
-        <Text style={{margin: 10}}>Hello {derivedUsername}!</Text>
+        <Text style={{margin: 10}}>Hello {user.username} !</Text>
       </View>
     );
   }
