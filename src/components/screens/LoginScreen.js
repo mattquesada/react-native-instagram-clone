@@ -7,7 +7,7 @@ import {
 import PropTypes from 'prop-types';
 import LoginStyles from '../styles/LoginStyles';
 import formBuilder from 'tcomb-form-native';
-import { getUser } from '../../database/User';
+import * as databaseIO from '../../database/User';
 
 // Form object template
 const LoginForm = formBuilder.form.Form;
@@ -43,17 +43,17 @@ class LoginScreen extends React.Component {
     const { navigate } = this.props.navigation;
     let input = this.refs.form.getValue(); // capture form input
 
-    getUser(input.username) // search for user in db
+    databaseIO.getUser(input.username) // search for user in db
       .then(user => { // if found, load main page
         navigate('Main', { username: user.username });
       })
-      .catch(err => { // if not found, display error 
+      .catch(err => { // if not found, display error
         raiseUsernameAlert();
-      });  
+      });
   }
 
   render() {
-    return (  
+    return (
       <View style={styles.container}>
         <LoginForm ref='form' type={User} options={FormOptions} />
         <Button title="Login" onPress={this.handleSubmit} />
