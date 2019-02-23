@@ -1,13 +1,13 @@
 import React from 'react';
 import {
-  View, 
+  View,
   Button,
   ToastAndroid
 } from 'react-native';
 import PropTypes from 'prop-types';
 import RegisterStyles from '../styles/LoginStyles';
 import formBuilder from 'tcomb-form-native';
-import { getUser, addUser } from '../../database/User';
+import * as databaseIO from '../../database/User';
 
 
 // Form object template
@@ -33,14 +33,14 @@ class RegisterScreen extends React.Component {
  handleSubmit = async () => {
     const { navigate } = this.props.navigation;
     let input = this.refs.form.getValue(); // capture input from form
-    
+
     // create new user row in the users table
-    let status = await addUser(input);
+    let status = await databaseIO.addUser(input);
     console.log(status);
 
-    let user = await getUser(input.username); // look up the username in the database
+    let user = await databaseIO.getUser(input.username); // look up the username in the database
 
-    navigate('Main', { username: user.username }); // transition to the MainScreen component
+    navigate('Main', { username: user }); // transition to the MainScreen component
   }
 
   render() {

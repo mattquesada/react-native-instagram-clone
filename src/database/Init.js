@@ -12,7 +12,8 @@ const errorCB = (err) => { console.log('SQL Error: ' + err); }
 //Extended createTables function
 export const createTables = () => {
   let db = openDB();
-  /*let dropTableQuery = `Drop table users`;
+  /*
+  let dropTableQuery = `Drop table users`;
   let dropTableImageQuery = `Drop table image_database`;
   let dropTableFollowersQuery = `Drop table following_database`;
   let dropTableCommentQuery = `Drop table comment_database`;
@@ -26,21 +27,21 @@ export const createTables = () => {
   sendGenericQuery(dropTableCommentQuery);*/
 
   let createUserBaseQuery = `CREATE TABLE IF NOT EXISTS users
-              ('userID'         INTEGER     PRIMARY KEY,
-               'username'       TEXT        NOT NULL,
-               'email'          TEXT        NOT NULL,
-               'password'       TEXT        NOT NULL,
-               'biography'      TEXT        DEFAULT 'Say Something about yourself!',
-               'profileImage'   BLOB,
-               'PostCount'      INTEGER     DEFAULT 0,
-               'followingCount' INTEGER     DEFAULT 0,
-               'followersCount' INTEGER     DEFAULT 0,
-               'isPrivate'      BOOLEAN     DEFAULT FALSE
+              ('userID'          INTEGER     PRIMARY KEY,
+               'username'        TEXT        NOT NULL,
+               'email'           TEXT        NOT NULL,
+               'password'        TEXT        NOT NULL,
+               'biography'       TEXT        DEFAULT 'Say Something about yourself!',
+               'profileImageURL' TEXT,
+               'postCount'       INTEGER     DEFAULT 0,
+               'followingCount'  INTEGER     DEFAULT 0,
+               'followersCount'  INTEGER     DEFAULT 0,
+               'isPrivate'       BOOLEAN     DEFAULT FALSE
                );`; // insert into users (username, password, email) values ('test','test','test@mail.com');
   let createImageBaseQuery = `CREATE TABLE IF NOT EXISTS image_database
                               ('userID'        INTEGER,
                                'imageID'       INTEGER,
-                               'imageFile'     BLOB      NOT NULL,
+                               'imageURL'      TEXT      NOT NULL,
                                'totalLikes'    INTEGER   DEFAULT 0,
                                'totalComments' INTEGER   DEFAULT 0,
                                'datePosted'    TEXT,

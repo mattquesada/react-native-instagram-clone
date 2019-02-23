@@ -12,15 +12,16 @@ import { openDB } from './Init';
      addUser(user struct) => [null]
      getUser(username) => [ALL USER INFO]
      getFollowingAndPostcount(username) => [(username, userID, postCount) ...]
-     validateUser(username, password) => [userID, username, biography, profileImage, postCount, followersCount, followingCount] //use this
-     addImage(username, imagefile, caption) => [null]     //currently probs won't work due to not knowing how to insert file
+     validateUser(username, password) => [userID, username, biography, profileImageURL, postCount, followersCount, followingCount] //use this
+     addImage(userID, imageURL, caption) => [null]     //currently probs won't work due to not knowing how to insert file
      addFollow(ownUsername, toFollowUsername) => [null]
      removeFollow(ownUsername, toFollowUsername) => [null]
      addComment(userID, imageID, comment, ownUserID, ownUsername) => [null]
      addLike(userID, imageID, ownUserID, ownUsername) => [null]
      getUserID(username) => [useID] //mostly for internal use
-     getUserInfo(username) => [userID, username, biography, profileImage, postCount, followersCount, followingCount]
-     searchForUsers(keyword) => [userID, username, profileImage]
+     getUserInfo(username) => [userID, username, biography, profileImageURL, postCount, followersCount, followingCount]
+     searchForUsers(keyword) => [userID, username, profileImageURL]
+     parseStringAndHashtagLatest (inputString, userID, imageID) => [null] //Adds to last image, without getting imageID
      parseStringAndHashtag (inputString, userID, imageID) => [null]
      setHashtag(hashtag, userID, imageID) => [null]
      getHashtagContainedInfo(hashtag) => [(userID, ImageID), ..., (userID, ImageID)]
@@ -33,7 +34,7 @@ import { openDB } from './Init';
 
 // add a user's data to the database after using the Register Form
 // TODO: password should be encrypted
-export const addUser = user => {
+export const addUser = (user) => {
   let { username, email, password } = user;
   let query = `INSERT INTO users (username, email, password) VALUES
               ('${username}', '${email}', '${password}')`;
@@ -68,15 +69,6 @@ export const getUser = username => {
   });
 };
 
-export const getFollowingAndPostcount = username => {
-  let getInfoQuery = `SELECT username, userID, postCount
-                      FROM   users
-                      WHERE username IN (SELECT toFollowUsername
-                                         FROM following_database
-                                         WHERE followUsername = '${username}');`;
-  //TODO: get username/postcount and push into datastructure listLength
-  return getGenericListQuery(getInfoQuery);
-}
 
 
 export const getAllUsernames = currentUsername => {
@@ -118,18 +110,6 @@ export const updateBiography = (username, biography) => {
   });
 };
 
-export const sendGenericQuery = query => {
-  let db = openDB();
-  return new Promise((resolve, reject) => {
-    db.transaction(tx => {
-      tx.executeSql(query, [], (tx, results) => {
-        resolve('success');
-      }, (err) => {
-        reject(err);
-      });
-    });
-  });
-}
 
 export const addFollow = (ownUsername, toFollowUsername) => {
   let addFollowQuery = `INSERT INTO following_database
@@ -160,6 +140,19 @@ export const removeFollow = (ownUsername, toUnfollowUsername) => {
   return sendGenericQuery(removeFollowQuery);
 };
 
+// -------------------------- GET/ADD FUNCTIONS --------------------------
+
+
+export const getFollowingAndPostcount = username => {
+  let getInfoQuery = `SELECT username, userID, postCount
+                      FROM   users
+                      WHERE username IN (SELECT toFollowUsername
+                                         FROM following_database
+                                         WHERE followUsername = '${username}');`;
+  //TODO: get username/postcount and push into datastructure listLength
+  return getGenericListQuery(getInfoQuery);
+}
+
 export const getFollowers = username => {
   let query = ` SELECT isFollowedUsername
                 FROM following_database
@@ -169,7 +162,7 @@ export const getFollowers = username => {
   return new Promise((resolve, reject) => {
     db.transaction(tx => {
       tx.executeSql(query, [], (tx, results) => {
-        let followers = []; // push all usernames
+        var followers = []; // push all usernames
         for (let i = 0; i < results.rows.length; i++) {
           followers.push(results.rows.item(i).isFollowedUsername)
         }
@@ -180,32 +173,29 @@ export const getFollowers = username => {
     });
   });
 };
+export const addImage = (userID, newURL, caption) => {
+  let addImageQuery = `UPDATE users
+                       SET postCount = postCount + 1
+                       WHERE userID = ${userID};
 
-export const addImage = (username, image, caption) => {
-  let userID = getUserID(username).userID;
-  let incrementPostNumberQuery = `UPDATE users
-                                  SET postCount = postCount + 1
-                                  WHERE  userID = ${userID};`;
-  sendGenericQuery(incrementPostNumberQuery);
-  let getpostCountQuery = `SELECT postCount FROM users WHERE users.userID = ${userID}`;
-  let postCount = getGenericOneRowQuery(getpostCountQuery)['postCount'];
-  let addImageQuery = `INSERT into image_Database (userID, imageID, username, caption, imageFile) VALUES
-                       (${userID}, ${postCount}, '${username}', '${caption}',${image});`;
-  parseStringAndHashtag(caption, userID, postCount);
+                       INSERT INTO image_database (userID, caption, imageURL, imageID)
+                       VALUES
+                       (${userID}, '${caption}', '${imageURL}',
+                       (SELECT postCount FROM users WHERE userID = ${userID});
+                        );`;
+   sendGenericQuery(addImageQuery);
+   parseStringAndHashtagLatest(userID, caption);
 
-  return new Promise((resolve, reject) => { //IDK how to send image file so I left it like this but NEEDS FIXIN'
-    db.transaction(tx => {
-      tx.executeSql(addImageQuery, [image], (tx, results) => {
-        resolve('success');
-      }, (err) => {
-        reject(err);
-      });
-    });
-  });
+}
+
+export const getImage = (userID, imageID) =>{
+  let getImageQuery = `SELECT * FROM image_database
+                       WHERE (userID = ${userID}) AND (imageID =${imageID});`;
+  return getGenericOneRowQuery(getImageQuery);
 }
 
 export const getUserInfo = (username) => {
-  let getUserInfoQuery = `SELECT userID, username, biography, profileImage, postCount, followersCount, followingCount
+  let getUserInfoQuery = `SELECT userID, username, biography, profileImageURL, postCount, followersCount, followingCount
               FROM users
               WHERE users.username = '${username}' `;
   return getGenericOneRowQuery(getUserInfoQuery);
@@ -235,16 +225,17 @@ export const addLike = (userID, imageID, ownUserID, ownUsername) => {
   sendGenericQuery(addLikeQuery);
 }
 
+//  -------------------------- USER FUNCTIONS --------------------------
+
 export const validateUser = (inputKeyword, inputPassword) => {
-  let validateUserQuery = `SELECT userID, username, biography, profileImage, postCount, followersCount, followingCount
+  let validateUserQuery = `SELECT userID, username, biography, profileImageURL, postCount, followersCount, followingCount
                           FROM users
                           WHERE (username = '${inputKeyword}') AND (password = '${inputPassword}');`;
-  setHashtag('test1', '11', '1');
   return getGenericOneRowQuery(validateUserQuery);
 }
 
 export const searchForUser = (keyword) => {
-  let findUsersQuery = `SELECT (userID, username, profileImage)
+  let findUsersQuery = `SELECT (userID, username, profileImageURL)
                         FROM users
                         WHERE (username ='${keyword}') OR (email = '${keyword}'); `;
   return getGenericListQuery(findUsersQuery);
@@ -265,20 +256,34 @@ export const getUserID = username => {
   });
 };
 
+// --------------------------  HASHTAGS --------------------------
 
-export const parseStringAndHashtag = (inputString, userID, imageID) => {
+
+export const parseStringAndHashtagLatest = async (userID, inputString) => { //TODO: UPDATE PostCount to postCount.
+  getImageID(userID)
+  .then(retVal => {
+    return parseStringAndHashtag(userID, retVal.PostCount, inputString);
+  })
+  .catch(err => {
+    return err;
+  });
+
+  return;
+}
+
+export const parseStringAndHashtag = ( userID, imageID, inputString) => {
   let parsedString = inputString.split(" ");
   for(wordIndex in parsedString){
     let word = parsedString[wordIndex]
     if(word[0] == '#'){
-      setHashtag(word.substring(1,word.length), userID, imageID);
+      setHashtag(userID, imageID, word.substring(1,word.length));
     }
   }
   return ;
 }
 
-export const setHashtag = (hashtag, userID, imageID) => {
-  let hashtagQuery = `INSERT INTO hashtag_database (hashtag, userID, imageID)
+export const setHashtag = (userID, imageID, hashtag) => {
+  let hashtagQuery = `INSERT OR IGNORE INTO hashtag_database (hashtag, userID, imageID)
                       VALUES ('${hashtag}', ${userID}, ${imageID});`;
   return sendGenericQuery(hashtagQuery);
 }
@@ -288,6 +293,26 @@ export const getHashtagContainedInfo = (hashtag) => {
   return getGenericListQuery(getHashInfoQuery);
 }
 
+export const getImageID = async (userID) => {
+    let query = `select postCount from users where userID = ${userID};`;
+    return getGenericOneRowQuery(query);
+}
+
+// -------------------------- GENERIC QUERIES --------------------------
+
+
+export const sendGenericQuery = query => {
+  let db = openDB();
+  return new Promise((resolve, reject) => {
+    db.transaction(tx => {
+      tx.executeSql(query, [], (tx, results) => {
+        resolve('success');
+      }, (err) => {
+        reject(err);
+      });
+    });
+  });
+}
 //Function to reduce clutter; Sends generic query that returns exactly one row.
 //WARNING: Does not know what type of table returned: needs to be handled externally.
 export const getGenericOneRowQuery = query => {
@@ -309,8 +334,8 @@ export const getGenericListQuery = query => {
   return new Promise((resolve, reject) => {
     db.transaction(tx => {
       tx.executeSql(query, [], (tx, results) => {
-        let objList = [];
-        var listLength = results.rows.length;
+        var objList = [];
+        let listLength = results.rows.length;
         for (let i = 0; i < listLength; i++) {
           objList.push(results.rows.item(i));
         }

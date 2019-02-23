@@ -35,6 +35,7 @@ class MainScreen extends React.Component {
   render() {
     //const username = this.props.navigation.getParam('username', 'user');
     const userInfo = this.props.navigation.getParam('username', 'user');
+    //databaseIO.parseStringAndHashtagLatest(2,' test #async3 #testAsync3 test4');
 
     return (
       <View style={styles.container}>
