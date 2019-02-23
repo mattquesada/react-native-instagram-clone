@@ -17,6 +17,8 @@ export const createTables = () => {
   let dropTableFollowersQuery = `Drop table following_database`;
   let dropTableCommentQuery = `Drop table comment_database`;
   let dropTableLikesQuery = `Drop table likes_database`;
+  let dropTableHashtagQuery = `Drop table hashtag_database`;
+  sendGenericQuery(dropTableHashtagQuery);
   sendGenericQuery(dropTableQuery);
   sendGenericQuery(dropTableImageQuery);
   sendGenericQuery(dropTableFollowersQuery);
@@ -69,10 +71,18 @@ export const createTables = () => {
                                    'followUsername' TEXT,
                                    'isFollowedUsername' TEXT
                                   );`;
+  let createHashtagBaseQuery = `CREATE TABLE IF NOT EXISTS hashtag_database
+                                (
+                                  'hashtag'   TEXT,
+                                  'userID'    INTEGER,
+                                  'imageID'   INTEGER,
+                                  CONSTRAINT pk_hashtag PRIMARY KEY (userID, imageID, hashtag)
+                                );`;
   sendGenericQuery(createUserBaseQuery);
   sendGenericQuery(createLikeBaseQuery);
   sendGenericQuery(createImageBaseQuery);
   sendGenericQuery(createCommentBaseQuery);
+  sendGenericQuery(createHashtagBaseQuery);
   return sendGenericQuery(createFollowingBaseQuery);
 }
 

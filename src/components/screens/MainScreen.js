@@ -35,7 +35,7 @@ class MainScreen extends React.Component {
   render() {
     //const username = this.props.navigation.getParam('username', 'user');
     const userInfo = this.props.navigation.getParam('username', 'user');
-    console.log("Got to user" + userInfo.username);
+
     return (
       <View style={styles.container}>
         <Navbar onNavbarSelect={this.onNavbarSelect} />

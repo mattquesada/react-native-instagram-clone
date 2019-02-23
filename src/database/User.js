@@ -187,11 +187,12 @@ export const addImage = (username, image, caption) => {
                                   SET postCount = postCount + 1
                                   WHERE  userID = ${userID};`;
   sendGenericQuery(incrementPostNumberQuery);
-  let getpostCountQuery = `SELECT postCount FROM users WHERE users.userID = ${userID}`
+  let getpostCountQuery = `SELECT postCount FROM users WHERE users.userID = ${userID}`;
   let postCount = getGenericOneRowQuery(getpostCountQuery)['postCount'];
   let addImageQuery = `INSERT into image_Database (userID, imageID, username, caption, imageFile) VALUES
-             (${userID}, ${postCount}, '${username}', '${caption}',${image});`;
-  let parseStringAndHashtag(caption, userID, postCount);
+                       (${userID}, ${postCount}, '${username}', '${caption}',${image});`;
+  parseStringAndHashtag(caption, userID, postCount);
+
   return new Promise((resolve, reject) => { //IDK how to send image file so I left it like this but NEEDS FIXIN'
     db.transaction(tx => {
       tx.executeSql(addImageQuery, [image], (tx, results) => {
@@ -277,13 +278,13 @@ export const parseStringAndHashtag = (inputString, userID, imageID) => {
 }
 
 export const setHashtag = (hashtag, userID, imageID) => {
-  let hashtagQuery = `INSERT INTO hashtag_Database (hashtag, userID, imageID)
+  let hashtagQuery = `INSERT INTO hashtag_database (hashtag, userID, imageID)
                       VALUES ('${hashtag}', ${userID}, ${imageID});`;
   return sendGenericQuery(hashtagQuery);
 }
 
 export const getHashtagContainedInfo = (hashtag) => {
-  let getHashInfoQuery = `Select userID, imageID FROM hashtag_Database WHERE hashtag = '${hashtag}';`;
+  let getHashInfoQuery = `Select userID, imageID FROM hashtag_database WHERE hashtag = '${hashtag}';`;
   return getGenericListQuery(getHashInfoQuery);
 }
 
