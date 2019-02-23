@@ -19,10 +19,13 @@
   "devDependencies": {
     "babel-core": "7.0.0-bridge.0",
     "babel-jest": "24.0.0",
-    "jest": "24.0.0",
+    "jest": "^24.0.0",
     "react-test-renderer": "16.6.3"
   },
   "jest": {
     "preset": "react-native"
+  },
+  "scripts": {
+    "test": "jest"
   }
 }

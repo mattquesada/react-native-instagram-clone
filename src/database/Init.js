@@ -12,13 +12,24 @@ const errorCB = (err) => { console.log('SQL Error: ' + err); }
 //Extended createTables function
 export const createTables = () => {
   let db = openDB();
-  let createUserBaseQuery = `CREATE TABLE IF NOT EXISTS users 
+  /*let dropTableQuery = `Drop table users`;
+  let dropTableImageQuery = `Drop table image_database`;
+  let dropTableFollowersQuery = `Drop table following_database`;
+  let dropTableCommentQuery = `Drop table comment_database`;
+  let dropTableLikesQuery = `Drop table likes_database`;
+  sendGenericQuery(dropTableQuery);
+  sendGenericQuery(dropTableImageQuery);
+  sendGenericQuery(dropTableFollowersQuery);
+  sendGenericQuery(dropTableLikesQuery);
+  sendGenericQuery(dropTableCommentQuery);*/
+
+  let createUserBaseQuery = `CREATE TABLE IF NOT EXISTS users
               ('userID'         INTEGER     PRIMARY KEY,
-               'username'       TEXT        NOT NULL, 
-               'email'          TEXT        NOT NULL, 
+               'username'       TEXT        NOT NULL,
+               'email'          TEXT        NOT NULL,
                'password'       TEXT        NOT NULL,
-               'biography'      TEXT        DEFAULT 'SAY SOMETHING ABOUT YOURSELF!',
-               'profileImage'   VARBINARY,
+               'biography'      TEXT        DEFAULT 'Say Something about yourself!',
+               'profileImage'   BLOB,
                'PostCount'      INTEGER     DEFAULT 0,
                'followingCount' INTEGER     DEFAULT 0,
                'followersCount' INTEGER     DEFAULT 0,
@@ -26,40 +37,37 @@ export const createTables = () => {
                );`; // insert into users (username, password, email) values ('test','test','test@mail.com');
   let createImageBaseQuery = `CREATE TABLE IF NOT EXISTS image_database
                               ('userID'        INTEGER,
-                               'imageID'       INTEGER   IDENTITY,
-                               'imageFile'     VARBINARY NOT NULL,
+                               'imageID'       INTEGER,
+                               'imageFile'     BLOB      NOT NULL,
                                'totalLikes'    INTEGER   DEFAULT 0,
-                               'datePosted'    DATE      GETDATE,
+                               'totalComments' INTEGER   DEFAULT 0,
+                               'datePosted'    TEXT,
                                'caption'       TEXT      DEFAULT ' ',
-                               CONSTRAINT pk_image PRIMARY KEY (userID, imageID),
-                               FOREIGN KEY (userID) REFERENCES users
+                               CONSTRAINT pk_image PRIMARY KEY (userID, imageID)
                                );`;
   let createCommentBaseQuery = `CREATE TABLE IF NOT EXISTS comment_database
-                                ('userID'     INTEGER,
-                                 'imageID'    INTEGER,
-                                 'commentID'  INTEGER    IDENTITY,
-                                 'comment'    TEXT       DEFAULT ' ',
+                                ('userID'             INTEGER,
+                                 'imageID'            INTEGER,
+                                 'commentID'          INTEGER    DEFAULT 0,
+                                 'commentingUserID'   INTEGER    NOT NULL,
+                                 'commentingUsername' TEXT       NOT NULL,
+                                 'comment'            TEXT       DEFAULT ' ',
                                  constraint pk_comments primary key (userID, imageID, commentID)
-                                 FOREIGN KEY (userID) REFERENCES users,
-                                 FOREIGN KEY (imageID) REFERENCES image_database
+
                                 );`;
   let createLikeBaseQuery = `CREATE TABLE IF NOT EXISTS likes_database
-                             ('userID'     INTEGER,
-                              'imageID'    INTEGER,
-                              'likeID'     INTEGER    IDENTITY,
-                              'username'   TEXT, 
+                             ('userID'         INTEGER,
+                              'imageID'        INTEGER,
+                              'likeID'         INTEGER       DEFAULT 0,
+                              'likingUserID'   INTEGER       NOT NULL,
+                              'likingUsername' TEXT          NOT NULL,
                               CONSTRAINT pk_likes PRIMARY KEY (userID, imageID, likeID)
-                              FOREIGN KEY  (userID) REFERENCES users,
-                              FOREIGN KEY  (imageID) REFERENCES image_database
                              );`;
   let createFollowingBaseQuery = `CREATE TABLE IF NOT EXISTS following_database
-                                  ('followUserID' INTEGER,
+                                  (
+                                   'ID' INTEGER PRIMARY KEY,
                                    'followUsername' TEXT,
-                                   'isFollowedUserID' INTEGER,
-                                   'isFollowedUsername' TEXT,
-                                   CONSTRAINT pk_following PRIMARY KEY (followUserID, isFollowedUserID),
-                                   FOREIGN KEY (followUsername)   REFERENCES users,
-                                   FOREIGN KEY (isFollowedUserID) REFERENCES users
+                                   'isFollowedUsername' TEXT
                                   );`;
   sendGenericQuery(createUserBaseQuery);
   sendGenericQuery(createLikeBaseQuery);
@@ -69,7 +77,7 @@ export const createTables = () => {
 }
 
 export const openDB = () => {
-  // the template is located in ~/android/app/src/main/assets/ for android and 
+  // the template is located in ~/android/app/src/main/assets/ for android and
   // ~/ios/ecs165Instagram/www for iOS
   let pathToDB = Platform.OS == 'ios' ?
     { name: 'test.db' } : { name: 'test.db', createFromLocation: 'sql_template.sqlite' };
@@ -88,4 +96,3 @@ export const sendGenericQuery = query => {
     });
   });
 }
-
