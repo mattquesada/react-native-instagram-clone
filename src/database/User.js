@@ -11,126 +11,91 @@ const headers = { 'access-key': config.ACCESS_KEY };
 export const addUser = user => {
   let endpoint = BASE_URL + '/user';
   let options = {
-    headers: headers
-  }
+    headers: headers,
+    method: 'POST',
+    body: JSON.stringify(user)
+  };
+
+  return fetch(endpoint, options)
+    .then(res => res.json())
+    .catch(err => console.log(err));
 };
 
 // get a user's data after using the Login Form or after completing Register Form
 // TODO: might want to perform select on a different identifier than email
 export const getUser = username => {
-  let query = `SELECT * FROM users WHERE username ='${username}'`;
-  let db = openDB();
+  let endpoint = BASE_URL + '/user';
+  let options = {
+    headers: headers,
+    method: 'GET',
+    body: JSON.stringify({ username })
+  };
 
-  return new Promise((resolve, reject) => {
-    db.transaction(tx => {
-      tx.executeSql(query, [], (tx, results) => {
-        let selectedUser = results.rows.item(0);
-        resolve(selectedUser);
-      }, (err) => {
-        reject(err);
-      });
-    });
-  });
+  return fetch(endpoint, options)
+    .then(res => res.json())
+    .catch(err => console.log(err));
 };
 
-export const getAllUsernames = currentUsername => {
-  let query = `SELECT username FROM users`;
-  let db = openDB();
+export const getAllUsers = () => {
+  let endpoint = BASE_URL + '/allUsers';
+  let options = {
+    headers: headers,
+    method: 'GET'
+  };
 
-  return new Promise((resolve, reject) => {
-    db.transaction(tx => {
-      tx.executeSql(query, [], (tx, results) => {
-        let usernames = []; // push all usernames 
-        for (let i = 0; i < results.rows.length; i++) {
-          let foundUsername = results.rows.item(i).username;
-          if (currentUsername !== foundUsername)
-            usernames.push(foundUsername);
-        }
-        resolve(usernames);
-      }, (err) => {
-        reject(err);
-      });
-    });
-  });
+  return fetch(endpoint, options)
+    .then(res => res.json())
+    .catch(err => console.log(err));
 }
 
 export const updateBiography = (username, biography) => {
-  let query = ` UPDATE users 
-                SET biography = '${biography}'
-                WHERE username = '${username}' 
-              `;
-  let db = openDB();
+  let endpoint = BASE_URL + '/biography';
+  let options = {
+    headers: headers,
+    method: 'POST',
+    body: JSON.stringify({ username, biography })
+  };
 
-  return new Promise((resolve, reject) =>{
-    db.transaction(tx => {
-      tx.executeSql(query, [], (tx, results) => {
-        resolve('biography updated successfully');
-      }, (err) => {
-        reject(err);
-      });
-    });
-  }); 
+  return fetch(endpoint, options)
+    .then(res => res.json())
+    .catch(err => console.log(err));
 };
 
-export const sendGenericQuery = query => {
-  let db = openDB();
-  return new Promise((resolve, reject) => {
-    db.transaction(tx => {
-      tx.executeSql(query, [], (tx, results) => {
-        resolve('success');
-      }, (err) => {
-        reject(err);
-      });
-    });
-  });
-}
-
 export const addFollow = (ownUsername, toFollowUsername) => {
-  let addFollowQuery = `INSERT INTO following_database 
-              (followUsername, isFollowedUsername) VALUES
-              ('${ownUsername}', '${toFollowUsername}')`;
-  let updateFollowerCount = `UPDATE users
-                 SET followersCount = followersCount + 1
-                 WHERE username = '${toFollowUsername}';`;
-  let updateFollowingCount = `UPDATE users
-                 SET followingCount = followingCount + 1
-                 WHERE username = '${ownUsername}';`;
-  sendGenericQuery(updateFollowingCount);
-  sendGenericQuery(updateFollowerCount);
-  return sendGenericQuery(addFollowQuery);
+  let endpoint = BASE_URL + '/addFollow';
+  let options = {
+    headers: headers,
+    method: 'POST',
+    body: JSON.stringify({ ownUsername, toFollowUsername })
+  };
+
+  return fetch(endpoint, options)
+    .then(res => res.json())
+    .catch(err => console.log(err));
 };
 
 export const removeFollow = (ownUsername, toUnfollowUsername) => {
-  let removeFollowQuery = `DELETE FROM following_database 
-               WHERE followUsername = '${ownUsername}' AND isFollowedUsername = '${toUnfollowUsername}' `;
-  let updateFollowerCount = `UPDATE users
-                 SET followersCount = followersCount - 1
-                 WHERE username = '${toUnfollowUsername}'`;
-  let updateFollowingCount = `UPDATE users
-                 SET followingCount = followingCount - 1
-                 WHERE username = '${ownUsername}'`;
-  sendGenericQuery(updateFollowingCount);
-  sendGenericQuery(updateFollowerCount);
-  return sendGenericQuery(removeFollowQuery);
+  let endpoint = BASE_URL + '/removeFollow';
+  let options = {
+    headers: headers,
+    method: 'POST',
+    body: JSON.stringify({ ownUsername, toUnfollowUsername })
+  };
+
+  return fetch(endpoint, options)
+    .then(res => res.json())
+    .catch(err => console.log(err));
 };
 
 export const getFollowers = username => {
-  let query = ` SELECT isFollowedUsername 
-                FROM following_database
-                WHERE followUsername = '${username}'`;
-  let db = openDB();
+  let endpoint = BASE_URL + '/followers';
+  let options = {
+    headers: headers,
+    method: 'GET',
+    body: JSON.stringify({ username })
+  };
 
-  return new Promise((resolve, reject) => {
-    db.transaction(tx => {
-      tx.executeSql(query, [], (tx, results) => {
-        let followers = []; // push all usernames 
-        for (let i = 0; i < results.rows.length; i++) {
-          followers.push(results.rows.item(i).isFollowedUsername)
-        }
-        resolve(followers);
-      }, (err) => {
-        reject(err);
-      });
-    });
-  });
+  return fetch(endpoint, options)
+    .then(res => res.json())
+    .catch(err => console.log(err));
 };
