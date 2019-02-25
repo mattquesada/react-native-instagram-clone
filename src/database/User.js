@@ -1,27 +1,18 @@
-/* 
-* Contains functions for registering new users / verifying current users
-* Connects to our sqlite service to retrieve data for the frontend
-*/
+// connects to our express server located at: 
+// https://ig-express-api.herokuapp.com/ to retrieve postgres data
 
-import { openDB } from './Init';
+import config from '../config/config';
+
+const BASE_URL = 'https://ig-express-api.herokuapp.com/'
+const headers = { 'access-key': config.ACCESS_KEY };
 
 // add a user's data to the database after using the Register Form
 // TODO: password should be encrypted 
 export const addUser = user => {
-  let { username, email, password } = user;
-  let query = `INSERT INTO users (username, email, password) VALUES 
-              ('${username}', '${email}', '${password}')`;
-  let db = openDB();
-
-  return new Promise((resolve, reject) => {
-    db.transaction(tx => {
-      tx.executeSql(query, [], (tx, results) => {
-        resolve('User added successfully');
-      }, (err) => {
-        reject('SQL Error: ' + err);
-      });
-    });
-  });
+  let endpoint = BASE_URL + '/user';
+  let options = {
+    headers: headers
+  }
 };
 
 // get a user's data after using the Login Form or after completing Register Form
