@@ -36,7 +36,10 @@ class MainScreen extends React.Component {
     //const username = this.props.navigation.getParam('username', 'user');
     const userInfo = this.props.navigation.getParam('username', 'user');
     //databaseIO.parseStringAndHashtagLatest(2,' test #async3 #testAsync3 test4');
-
+    //databaseIO.addImage(1, 'imgURL.com/1', 'My #FirstPost ');
+    //databaseIO.addComment(1, 1, 'This is #my first comment on your post!', 2, '22');
+    //databaseIO.addLike(1,1,2,'22');
+    //databaseIO.removeLike(1,1,2);
     return (
       <View style={styles.container}>
         <Navbar onNavbarSelect={this.onNavbarSelect} />

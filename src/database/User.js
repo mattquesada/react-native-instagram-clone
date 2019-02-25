@@ -11,13 +11,16 @@ import { openDB } from './Init';
      Currently implemented:
      addUser(user struct) => [null]
      getUser(username) => [ALL USER INFO]
-     getFollowingAndPostcount(username) => [(username, userID, postCount) ...]
+     getFollowingAndPostcount(username) => [(username, userID, postCount) ...] //Use for acitivity feed
      validateUser(username, password) => [userID, username, biography, profileImageURL, postCount, followersCount, followingCount] //use this
      addImage(userID, imageURL, caption) => [null]     //currently probs won't work due to not knowing how to insert file
+     getImage(userID, imageID) => [*]
      addFollow(ownUsername, toFollowUsername) => [null]
      removeFollow(ownUsername, toFollowUsername) => [null]
      addComment(userID, imageID, comment, ownUserID, ownUsername) => [null]
+     removeComment (imageUserID, imageID, ownUserID) => [null]
      addLike(userID, imageID, ownUserID, ownUsername) => [null]
+     removeLike (imageUserID, imageID, ownUserID) => [null]
      getUserID(username) => [useID] //mostly for internal use
      getUserInfo(username) => [userID, username, biography, profileImageURL, postCount, followersCount, followingCount]
      searchForUsers(keyword) => [userID, username, profileImageURL]
@@ -173,62 +176,111 @@ export const getFollowers = username => {
     });
   });
 };
-export const addImage = (userID, newURL, caption) => {
-  let addImageQuery = `UPDATE users
-                       SET postCount = postCount + 1
-                       WHERE userID = ${userID};
-
-                       INSERT INTO image_database (userID, caption, imageURL, imageID)
-                       VALUES
-                       (${userID}, '${caption}', '${imageURL}',
-                       (SELECT postCount FROM users WHERE userID = ${userID});
-                        );`;
+export const addImage = (userID, imageURL, caption) => {
+  let updatePostCountQuery = `UPDATE users
+                              SET postCount = postCount + 1, postCountExt = postCountExt + 1
+                              WHERE userID = ${userID};`;
+  let addImageQuery = `  INSERT INTO image_database (userID, caption, imageURL, imageID)
+                         VALUES
+                         (${userID}, '${caption}', '${imageURL}',
+                         (SELECT postCount FROM users WHERE userID = ${userID})
+                          );`;
+   sendGenericQuery(updatePostCountQuery);
    sendGenericQuery(addImageQuery);
    parseStringAndHashtagLatest(userID, caption);
+   return ;
+}
 
+export const removeImage = (userID, imageID) => {
+  let removeImageQuery = `UPDATE users
+                          SET postCountExt = postCountExt - 1
+                          WHERE userID = ${userID};
+
+                          DELETE FROM image_database
+                          WHERE userID = ${userID} AND imageID = ${imageID};`;
+  return sendGenericQuery(removeImageQuery);
 }
 
 export const getImage = (userID, imageID) =>{
   let getImageQuery = `SELECT * FROM image_database
-                       WHERE (userID = ${userID}) AND (imageID =${imageID});`;
+                       WHERE (userID = ${userID}) AND (imageID = (SELECT MAX(imageID) FROM image_database
+                                                                  WHERE userID = ${userID} AND imageID <= ${imageID})
+                                                      );`;
   return getGenericOneRowQuery(getImageQuery);
 }
 
+export const setProfileByImageID = (userID, imageID) => {
+  setProfileToImgURLQuery = `UPDATE users
+                             SET profileImageURL = (SELECT imageURL
+                                                    FROM image_database
+                                                    WHERE (userID = ${userID}) AND (imageID = ${imageID})
+                             WHERE userID = ${userID};`;
+  return sendGenericQuery(setProfileToImgURLQuery);
+}
+
 export const getUserInfo = (username) => {
-  let getUserInfoQuery = `SELECT userID, username, biography, profileImageURL, postCount, followersCount, followingCount
+  let getUserInfoQuery = `SELECT userID, username, biography, profileImageURL, postCountExt, followersCount, followingCount
               FROM users
               WHERE users.username = '${username}' `;
   return getGenericOneRowQuery(getUserInfoQuery);
 }
 
-export const addComment = (userID, imageID, comment, ownUserID, ownUsername) => {
-  let addCommentQuery = `UPDATE image_database
-                         SET totalComments = totalComments + 1
-                         WHERE (userID = '${userID}') AND ('imageID' = '${imageID}');
-                         INSERT INTO comment_database(userID, imageID, commentingUserID, commentingUsername, comment, commentID)
-                         VALUES ('${userID}', '${imageID}', '${ownUserID}', '${ownUsername}', '${comment}',
-                                 (SELECT totalComments FROM image_database
-                                  WHERE (userID = '${userID}') and (imageID = '${imageID}'))
-                                );`;
-  return sendGenericQuery(addCommentQuery);
-}
 
 export const addLike = (userID, imageID, ownUserID, ownUsername) => {
-  let addLikeQuery = `UPDATE image_database
-                         SET totalLikes = totalLikes + 1
-                         WHERE (userID = '${userID}') AND ('imageID' = '${imageID}');
-                         INSERT INTO likes_database(userID, imageID, likingUserID, likingUsername, likeID)
+  let incrementLikesQuery = `UPDATE image_database
+                         SET totalLikes = totalLikes + 1, totalLikesExt = totalLikesExt + 1
+                         WHERE (userID = ${userID}) AND (imageID = ${imageID});`;
+
+  let addLikeQuery =    `INSERT INTO likes_database(userID, imageID, likingUserID, likingUsername, likeID)
                          VALUES ('${userID}', '${imageID}', '${ownUserID}', '${ownUsername}',
                                  (SELECT totalLikes FROM image_database
                                   WHERE (userID = '${userID}') and (imageID = '${imageID}'))
                                 );`;
-  sendGenericQuery(addLikeQuery);
+  sendGenericQuery(incrementLikesQuery);
+  return sendGenericQuery(addLikeQuery);
 }
+
+export const removeLike = (userID, imageID, ownUserID) => {
+  let decrementLikesQuery = `UPDATE image_database
+                             SET totalLikesExt = totalLikesExt - 1
+                             WHERE userID = ${userID} AND imageID = ${imageID};`;
+
+  let removeLikeQuery = `DELETE FROM likes_database
+                         WHERE userID = ${userID} AND imageID = ${imageID} AND likingUserID = ${ownUserID};`;
+  sendGenericQuery(decrementLikesQuery);
+  return sendGenericQuery(removeLikeQuery);
+}
+
+export const addComment = (userID, imageID, comment, ownUserID, ownUsername) => {
+  let incrementCommentsQuery = `UPDATE image_database
+                         SET totalComments = totalComments + 1, totalCommentsExt = totalCommentsExt + 1
+                         WHERE (userID = '${userID}') AND ('imageID' = '${imageID}');`;
+
+  let addCommentQuery = `INSERT INTO comment_database(userID, imageID, commentingUserID, commentingUsername, comment, commentID)
+                         VALUES ('${userID}', '${imageID}', '${ownUserID}', '${ownUsername}', '${comment}',
+                                 (SELECT totalComments FROM image_database
+                                  WHERE (userID = '${userID}') and (imageID = '${imageID}'))
+                                );`;
+  sendGenericQuery (incrementCommentsQuery);
+  return sendGenericQuery(addCommentQuery);
+}
+
+export const removeComment = (imageUserID, imageID, ownUserID) => {
+  let decrementCommentsQuery = `UPDATE image_database
+                                SET totalCommentsExt = totalCommentsExt - 1
+                                WHERE userID = ${userID} AND imageID = ${imageID};`;
+
+  let removeCommentQuery = `DELETE FROM comments_database
+                            WHERE userID = ${userID} AND imageID = ${imageID} AND commentingUserID = ${ownUserID};`;
+  sendGenericQuery(decrementCommentsQuery);
+  return sendGenericQuery(removeCommentQuery);
+}
+
 
 //  -------------------------- USER FUNCTIONS --------------------------
 
 export const validateUser = (inputKeyword, inputPassword) => {
-  let validateUserQuery = `SELECT userID, username, biography, profileImageURL, postCount, followersCount, followingCount
+  let validateUserQuery = `SELECT userID, username, biography, profileImageURL, postCountExt, followersCount, followingCount
                           FROM users
                           WHERE (username = '${inputKeyword}') AND (password = '${inputPassword}');`;
   return getGenericOneRowQuery(validateUserQuery);
@@ -259,10 +311,10 @@ export const getUserID = username => {
 // --------------------------  HASHTAGS --------------------------
 
 
-export const parseStringAndHashtagLatest = async (userID, inputString) => { //TODO: UPDATE PostCount to postCount.
+export const parseStringAndHashtagLatest = async (userID, inputString) => {
   getImageID(userID)
   .then(retVal => {
-    return parseStringAndHashtag(userID, retVal.PostCount, inputString);
+    return parseStringAndHashtag(userID, retVal.postCount, inputString);
   })
   .catch(err => {
     return err;
