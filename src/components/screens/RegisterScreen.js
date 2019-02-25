@@ -35,12 +35,11 @@ class RegisterScreen extends React.Component {
     let input = this.refs.form.getValue(); // capture input from form
     
     // create new user row in the users table
-    let status = await addUser(input);
-    console.log(status);
+    await addUser(input);
 
     let user = await getUser(input.username); // look up the username in the database
 
-    navigate('Main', { username: user.username }); // transition to the MainScreen component
+    navigate('Main', { username: user[0].username }); // transition to the MainScreen component
   }
 
   render() {

@@ -30,7 +30,7 @@ class ProfileScreen extends React.Component {
   componentDidMount() {
     getUser(this.state.username) // fetch the biography for the user
       .then( user => {
-        this.setState({biography: user.biography});
+        this.setState({biography: user[0].biography});
       })
       .catch( err => {
         console.log(err);
@@ -119,7 +119,10 @@ class ProfileScreen extends React.Component {
           title="Following"
           onPress={() => this.getFollowing()}
           color='#3195F3'
-        /> 
+        />
+        <View>
+          
+        </View>
       </View>
     );
   }
