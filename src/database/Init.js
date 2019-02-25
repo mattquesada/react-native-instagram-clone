@@ -69,7 +69,7 @@ export const openDB = () => {
   // the template is located in ~/android/app/src/main/assets/ for android and 
   // ~/ios/ecs165Instagram/www for iOS
   let pathToDB = Platform.OS == 'ios' ?
-    { name: 'test.db' } : { name: 'test.db', createFromLocation: 'sql_template.sqlite' };
+    { name: 'test.db' } : { name: 'test.db' };
 
   return SQLite.openDatabase(pathToDB, openCB, errorCB);
 }

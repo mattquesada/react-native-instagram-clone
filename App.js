@@ -22,7 +22,7 @@ import FollowersScreen from './src/components/screens/FollowersScreen';
 type Props = {};
 class App extends React.Component<Props> {
   render() {
-    return <AppContainer />;
+    return <AppContainer />
   }
 }
 

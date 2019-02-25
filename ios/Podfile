@@ -10,6 +10,10 @@ target 'ecs165Instagram' do
   pod 'react-native-sqlite-storage', :path => '../node_modules/react-native-sqlite-storage'
   pod 'yoga', :path => '../node_modules/react-native/ReactCommon/yoga'
 
+  pod 'react-native-image-picker', :path => '../node_modules/react-native-image-picker'
+
+  pod 'react-native-fetch-blob', :path => '../node_modules/react-native-fetch-blob'
+
   target 'ecs165InstagramTests' do
     inherit! :search_paths
     # Pods for testing

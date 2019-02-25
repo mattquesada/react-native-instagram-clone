@@ -12,7 +12,6 @@ import {
   updateBiography,
 } from '../../database/User';
 
-// picture imports 
 import { profileIcons } from '../../assets/config';
 
 class ProfileScreen extends React.Component {
@@ -34,7 +33,7 @@ class ProfileScreen extends React.Component {
       })
       .catch( err => {
         console.log(err);
-      })
+      });
   }
 
   // load the selected screen when the navbar is pressed 
