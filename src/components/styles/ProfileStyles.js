@@ -32,6 +32,22 @@ const ProfileStyles = StyleSheet.create({
     height: 90,
     marginLeft: 20,
     marginTop: 5,
+  },
+  imageGrid: {
+    display: 'flex',
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    marginLeft: 35,
+    marginTop: 10
+  },
+  imageContainer: {
+    backgroundColor: '#FFF',
+    height: 100,
+    width: 100,
+  },
+  image: {
+    width: 100 + '%',
+    height: 100 + '%'
   }
 });
 

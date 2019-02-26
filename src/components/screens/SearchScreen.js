@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, Button } from 'react-native';
+import { View, ScrollView, Text, Button, TextInput } from 'react-native';
 import SearchStyles from '../styles/SearchStyles';
 import PropTypes from 'prop-types';
 
@@ -7,7 +7,7 @@ import PropTypes from 'prop-types';
 import Navbar from '../common/Navbar';
 
 // sqlite query imports 
-import { getAllUsernames, addFollow } from '../../database/User';
+import { searchForUsers, getUser, addFollow } from '../../database/User';
 
 class SearchScreen extends React.Component {
 
@@ -15,15 +15,10 @@ class SearchScreen extends React.Component {
     super(props);
     this.state = {
       username: props.navigation.getParam('username', 'user'),
-      foundUsernames: []
+      foundUsers: [],
+      searchText: ''
     };
     this.onNavbarSelect.bind(this);
-  }
-
-  componentDidMount() {
-    getAllUsernames(this.state.username)
-      .then( usernames => this.setState({foundUsernames: usernames}))
-      .catch( err => console.log(err));
   }
 
   // load the selected screen when the navbar is pressed 
@@ -42,34 +37,55 @@ class SearchScreen extends React.Component {
     }
   }
 
-  saveFollower = toFollowUsername => {
+  findUsers = () => {
+    searchForUsers(this.state.searchText)
+    .then(users => this.setState({foundUsers: users}))
+    .catch(err => console.log(err));
+  }
+
+  saveFollow = async (toFollowUser) => {
     let ownUsername = this.state.username;
-    addFollow(ownUsername, toFollowUsername)
-      .then(success => console.log(success))
-      .catch(err => console.log(err));
+    let currentUser = await getUser(ownUsername);
+    let success = await addFollow(currentUser.userid, toFollowUser.userid);
+    console.log(success);
   }
 
   render() {
     return (
       <View>
-        <Navbar onNavbarSelect={this.onNavbarSelect} />
-        <View>
-          {this.state.foundUsernames.map((username, key) => {
+        <Navbar
+          onNavbarSelect={this.onNavbarSelect}
+          currentUsername={this.state.username}
+        />
+        <View style={styles.textInputContainer}>
+          <TextInput
+            style={styles.textInput}
+            placeholder='search for users...'
+            onChangeText={(text) => this.setState({ searchText: text })}
+          />
+          <Button
+            title="Search"
+            onPress={() => this.findUsers()}
+            color='#3195F3'
+          />
+        </View>
+        <ScrollView style={{marginTop: 5}}>
+          {this.state.foundUsers.map((user, key) => {
               return (
                 <View style={styles.userPanel} key={key}>
                   <Text style={styles.usernameText}>
-                    {username}
+                    {user.username}
                   </Text>
                   <Button
                     title="Follow"
-                    onPress={() => this.saveFollower(username)}
+                    onPress={() => this.saveFollow(user)}
                     color='#3195F3'
                   />
                 </View>
               );
             })
           }
-        </View>
+        </ScrollView>
       </View>
     );
   }

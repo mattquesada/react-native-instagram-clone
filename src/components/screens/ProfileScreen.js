@@ -1,16 +1,24 @@
 import React from 'react';
-import { View, Text, Image, TextInput, Button, TouchableOpacity } from 'react-native';
+import { 
+  View, 
+  Text, 
+  Image, 
+  TextInput, 
+  Button, 
+  TouchableOpacity 
+} from 'react-native';
 import ProfileStyles from '../styles/ProfileStyles';
 import PropTypes from 'prop-types';
 
 // custom component imports
 import Navbar from '../common/Navbar';
 
-// sqlite query imports 
+// postgres query imports 
 import { 
   getUser,
   updateBiography,
 } from '../../database/User';
+import { getImages } from '../../database/Image';
 
 import { profileIcons } from '../../assets/config';
 
@@ -22,18 +30,19 @@ class ProfileScreen extends React.Component {
       username: props.navigation.getParam('username', 'user'),
       biography: '',
       editingBiography: false,
+      images: [] // array of urls
     };
     this.onNavbarSelect.bind(this);
   }
 
-  componentDidMount() {
-    getUser(this.state.username) // fetch the biography for the user
-      .then( user => {
-        this.setState({biography: user.biography});
-      })
-      .catch( err => {
-        console.log(err);
-      });
+  async componentDidMount() {
+    let currentUser = await getUser(this.state.username) 
+    let currentUserImages = await getImages(currentUser.userid);
+
+    this.setState({
+      biography: currentUser.biography,
+      images: currentUserImages
+    });
   }
 
   // load the selected screen when the navbar is pressed 
@@ -69,13 +78,16 @@ class ProfileScreen extends React.Component {
 
   getFollowing = () => {
     let { navigate } = this.props.navigation;
-    navigate('Followers', { username: this.state.username });
+    navigate('Following', { username: this.state.username });
   }
 
   render() {
     return (
       <View>
-        <Navbar onNavbarSelect={this.onNavbarSelect} />
+        <Navbar
+          onNavbarSelect={this.onNavbarSelect}
+          currentUsername={this.state.username}
+        />
         <View style={styles.userInfoContainer}>
           <TouchableOpacity style={styles.profileImageContainer}>
             <Image 
@@ -118,7 +130,19 @@ class ProfileScreen extends React.Component {
           title="Following"
           onPress={() => this.getFollowing()}
           color='#3195F3'
-        /> 
+        />
+        <View style={styles.imageGrid}>
+          {this.state.images.map((image, key) => {
+            return (
+              <View style={styles.imageContainer} key={key}>
+                <Image
+                  style={styles.image}
+                  source={{ uri: image.imageurl }}
+                />
+              </View>
+            );
+          })}
+        </View>
       </View>
     );
   }

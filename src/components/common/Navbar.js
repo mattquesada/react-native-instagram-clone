@@ -7,6 +7,8 @@ import {
 import NavbarStyles from '../styles/NavbarStyles';
 import PropTypes from 'prop-types';
 import { navbarIcons } from '../../assets/config';
+import { addImage } from '../../database/Image';
+import { getUser } from '../../database/User';
 
 import ImagePicker from 'react-native-image-picker';
 
@@ -19,8 +21,8 @@ const uploadOptions = {
   quality: 0.5
 };
 
-const handleImageUpload = () => {
-  ImagePicker.showImagePicker(uploadOptions, (response) => {
+const handleImageUpload = (currentUsername) => {
+  ImagePicker.showImagePicker(uploadOptions, async (response) => {
     console.log('Response = ', response);
 
     if (response.didCancel) {
@@ -30,7 +32,10 @@ const handleImageUpload = () => {
     } else if (response.customButton) {
       console.log('User tapped custom button: ', response.customButton);
     } else {
-      uploadToS3(response);
+      let awsResponse = await uploadToS3(response) // AWS returns the URL to the image
+      let currentUser = await getUser(currentUsername);
+      let success = await addImage(currentUser.userid, awsResponse.imageUrl); // add the image URL to postgres
+      console.log(success);
     }
   });
 }
@@ -39,7 +44,7 @@ const uploadToS3 = photoInfo => {
   const { uri, fileName, type } = photoInfo;
 
   //const s3Address = `https://ig-express-api.herokuapp.com/sign-s3?file-name=${fileName}&file-type=${type}`;
-  const s3Address = 'http://localhost:5000/image-upload';
+  const s3Address = 'http://localhost:5000/uploadImage';
 
   let data = new FormData();
   data.append('image', { uri, name: fileName, type });
@@ -66,7 +71,7 @@ const Navbar = props => {
           style={styles.iconFirst}
         />
       </TouchableOpacity>
-      <TouchableOpacity onPress={() => handleImageUpload()}>
+      <TouchableOpacity onPress={() => handleImageUpload(props.currentUsername)}>
         <Image  
           source={navbarIcons.uploadIcon} 
           style={styles.icon}
@@ -91,7 +96,8 @@ const Navbar = props => {
 const styles = NavbarStyles;
 
 Navbar.propTypes = {
-  onNavbarSelect: PropTypes.func.isRequired
+  onNavbarSelect: PropTypes.func.isRequired,
+  currentUsername: PropTypes.string.isRequired
 }
 
 export default Navbar;

@@ -1,6 +1,18 @@
 import { StyleSheet } from 'react-native';
 
 const SearchStyles = StyleSheet.create({
+  textInputContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  textInput: {
+    width: 190,
+    height: 90,
+    marginLeft: 20,
+    marginTop: 5,
+  },
   userPanel: {
     width: 100 + '%',
     height: 50,

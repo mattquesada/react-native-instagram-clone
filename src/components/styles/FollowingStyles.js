@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
 
-const FollowersStyles = StyleSheet.create({
+const FollowingStyles = StyleSheet.create({
   userPanel: {
     width: 100 + '%',
     height: 50,
@@ -14,4 +14,4 @@ const FollowersStyles = StyleSheet.create({
   },
 });
 
-export default FollowersStyles;
+export default FollowingStyles;
