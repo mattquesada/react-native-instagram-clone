@@ -3,7 +3,8 @@
 
 import { ACCESS_KEY } from '../config/config';
 
-const BASE_URL = 'https://ig-express-api.herokuapp.com'
+//const BASE_URL = 'https://ig-express-api.herokuapp.com';
+const BASE_URL = 'http://localhost:5000'
 const headers = { 'access-key': ACCESS_KEY, 'Content-Type': 'application/json' };
 
 // add a user's data to the database after using the Register Form
@@ -40,6 +41,30 @@ export const getUser = username => {
     .catch(err => console.log(err));
 };
 
+export const getUserByID = userID => {
+  let endpoint = BASE_URL + `/userById?userID=${userID}`;
+  let options = {
+    headers: headers,
+    method: 'GET'
+  };
+
+  return fetch(endpoint, options)
+    .then(res => res.json())
+    .catch(err => console.log(err));
+}
+
+export const getMultipleUsersByID = userIDs => {
+  let endpoint = BASE_URL + `/usersByID?userIDs=${userIDs.join()}`;
+  let options = {
+    headers: headers,
+    method: 'GET'
+  };
+
+  return fetch(endpoint, options)
+    .then(res => res.json())
+    .catch(err => console.log(err));
+}
+
 export const getAllUsers = () => {
   let endpoint = BASE_URL + '/allUsers';
   let options = {
@@ -52,7 +77,7 @@ export const getAllUsers = () => {
     .catch(err => console.log(err));
 }
 
-export const searchForUsers = (input) => {
+export const searchForUsers = input => {
   let endpoint = BASE_URL + `/searchUsers?searchText=${input}`;
   let options = {
     headers: headers,
@@ -77,12 +102,12 @@ export const updateBiography = (username, biography) => {
     .catch(err => console.log(err));
 };
 
-export const addFollow = (ownUsername, toFollowUsername) => {
+export const addFollow = (ownUserID, toFollowUserID) => {
   let endpoint = BASE_URL + '/addFollow';
   let options = {
     headers: headers,
     method: 'POST',
-    body: JSON.stringify({ ownUsername, toFollowUsername }),
+    body: JSON.stringify({ ownUserID, toFollowUserID })
   };
 
   return fetch(endpoint, options)
@@ -90,12 +115,12 @@ export const addFollow = (ownUsername, toFollowUsername) => {
     .catch(err => console.log(err));
 };
 
-export const removeFollow = (ownUsername, toUnfollowUsername) => {
+export const removeFollow = (ownUserID, toUnfollowUserID) => {
   let endpoint = BASE_URL + '/removeFollow';
   let options = {
     headers: headers,
     method: 'POST',
-    body: JSON.stringify({ ownUsername, toUnfollowUsername }),
+    body: JSON.stringify({ ownUserID, toUnfollowUserID } )
   };
 
   return fetch(endpoint, options)
@@ -103,15 +128,20 @@ export const removeFollow = (ownUsername, toUnfollowUsername) => {
     .catch(err => console.log(err));
 };
 
-export const getFollowers = username => {
-  let endpoint = BASE_URL + `/followers?username=${username}`;
+export const getFollowing = async (userID) => {
+  let endpoint = BASE_URL + `/following?userID=${userID}`;
   let options = {
     headers: headers,
     method: 'GET',
-    body: JSON.stringify({ username }),
   };
 
-  return fetch(endpoint, options)
-    .then(res => res.json())
-    .catch(err => console.log(err));
+  let response = await fetch(endpoint, options);
+  let results = await response.json();
+  
+  let followedUserIDs = [];
+  results.forEach(user => {
+    followedUserIDs.push(user.is_followed_id);
+  });
+
+  return followedUserIDs;
 };

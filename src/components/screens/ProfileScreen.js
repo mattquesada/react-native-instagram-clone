@@ -30,7 +30,7 @@ class ProfileScreen extends React.Component {
   componentDidMount() {
     getUser(this.state.username) // fetch the biography for the user
       .then( user => {
-        this.setState({biography: user[0].biography});
+        this.setState({biography: user.biography});
       })
       .catch( err => {
         console.log(err);
@@ -70,7 +70,7 @@ class ProfileScreen extends React.Component {
 
   getFollowing = () => {
     let { navigate } = this.props.navigation;
-    navigate('Followers', { username: this.state.username });
+    navigate('Following', { username: this.state.username });
   }
 
   render() {

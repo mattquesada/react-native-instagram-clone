@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, Button, TextInput } from 'react-native';
+import { View, ScrollView, Text, Button, TextInput } from 'react-native';
 import SearchStyles from '../styles/SearchStyles';
 import PropTypes from 'prop-types';
 
@@ -7,7 +7,7 @@ import PropTypes from 'prop-types';
 import Navbar from '../common/Navbar';
 
 // sqlite query imports 
-import { getAllUsers, addFollow } from '../../database/User';
+import { searchForUsers, getUser, addFollow } from '../../database/User';
 
 class SearchScreen extends React.Component {
 
@@ -15,24 +15,11 @@ class SearchScreen extends React.Component {
     super(props);
     this.state = {
       username: props.navigation.getParam('username', 'user'),
-      foundUsernames: [],
+      foundUsers: [],
       searchText: ''
     };
     this.onNavbarSelect.bind(this);
   }
-
-  /*componentDidMount() {
-    getAllUsers(this.state.username)
-      .then( users => {
-        let usernames = [];
-        users.forEach(user => {
-          if (this.state.username != user.username) // we don't want to display current user 
-            usernames.push(user.username);          // on the search screen
-        });
-        this.setState({foundUsernames: usernames});
-      })
-      .catch( err => console.log(err));
-  }*/
 
   // load the selected screen when the navbar is pressed 
   onNavbarSelect = (selectedIcon) => {
@@ -51,14 +38,16 @@ class SearchScreen extends React.Component {
   }
 
   findUsers = () => {
-    // TODO - write search for users route
+    searchForUsers(this.state.searchText)
+    .then(users => this.setState({foundUsers: users}))
+    .catch(err => console.log(err));
   }
 
-  saveFollower = toFollowUsername => {
+  saveFollow = async (toFollowUser) => {
     let ownUsername = this.state.username;
-    addFollow(ownUsername, toFollowUsername)
-      .then(success => console.log(success))
-      .catch(err => console.log(err));
+    let currentUser = await getUser(ownUsername);
+    let success = await addFollow(currentUser.userid, toFollowUser.userid);
+    console.log(success);
   }
 
   render() {
@@ -77,23 +66,23 @@ class SearchScreen extends React.Component {
             color='#3195F3'
           />
         </View>
-        <View style={{marginTop: 5}}>
-          {this.state.foundUsernames.map((username, key) => {
+        <ScrollView style={{marginTop: 5}}>
+          {this.state.foundUsers.map((user, key) => {
               return (
                 <View style={styles.userPanel} key={key}>
                   <Text style={styles.usernameText}>
-                    {username}
+                    {user.username}
                   </Text>
                   <Button
                     title="Follow"
-                    onPress={() => this.saveFollower(username)}
+                    onPress={() => this.saveFollow(user)}
                     color='#3195F3'
                   />
                 </View>
               );
             })
           }
-        </View>
+        </ScrollView>
       </View>
     );
   }

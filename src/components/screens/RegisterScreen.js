@@ -39,7 +39,7 @@ class RegisterScreen extends React.Component {
 
     let user = await getUser(input.username); // look up the username in the database
 
-    navigate('Main', { username: user[0].username }); // transition to the MainScreen component
+    navigate('Main', { username: user.username }); // transition to the MainScreen component
   }
 
   render() {
