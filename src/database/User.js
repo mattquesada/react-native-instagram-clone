@@ -37,12 +37,17 @@ import { openDB } from './Init';
 
 // add a user's data to the database after using the Register Form
 // TODO: password should be encrypted
+
+
 export const addUser = (user) => {
   let { username, email, password } = user;
   let query = `INSERT INTO users (username, email, password) VALUES
               ('${username}', '${email}', '${password}')`;
-  let db = openDB();
 
+  return sendGenericQuery(query);
+
+
+  let db = openDB();
   return new Promise((resolve, reject) => {
     db.transaction(tx => {
       tx.executeSql(query, [], (tx, results) => {
@@ -192,16 +197,24 @@ export const addImage = (userID, imageURL, caption) => {
 }
 
 export const removeImage = (userID, imageID) => {
-  let removeImageQuery = `UPDATE users
-                          SET postCountExt = postCountExt - 1
-                          WHERE userID = ${userID};
+  let decrementPostcountQuery = `UPDATE users
+                                 SET postCountExt = postCountExt - 1
+                                 WHERE userID = ${userID};`;
 
-                          DELETE FROM image_database
+  let removeImageQuery = `DELETE FROM image_database
                           WHERE userID = ${userID} AND imageID = ${imageID};`;
-  return sendGenericQuery(removeImageQuery);
+  let removeAssociatedLikesQuery = `DELETE FROM likes_database
+                                    WHERE userID = ${userID} AND imageID = ${imageID};`;
+  let removeAssociatedCommentsQuery = `DELETE FROM comment_database
+                                       WHERE userID = ${userID} AND imageID = ${imageID};`;
+
+  sendGenericQuery(decrementPostcountQuery);
+  sendGenericQuery(removeImageQuery);
+  sendGenericQuery(removeAssociatedLikesQuery);
+  return sendGenericQuery(removeAssociatedCommentsQuery);
 }
 
-export const getImage = (userID, imageID) =>{
+export const getImage = (userID, imageID) => {
   let getImageQuery = `SELECT * FROM image_database
                        WHERE (userID = ${userID}) AND (imageID = (SELECT MAX(imageID) FROM image_database
                                                                   WHERE userID = ${userID} AND imageID <= ${imageID})
@@ -213,7 +226,7 @@ export const setProfileByImageID = (userID, imageID) => {
   setProfileToImgURLQuery = `UPDATE users
                              SET profileImageURL = (SELECT imageURL
                                                     FROM image_database
-                                                    WHERE (userID = ${userID}) AND (imageID = ${imageID})
+                                                    WHERE userID = ${userID} AND imageID = ${imageID})
                              WHERE userID = ${userID};`;
   return sendGenericQuery(setProfileToImgURLQuery);
 }
@@ -244,7 +257,6 @@ export const removeLike = (userID, imageID, ownUserID) => {
   let decrementLikesQuery = `UPDATE image_database
                              SET totalLikesExt = totalLikesExt - 1
                              WHERE userID = ${userID} AND imageID = ${imageID};`;
-
   let removeLikeQuery = `DELETE FROM likes_database
                          WHERE userID = ${userID} AND imageID = ${imageID} AND likingUserID = ${ownUserID};`;
   sendGenericQuery(decrementLikesQuery);
@@ -254,10 +266,10 @@ export const removeLike = (userID, imageID, ownUserID) => {
 export const addComment = (userID, imageID, comment, ownUserID, ownUsername) => {
   let incrementCommentsQuery = `UPDATE image_database
                          SET totalComments = totalComments + 1, totalCommentsExt = totalCommentsExt + 1
-                         WHERE (userID = '${userID}') AND ('imageID' = '${imageID}');`;
+                         WHERE (userID = ${userID}) AND (imageID = ${imageID});`;
 
   let addCommentQuery = `INSERT INTO comment_database(userID, imageID, commentingUserID, commentingUsername, comment, commentID)
-                         VALUES ('${userID}', '${imageID}', '${ownUserID}', '${ownUsername}', '${comment}',
+                         VALUES (${userID}, ${imageID}, ${ownUserID}, '${ownUsername}', '${comment}',
                                  (SELECT totalComments FROM image_database
                                   WHERE (userID = '${userID}') and (imageID = '${imageID}'))
                                 );`;
@@ -265,12 +277,12 @@ export const addComment = (userID, imageID, comment, ownUserID, ownUsername) => 
   return sendGenericQuery(addCommentQuery);
 }
 
-export const removeComment = (imageUserID, imageID, ownUserID) => {
+export const removeComment = (userID, imageID, ownUserID) => {
   let decrementCommentsQuery = `UPDATE image_database
                                 SET totalCommentsExt = totalCommentsExt - 1
                                 WHERE userID = ${userID} AND imageID = ${imageID};`;
 
-  let removeCommentQuery = `DELETE FROM comments_database
+  let removeCommentQuery = `DELETE FROM comment_database
                             WHERE userID = ${userID} AND imageID = ${imageID} AND commentingUserID = ${ownUserID};`;
   sendGenericQuery(decrementCommentsQuery);
   return sendGenericQuery(removeCommentQuery);
@@ -308,6 +320,29 @@ export const getUserID = username => {
   });
 };
 
+
+export const searchForGenericKeyword = (keyword) => {
+  let query = `SELECT userID, username, profileImageURL
+               FROM users
+               WHERE (username = '${keyword}') OR (email = '${keyword}');`;
+ return new Promise((resolve, reject) => {
+   db.transaction(tx => {
+     tx.executeSql(query, [], (tx, results) => {
+       var objList = [];
+       let listLength = results.rows.length;
+       for (let i = 0; i < listLength; i++) {
+         let usrID = results.rows.item(i).userID;
+         let usrname = results.rows.item(i).username;
+         let profileImgURL = results.rows.item(i).profileImageURL;
+         objList.push({userID: usrID, username: usrname, profileImageURL: profileImgURL});
+       }
+       resolve(objList);
+     }, (err) => {
+       reject('SQL Error: ' + err);
+     });
+   });
+ });
+}
 // --------------------------  HASHTAGS --------------------------
 
 
@@ -323,13 +358,14 @@ export const parseStringAndHashtagLatest = async (userID, inputString) => {
   return;
 }
 
-export const parseStringAndHashtag = ( userID, imageID, inputString) => {
+export const parseStringAndHashtag = (userID, imageID, inputString) => {
   let parsedString = inputString.split(" ");
   for(wordIndex in parsedString){
     let word = parsedString[wordIndex]
     if(word[0] == '#'){
       setHashtag(userID, imageID, word.substring(1,word.length));
     }
+
   }
   return ;
 }
