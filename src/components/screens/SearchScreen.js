@@ -53,7 +53,10 @@ class SearchScreen extends React.Component {
   render() {
     return (
       <View>
-        <Navbar onNavbarSelect={this.onNavbarSelect} />
+        <Navbar
+          onNavbarSelect={this.onNavbarSelect}
+          currentUsername={this.state.username}
+        />
         <View style={styles.textInputContainer}>
           <TextInput
             style={styles.textInput}

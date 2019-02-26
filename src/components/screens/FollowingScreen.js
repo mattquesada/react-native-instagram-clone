@@ -71,7 +71,10 @@ class FollowingScreen extends React.Component {
   render() {
     return (
       <View>
-        <Navbar onNavbarSelect={this.onNavbarSelect} />
+        <Navbar 
+          onNavbarSelect={this.onNavbarSelect} 
+          currentUsername={this.state.username}
+        />
         <View>
           {this.state.followedUsers.map((followedUser, key) => {
             return (

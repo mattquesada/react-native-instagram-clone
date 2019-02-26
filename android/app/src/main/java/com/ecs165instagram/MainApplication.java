@@ -3,6 +3,8 @@ package com.ecs165instagram;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.RNFetchBlob.RNFetchBlobPackage;
+import com.imagepicker.ImagePickerPackage;
 import com.swmansion.gesturehandler.react.RNGestureHandlerPackage;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
@@ -27,6 +29,8 @@ public class MainApplication extends Application implements ReactApplication {
       return Arrays.<ReactPackage>asList(
           new SQLitePluginPackage(),
           new MainReactPackage(),
+            new RNFetchBlobPackage(),
+            new ImagePickerPackage(),
               new RNGestureHandlerPackage()
       );
     }
