@@ -70,7 +70,7 @@ class ProfileScreen extends React.Component {
 
   getFollowing = () => {
     let { navigate } = this.props.navigation;
-    navigate('Followers', { username: this.state.username });
+    navigate('Following', { username: this.state.username });
   }
 
   render() {
@@ -119,7 +119,10 @@ class ProfileScreen extends React.Component {
           title="Following"
           onPress={() => this.getFollowing()}
           color='#3195F3'
-        /> 
+        />
+        <View>
+          
+        </View>
       </View>
     );
   }
