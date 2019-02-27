@@ -51,24 +51,27 @@ class SearchScreen extends React.Component {
 
   render() {
     return (
-      <View>
-        <Navbar onNavbarSelect={this.onNavbarSelect} />
+      <View style = {{backgroundColor: 'black', paddingTop:30, width: 100 + '%', height: 100 + '%'}}>
+
         <View>
-          {this.state.foundUsernames.map((username, key) => {
-              return (
-                <View style={styles.userPanel} key={key}>
-                  <Text style={styles.usernameText}>
-                    {username}
-                  </Text>
-                  <Button
-                    title="Follow"
-                    onPress={() => this.saveFollower(username)}
-                    color='#3195F3'
-                  />
-                </View>
-              );
-            })
-          }
+          <Navbar onNavbarSelect={this.onNavbarSelect} />
+          <View>
+            {this.state.foundUsernames.map((username, key) => {
+                return (
+                  <View style={styles.userPanel} key={key}>
+                    <Text style={styles.usernameText}>
+                      {username}
+                    </Text>
+                    <Button
+                      title="Follow"
+                      onPress={() => this.saveFollower(username)}
+                      color='#3195F3'
+                    />
+                  </View>
+                );
+              })
+            }
+          </View>
         </View>
       </View>
     );

@@ -59,23 +59,26 @@ class FollowersScreen extends React.Component {
 
   render() {
     return (
-      <View>
-        <Navbar onNavbarSelect={this.onNavbarSelect} />
+      <View style = {{backgroundColor: 'black', paddingTop:30, width: 100 + '%', height: 100 + '%'}}>
+
         <View>
-          {this.state.followers.map( (follower, key) => {
-            return (
-              <View style={styles.userPanel} key={key}>
-                <Text style={styles.usernameText}>
-                  {follower}
-                </Text>
-                <Button
-                  title="Unfollow"
-                  onPress={() => this.removeFollower(follower)}
-                  color='#3195F3'
-                />
-              </View>
-            );
-          })}
+          <Navbar onNavbarSelect={this.onNavbarSelect} />
+          <View>
+            {this.state.followers.map( (follower, key) => {
+              return (
+                <View style={styles.userPanel} key={key}>
+                  <Text style={styles.usernameText}>
+                    {follower}
+                  </Text>
+                  <Button
+                    title="Unfollow"
+                    onPress={() => this.removeFollower(follower)}
+                    color='#3195F3'
+                  />
+                </View>
+              );
+            })}
+          </View>
         </View>
       </View>
     );
