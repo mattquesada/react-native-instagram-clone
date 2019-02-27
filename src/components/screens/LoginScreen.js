@@ -4,13 +4,16 @@ import {
   Button,
   Alert
 } from 'react-native';
+
 import PropTypes from 'prop-types';
 import LoginStyles from '../styles/LoginStyles';
 import formBuilder from 'tcomb-form-native';
 import { getUser } from '../../database/User';
 
+
 // Form object template
 const LoginForm = formBuilder.form.Form;
+
 
 // User object to capture the inputs from the Login Form
 const User = formBuilder.struct({

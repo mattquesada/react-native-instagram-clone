@@ -5,12 +5,14 @@ const LaunchStyles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#FFF'
+    
   },
   titleText: {
-    fontSize: 32,
-    fontWeight: 'bold',
-    color: '#000'
+    fontFamily: "Infinite_Stroke_Cond",
+    fontSize: 60,
+    
+    paddingBottom: 180,
+    color: '#fff'
   },
   button: {
     backgroundColor: '#3195F3', // the same color as actual instagram login buttons
