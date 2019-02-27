@@ -4,7 +4,7 @@ import {
   Text,
   TouchableOpacity,
   ImageBackground,
-  Image
+  Image, 
 } from 'react-native';
 
 import PropTypes from 'prop-types';
@@ -13,6 +13,11 @@ import { screens } from '../../assets/config'
 import { createTables } from '../../database/Init';
 
 class LaunchScreen extends React.Component {
+
+  static navigationOptions = {
+    header: null
+  };
+
   componentDidMount() {
     createTables() // create the database tables if they don't exist yet
     .then(success => console.log(success))
@@ -48,7 +53,7 @@ class LaunchScreen extends React.Component {
 const styles = LaunchStyles;
 
 LaunchScreen.propTypes = {
-  navigation: PropTypes.object.isRequired
+  navigation: PropTypes.object.isRequired,
 };
 
 export default LaunchScreen;

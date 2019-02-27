@@ -42,6 +42,11 @@ const raiseUsernameAlert = () => {
 };
 
 class LoginScreen extends React.Component {
+
+  static navigationOptions = {
+    header: null
+  };
+
   handleSubmit = async () => {
     const { navigate } = this.props.navigation;
     let input = this.refs.form.getValue(); // capture form input

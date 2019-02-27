@@ -10,6 +10,10 @@ import Navbar from '../common/Navbar';
 import { getFollowers, removeFollow } from '../../database/User';
 
 class FollowersScreen extends React.Component {
+
+  static navigationOptions = {
+    header: null
+  };
   
   constructor(props) {
     super(props)
