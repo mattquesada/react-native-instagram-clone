@@ -20,22 +20,26 @@ const ProfileStyles = StyleSheet.create({
   profileImage: {
     width: 70 + '%',
     height: 70 + '%',
-    margin: 20
+    margin: 20,
+    bottom: 4,
+    right: 1,
+    paddingBottom: 5
   },
   usernameContainer: {
     width: 190,
     marginLeft: 20,
     marginTop: 20,
     paddingLeft: 10,
-    fontSize: 20,
+    fontSize: 36,
     color: '#fff',
-    fontWeight: 'bold'
+    fontFamily: 'cac_champagne'
   },
   biographyContainer: {
-    width: 190,
+    width: 180,
     height: 90,
-    marginLeft: 0,
-    marginTop: 0,
+    marginLeft: 20,
+    marginTop: 5,
+    marginBottom: 20,
     color: '#fff'
   }
 });

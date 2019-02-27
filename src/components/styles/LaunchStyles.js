@@ -10,8 +10,7 @@ const LaunchStyles = StyleSheet.create({
   titleText: {
     fontFamily: "Infinite_Stroke_Cond",
     fontSize: 60,
-    
-    paddingBottom: 180,
+    paddingBottom: 170,
     color: '#fff'
   },
   button: {

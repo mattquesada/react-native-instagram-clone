@@ -95,21 +95,24 @@ class ProfileScreen extends React.Component {
                 ? <View>
                     <TextInput 
                       style={styles.biographyContainer}
-                      placeholder="Type here to edit your bio!"
+                      placeholder="Tap here to edit your bio!"
+                      placeholderTextColor="#fff"
                       onChangeText={(text) => this.setState({biography: text})}
                     />
-                    <Button 
-                      title="Save" 
-                      onPress={() => this.saveBiography()}
-                      color='#3195F3'
-                    />
+                    
+                      <Button 
+                        title="Save" 
+                        onPress={() => this.saveBiography()}
+                        color='#3195F3'
+                      />
+                    
                   </View>
                 : <View>
                     <TouchableOpacity 
                       style={styles.biographyContainer}
                       onPress={() => this.setState({editingBiography: true})}
                     >
-                      <Text style={{padding: 10}}>
+                      <Text style={{padding: 12, color: '#fff'}}>
                         {this.state.biography}
                       </Text>
                     </TouchableOpacity>
@@ -117,11 +120,13 @@ class ProfileScreen extends React.Component {
               }
             </View>
           </View>
-          <Button
-            title="Following"
-            onPress={() => this.getFollowing()}
-            color='#3195F3'
-          /> 
+            <View style={[{ width: "90%", margin: 10 }]}>
+              <Button
+                title="Following"
+                onPress={() => this.getFollowing()}
+                color='#3195F3'
+              /> 
+            </View>
         </View>
       </View>
     );
