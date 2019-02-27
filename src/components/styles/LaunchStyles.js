@@ -7,12 +7,14 @@ const LaunchStyles = StyleSheet.create({
     alignItems: 'center',
     
   },
+
   titleText: {
     fontFamily: "Infinite_Stroke_Cond",
-    fontSize: 60,
-    paddingBottom: 170,
+    fontSize: 58,
+    paddingBottom: 80,
     color: '#fff'
   },
+
   button: {
     backgroundColor: '#3195F3', // the same color as actual instagram login buttons
     paddingTop: 10,

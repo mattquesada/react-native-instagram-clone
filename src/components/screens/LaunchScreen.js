@@ -28,7 +28,7 @@ class LaunchScreen extends React.Component {
             Instagram
           </Text>  
 
-          <Image source={screens.logo} style={{bottom: 160, alignSelf: 'center', flex: 0, width: '23%', height: '12%'}}>
+          <Image source={screens.logo} style={{bottom: 70, alignSelf: 'center', flex: 0, width: '27.13%', height: '18.5%'}}>
           </Image>
 
           <TouchableOpacity style={styles.button} onPress={ () => navigate('Login')}>
