@@ -35,9 +35,11 @@ class MainScreen extends React.Component {
   render() {
     const username = this.props.navigation.getParam('username', 'user');
     return (
-      <View style={styles.container}>
-        <Navbar onNavbarSelect={this.onNavbarSelect} />
-        <Text style={{margin: 10}}>Hello {username}!</Text>
+      <View style = {{backgroundColor: 'black', paddingTop:30, width: 100 + '%', height: 100 + '%'}}>
+        <View style={styles.container}>
+          <Navbar onNavbarSelect={this.onNavbarSelect} />
+          <Text style={{margin: 10}}>Hello {username}!</Text>
+        </View>
       </View>
     );
   }

@@ -57,17 +57,12 @@ class LoginScreen extends React.Component {
 
   render() {
     return (
-      <View style = {{backgroundColor: 'black', paddingTop: 80}}>
+      <View style = {{backgroundColor: 'black', paddingTop:30, width: 100 + '%', height: 100 + '%'}}>
         <View style={styles.container}>
           <LoginForm ref='form' type={User} options={FormOptions} />
           <Button title="Login" onPress={this.handleSubmit} />
         </View>
-
-        <View style = {{backgroundColor: 'black', paddingTop: 300}}>
-        </View>
       </View>
-      
-
     );
   }
 };

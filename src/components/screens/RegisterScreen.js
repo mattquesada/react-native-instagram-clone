@@ -45,9 +45,11 @@ class RegisterScreen extends React.Component {
 
   render() {
     return (
-      <View style={styles.container}>
-        <RegisterForm ref='form' type={User} options={FormOptions}/>
-        <Button title="Sign Up" onPress={this.handleSubmit} />
+      <View style = {{backgroundColor: 'black', paddingTop:30, width: 100 + '%', height: 100 + '%'}}>
+        <View style={styles.container}>
+          <RegisterForm ref='form' type={User} options={FormOptions}/>
+          <Button title="Sign Up" onPress={this.handleSubmit} />
+        </View>
       </View>
     )
   }

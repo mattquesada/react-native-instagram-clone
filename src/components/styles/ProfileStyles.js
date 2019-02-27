@@ -4,6 +4,7 @@ const ProfileStyles = StyleSheet.create({
   userInfoContainer: {
     display: 'flex',
     flexDirection: 'row',
+    color: '#fff',
     marginLeft: 20,
     marginTop: 20,
   },
@@ -11,8 +12,10 @@ const ProfileStyles = StyleSheet.create({
     width: 135,
     height: 135,
     borderRadius: 70,
-    borderWidth: 0.5,
-    borderColor: 'rgb(233, 233, 233)',
+    borderWidth: 1,
+    marginLeft: 10,
+    marginBottom: 20,
+    borderColor: '#fff',
   },
   profileImage: {
     width: 70 + '%',
@@ -25,13 +28,15 @@ const ProfileStyles = StyleSheet.create({
     marginTop: 20,
     paddingLeft: 10,
     fontSize: 20,
+    color: '#fff',
     fontWeight: 'bold'
   },
   biographyContainer: {
     width: 190,
     height: 90,
-    marginLeft: 20,
-    marginTop: 5,
+    marginLeft: 0,
+    marginTop: 0,
+    color: '#fff'
   }
 });
 
