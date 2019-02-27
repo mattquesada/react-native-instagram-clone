@@ -30,11 +30,7 @@ const FormOptions = {
 }
 
 class RegisterScreen extends React.Component {
-
-  static navigationOptions = {
-    header: null
-  };
-
+  
   handleSubmit = async () => {
     const { navigate } = this.props.navigation;
     let input = this.refs.form.getValue(); // capture input from form

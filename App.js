@@ -38,7 +38,10 @@ const Routes = createStackNavigator(
     Followers: FollowersScreen
   },
   {
-    initialRouteName: 'Launch'
+    initialRouteName: 'Launch',
+    defaultNavigationOptions: {
+      header: null
+    },
   }
 );
 

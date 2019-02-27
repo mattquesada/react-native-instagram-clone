@@ -14,10 +14,6 @@ import { createTables } from '../../database/Init';
 
 class LaunchScreen extends React.Component {
 
-  static navigationOptions = {
-    header: null
-  };
-
   componentDidMount() {
     createTables() // create the database tables if they don't exist yet
     .then(success => console.log(success))
