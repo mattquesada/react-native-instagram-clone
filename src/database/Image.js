@@ -3,8 +3,7 @@
 
 import { ACCESS_KEY } from '../config/config';
 
-//const BASE_URL = 'https://ig-express-api.herokuapp.com';
-const BASE_URL = 'http://localhost:5000'
+const BASE_URL = 'https://ig-express-api.herokuapp.com';
 const headers = { 'access-key': ACCESS_KEY, 'Content-Type': 'application/json' };
 
 // add an image to the postgres DB and tie it to the given userID
@@ -27,6 +26,31 @@ export const getImages = userID => {
   let options = {
     headers: headers,
     method: 'GET',
+  };
+
+  return fetch(endpoint, options)
+    .then(res => res.json())
+    .catch(err => console.log(err));
+}
+
+export const getImagesForMultipleUsers = userIDs => {
+  let endpoint = BASE_URL + `/imagesByIDs?userIDs=${userIDs.join()}`;
+  let options = {
+    headers: headers,
+    method: 'GET'
+  };
+
+  return fetch(endpoint, options)
+    .then(res => res.json())
+    .catch(err => console.log(err));
+}
+
+export const incrementLikes = imageID => {
+  let endpoint = BASE_URL + '/likes';
+  let options = {
+    headers: headers,
+    method: 'POST',
+    body: JSON.stringify({ imageID }),
   };
 
   return fetch(endpoint, options)
