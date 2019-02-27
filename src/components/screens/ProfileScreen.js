@@ -83,54 +83,58 @@ class ProfileScreen extends React.Component {
 
   render() {
     return (
-      <View>
-        <Navbar
-          onNavbarSelect={this.onNavbarSelect}
-          currentUsername={this.state.username}
-        />
-        <View style={styles.userInfoContainer}>
-          <TouchableOpacity style={styles.profileImageContainer}>
-            <Image 
-              source={profileIcons.userPlaceholder}
-              style={styles.profileImage}
-            />
-          </TouchableOpacity>
-          <View>
-            <Text style={styles.usernameContainer}>
-              {this.state.username}
-            </Text>
-            {
-              (this.state.editingBiography)
-              ? <View>
-                  <TextInput 
-                    style={styles.biographyContainer}
-                    placeholder="Type here to edit your bio!"
-                    onChangeText={(text) => this.setState({biography: text})}
-                  />
-                  <Button 
-                    title="Save" 
-                    onPress={() => this.saveBiography()}
-                    color='#3195F3'
-                  />
-                </View>
-              : <View>
-                  <TouchableOpacity 
-                    style={styles.biographyContainer}
-                    onPress={() => this.setState({editingBiography: true})}
-                  >
-                    <Text style={{padding: 10}}>
-                      {this.state.biography}
-                    </Text>
-                  </TouchableOpacity>
-                </View>
-            }
-          </View>
+      <View style = {{backgroundColor: 'black', paddingTop:30, width: 100 + '%', height: 100 + '%'}}>
+        <View>
+          <Navbar
+            onNavbarSelect={this.onNavbarSelect}
+            currentUsername={this.state.username}
+          />
+
+          <View style={styles.userInfoContainer}>
+            <TouchableOpacity style={styles.profileImageContainer}>
+              <Image 
+                source={profileIcons.userPlaceholder}
+                style={styles.profileImage}
+              />
+            </TouchableOpacity>
+            <View>
+              <Text style={styles.usernameContainer}>
+                {this.state.username}
+              </Text>
+              {
+                (this.state.editingBiography)
+                ? <View>
+                    <TextInput 
+                      style={styles.biographyContainer}
+                      placeholder="Type here to edit your bio!"
+                      placeholderTextColor="#fff"
+                      onChangeText={(text) => this.setState({biography: text})}
+                    />
+                    <Button 
+                      title="Save" 
+                      onPress={() => this.saveBiography()}
+                      color='#3195F3'
+                    />
+                  </View>
+                : <View>
+                    <TouchableOpacity 
+                      style={styles.biographyContainer}
+                      onPress={() => this.setState({editingBiography: true})}
+                    >
+                      <Text style={{padding: 12, color: '#fff'}}>
+                        {this.state.biography}
+                      </Text>
+                    </TouchableOpacity>
+                  </View>
+              }
+            </View>
+        <View style={[{ width: "90%", margin: 10 }]}>
+          <Button
+            title="Following"
+            onPress={() => this.getFollowing()}
+            color='#3195F3'
+          />
         </View>
-        <Button
-          title="Following"
-          onPress={() => this.getFollowing()}
-          color='#3195F3'
-        />
         <View style={styles.imageGrid}>
           {this.state.images.map((image, key) => {
             return (

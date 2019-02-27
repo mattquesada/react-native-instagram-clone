@@ -7,6 +7,8 @@ import userPlaceholder from './images/user-placeholder.png';
 import heartIcon from './images/heart.png';
 import arrowIcon from './images/arrow.png';
 import commentIcon from './images/speech-bubble.png';
+import MainScreen from './images/MainScreen.png';
+import logo from './images/logo.png';
 
 // map images to their location in the assets folder
 export const navbarIcons = {
@@ -25,3 +27,8 @@ export const photoScreenIcons = {
   arrowIcon,
   commentIcon
 }
+
+export const screens = {
+	MainScreen,
+	logo
+};

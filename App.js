@@ -40,7 +40,10 @@ const Routes = createStackNavigator(
     Photo: PhotoScreen
   },
   {
-    initialRouteName: 'Launch'
+    initialRouteName: 'Launch',
+    defaultNavigationOptions: {
+      header: null
+    },
   }
 );
 

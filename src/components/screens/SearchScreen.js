@@ -51,41 +51,46 @@ class SearchScreen extends React.Component {
   }
 
   render() {
+
     return (
-      <View>
-        <Navbar
-          onNavbarSelect={this.onNavbarSelect}
-          currentUsername={this.state.username}
-        />
-        <View style={styles.textInputContainer}>
-          <TextInput
-            style={styles.textInput}
-            placeholder='search for users...'
-            onChangeText={(text) => this.setState({ searchText: text })}
+
+      <View style = {{backgroundColor: 'black', paddingTop:30, width: 100 + '%', height: 100 + '%'}}>
+        <View>
+          <Navbar
+            onNavbarSelect={this.onNavbarSelect}
+            currentUsername={this.state.username}
           />
-          <Button
-            title="Search"
-            onPress={() => this.findUsers()}
-            color='#3195F3'
-          />
+          <View style={styles.textInputContainer}>
+            <TextInput
+              style={styles.textInput}
+              placeholder='search for users...'
+              placeholderColor="#fff"
+              onChangeText={(text) => this.setState({ searchText: text })}
+            />
+            <Button
+              title="Search"
+              onPress={() => this.findUsers()}
+              color='#3195F3'
+            />
+          </View>
+          <ScrollView style={{marginTop: 5}}>
+            {this.state.foundUsers.map((user, key) => {
+                return (
+                  <View style={styles.userPanel} key={key}>
+                    <Text style={styles.usernameText}>
+                      {user.username}
+                    </Text>
+                    <Button
+                      title="Follow"
+                      onPress={() => this.saveFollow(user)}
+                      color='#3195F3'
+                    />
+                  </View>
+                );
+              })
+            }
+          </ScrollView>
         </View>
-        <ScrollView style={{marginTop: 5}}>
-          {this.state.foundUsers.map((user, key) => {
-              return (
-                <View style={styles.userPanel} key={key}>
-                  <Text style={styles.usernameText}>
-                    {user.username}
-                  </Text>
-                  <Button
-                    title="Follow"
-                    onPress={() => this.saveFollow(user)}
-                    color='#3195F3'
-                  />
-                </View>
-              );
-            })
-          }
-        </ScrollView>
       </View>
     );
   }

@@ -15,7 +15,7 @@ import {
 } from '../../database/User';
 
 class FollowingScreen extends React.Component {
-  
+
   constructor(props) {
     super(props)
     this.state = {
@@ -70,26 +70,28 @@ class FollowingScreen extends React.Component {
 
   render() {
     return (
-      <View>
-        <Navbar 
-          onNavbarSelect={this.onNavbarSelect} 
-          currentUsername={this.state.username}
-        />
+      <View style = {{backgroundColor: 'black', paddingTop:30, width: 100 + '%', height: 100 + '%'}}>
         <View>
-          {this.state.followedUsers.map((followedUser, key) => {
-            return (
-              <View style={styles.userPanel} key={key}>
-                <Text style={styles.usernameText}>
-                  {followedUser.username}
-                </Text>
-                <Button
-                  title="Unfollow"
-                  onPress={() => this.removeFollow(followedUser)}
-                  color='#3195F3'
-                />
-              </View>
-            );
-          })}
+          <Navbar 
+            onNavbarSelect={this.onNavbarSelect} 
+            currentUsername={this.state.username}
+          />
+          <View>
+            {this.state.followedUsers.map((followedUser, key) => {
+              return (
+                <View style={styles.userPanel} key={key}>
+                  <Text style={styles.usernameText}>
+                    {followedUser.username}
+                  </Text>
+                  <Button
+                    title="Unfollow"
+                    onPress={() => this.removeFollow(followedUser)}
+                    color='#3195F3'
+                  />
+                </View>
+              );
+            })}
+          </View>  
         </View>
       </View>
     );

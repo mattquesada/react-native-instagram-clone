@@ -4,13 +4,16 @@ import {
   Button,
   Alert
 } from 'react-native';
+
 import PropTypes from 'prop-types';
 import LoginStyles from '../styles/LoginStyles';
 import formBuilder from 'tcomb-form-native';
 import { getUser } from '../../database/User';
 
+
 // Form object template
 const LoginForm = formBuilder.form.Form;
+
 
 // User object to capture the inputs from the Login Form
 const User = formBuilder.struct({
@@ -39,6 +42,7 @@ const raiseUsernameAlert = () => {
 };
 
 class LoginScreen extends React.Component {
+
   handleSubmit = async () => {
     const { navigate } = this.props.navigation;
     let input = this.refs.form.getValue(); // capture form input
@@ -53,10 +57,12 @@ class LoginScreen extends React.Component {
   }
 
   render() {
-    return (  
-      <View style={styles.container}>
-        <LoginForm ref='form' type={User} options={FormOptions} />
-        <Button title="Login" onPress={this.handleSubmit} />
+    return (
+      <View style = {{backgroundColor: 'black', paddingTop:30, width: 100 + '%', height: 100 + '%'}}>
+        <View style={styles.container}>
+          <LoginForm ref='form' type={User} options={FormOptions} />
+          <Button title="Login" onPress={this.handleSubmit} />
+        </View>
       </View>
     );
   }

@@ -85,28 +85,31 @@ class MainScreen extends React.Component {
 
   render() {
     const username = this.props.navigation.getParam('username', 'user');
+
     return (
-      <View style={styles.container}>
-        <Navbar
-          onNavbarSelect={this.onNavbarSelect}
-          currentUsername={this.state.username}
-        />
-        {
-          (this.state.feedLoaded)
-          ? <ScrollView>
-              <ActivityFeed 
-                feed={this.state.activityFeed}
-                onPhotoTap={this.onPhotoTap}
-               />
-            </ScrollView>
-          : <View>
-              <View style={{ margin: 10, alignItems: 'center' }}>
-                <Text style={{ margin: 10 }}>Hello {username}!</Text>
-                <Text style={{ margin: 10 }}>Fetching your feed...</Text>
-              </View>
-              <LoadingAnimation />
-            </View> 
-        }
+      <View style = {{backgroundColor: 'black', paddingTop:30, width: 100 + '%', height: 100 + '%'}}>
+        <View style={styles.container}>
+          <Navbar
+            onNavbarSelect={this.onNavbarSelect}
+            currentUsername={this.state.username}
+          />
+          {
+            (this.state.feedLoaded)
+            ? <ScrollView>
+                <ActivityFeed 
+                  feed={this.state.activityFeed}
+                  onPhotoTap={this.onPhotoTap}
+                 />
+              </ScrollView>
+            : <View>
+                <View style={{ margin: 10, alignItems: 'center' }}>
+                  <Text style={{ margin: 10 }}>Hello {username}!</Text>
+                  <Text style={{ margin: 10 }}>Fetching your feed...</Text>
+                </View>
+                <LoadingAnimation />
+              </View> 
+          }
+        </View>    
       </View>
     );
   }

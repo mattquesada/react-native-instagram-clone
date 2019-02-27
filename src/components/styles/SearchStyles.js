@@ -22,7 +22,8 @@ const SearchStyles = StyleSheet.create({
   usernameText: {
     marginTop: 15,
     marginLeft: 20,
-    flex: 1
+    flex: 1,
+    color: '#fff'
   },
 });
 
