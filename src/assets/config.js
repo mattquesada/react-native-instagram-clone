@@ -4,6 +4,9 @@ import profileIcon from './images/profile.png';
 import uploadIcon from './images/upload.png';
 import searchIcon from './images/search.png';
 import userPlaceholder from './images/user-placeholder.png';
+import heartIcon from './images/heart.png';
+import arrowIcon from './images/arrow.png';
+import commentIcon from './images/speech-bubble.png';
 
 // map images to their location in the assets folder
 export const navbarIcons = {
@@ -16,3 +19,9 @@ export const navbarIcons = {
 export const profileIcons = {
   userPlaceholder
 };
+
+export const photoScreenIcons = {
+  heartIcon,
+  arrowIcon,
+  commentIcon
+}

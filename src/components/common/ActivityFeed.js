@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, Text, Image } from 'react-native';
+import {View, TouchableOpacity, Text, Image } from 'react-native';
 import PropTypes from 'prop-types';
 import ActivityFeedStyles from '../styles/ActivityFeedStyles';
 
@@ -12,12 +12,14 @@ const ActivityFeed = props => {
        return (
         <View key={key}>
           <Text>{feedItem.poster}</Text>
-          <View style={styles.imageContainer}>
+          <TouchableOpacity 
+            onPress={() => props.onPhotoTap(key)}
+            style={styles.imageContainer}>
             <Image 
               style={styles.image}
               source={{uri: feedItem.imageurl}} 
             />
-          </View>
+          </TouchableOpacity>
           <View style={styles.captionBox}>
             <Text>{feedItem.caption}</Text>
           </View>
@@ -29,7 +31,8 @@ const ActivityFeed = props => {
 }
 
 ActivityFeed.propTypes = {
-  feed: PropTypes.array.isRequired
+  feed: PropTypes.array.isRequired,
+  onPhotoTap: PropTypes.func.isRequired
 }
 
 export default ActivityFeed;

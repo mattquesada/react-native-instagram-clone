@@ -22,6 +22,7 @@ class MainScreen extends React.Component {
       feedLoaded: false // toggles to true after we've finished fetching
     };
     this.onNavbarSelect.bind(this);
+    this.onPhotoTap.bind(this);
   }
 
   componentDidMount() {
@@ -40,10 +41,6 @@ class MainScreen extends React.Component {
     let followedUsers = await getMultipleUsersByID(followedUserIDs);
     let images = await getImagesForMultipleUsers(followedUserIDs);
 
-    console.log(followedUsers);
-    console.log(images);
-    
-
     // finally, build the activity feed object to be rendered
     let activityFeed = this.constructActivityFeedArray(followedUsers, images);
     this.setState({ activityFeed, feedLoaded: true })
@@ -54,6 +51,7 @@ class MainScreen extends React.Component {
     images.forEach(image => {
       let imageOwner = users.find(user => user.userid === image.userid)
       activityFeed.push({
+        imageid: image.imageid,
         imageurl: image.imageurl,
         poster: imageOwner.username,
         caption: image.caption,
@@ -78,6 +76,12 @@ class MainScreen extends React.Component {
     }
   }
 
+  // if a photo is tapped -> transition to the photo page
+  onPhotoTap = (index) => {
+    let { navigate } = this.props.navigation;
+    navigate('Photo', {imageInfo: this.state.activityFeed[index]});
+  }
+
   render() {
     const username = this.props.navigation.getParam('username', 'user');
     return (
@@ -89,7 +93,10 @@ class MainScreen extends React.Component {
         {
           (this.state.feedLoaded)
           ? <ScrollView>
-              <ActivityFeed feed={this.state.activityFeed} />
+              <ActivityFeed 
+                feed={this.state.activityFeed}
+                onPhotoTap={this.onPhotoTap}
+               />
             </ScrollView>
           : <View>
               <View style={{ margin: 10, alignItems: 'center' }}>

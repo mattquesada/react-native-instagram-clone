@@ -18,6 +18,7 @@ import MainScreen from './src/components/screens/MainScreen';
 import ProfileScreen from './src/components/screens/ProfileScreen';
 import SearchScreen from './src/components/screens/SearchScreen';
 import FollowingScreen from './src/components/screens/FollowingScreen';
+import PhotoScreen from './src/components/screens/PhotoScreen';
 
 type Props = {};
 class App extends React.Component<Props> {
@@ -35,7 +36,8 @@ const Routes = createStackNavigator(
     Main: MainScreen,
     Profile: ProfileScreen,
     Search: SearchScreen,
-    Following: FollowingScreen
+    Following: FollowingScreen,
+    Photo: PhotoScreen
   },
   {
     initialRouteName: 'Launch'
