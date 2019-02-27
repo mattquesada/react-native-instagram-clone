@@ -1,10 +1,13 @@
 import { StyleSheet } from 'react-native';
 
 const ActivityFeedStyles = StyleSheet.create({
+  userText: {
+    marginLeft: 10,
+    marginTop: 10
+  },
   imageContainer: {
     height: 300,
-    width: 345,
-    marginLeft: 15,
+    width: 100 + '%',
     marginTop: 10,
     backgroundColor: '#FFF',
   },

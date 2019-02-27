@@ -55,6 +55,7 @@ class MainScreen extends React.Component {
         imageurl: image.imageurl,
         poster: imageOwner.username,
         caption: image.caption,
+        numLikes: image.likes
       })
     });
     return activityFeed;

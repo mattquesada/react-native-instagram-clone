@@ -10,21 +10,34 @@ import {
 import PropTypes from 'prop-types';
 import { photoScreenIcons } from '../../assets/config';
 
+// postgres query imports
+import { incrementLikes } from '../../database/Image';
+
 class PhotoScreen extends React.Component {
 
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       imageInfo: props.navigation.getParam('imageInfo', 'oops'),
+      numLikes: 0,
       screenWidth: Dimensions.get("window").width, // return the width of the current device
       liked: false
     };
   }
 
-  likeToggled() {
+  async likeToggled() {
+    let numLikes = this.state.numLikes + 1;
     this.setState({
-      liked: !this.state.liked
+      liked: !this.state.liked,
+      numLikes: numLikes
     });
+    let status = await incrementLikes(this.state.imageInfo.imageid);
+    console.log(status);
+  }
+
+  componentDidMount() {
+    numLikes = this.state.imageInfo.numLikes;
+    this.setState({ numLikes: numLikes });
   }
 
   render() {
@@ -32,9 +45,6 @@ class PhotoScreen extends React.Component {
 
     return (
       <View style={styles.mainWrapper}>
-        <View style={styles.tempNav}>
-          <Text>Instagram</Text>
-        </View>
         <View style={styles.userBar}>
           <View style={{ flexDirection: "row", alignItems: "center" }} >
             <Image style={styles.userPic}
@@ -43,7 +53,7 @@ class PhotoScreen extends React.Component {
                   "https://i.pinimg.com/736x/fa/3f/13/fa3f13c259c27d7e0f7c79a2e5b157ee--outfits-with-black-converse-converse-fashion.jpg"
               }}
             />
-            <Text style={{ marginLeft: 10 }}>Some Username</Text>
+            <Text style={{ marginLeft: 10 }}>{this.state.imageInfo.poster}</Text>
           </View>
           <View style={{ alignItems: "center" }}>
             <Text style={{ fontSize: 28 }}>...</Text>
@@ -57,8 +67,7 @@ class PhotoScreen extends React.Component {
         >
           <Image style={{ marginTop: 10, width: this.state.screenWidth, height: 400 }}
             source={{
-              uri:
-                "https://i.redd.it/o4vp5caz2pd11.jpg"
+              uri: this.state.imageInfo.imageurl
             }}
           />
         </TouchableOpacity>
@@ -77,7 +86,7 @@ class PhotoScreen extends React.Component {
           <Image style={[styles.icon, { height: 30, width: 30 }]}
             source={photoScreenIcons.heartIcon}
           />
-          <Text style={{ paddingLeft: 5 }}>128 Likes</Text>
+          <Text style={{ paddingLeft: 5 }}>{this.state.numLikes} Likes</Text>
         </View>
       </View>
     );
@@ -130,6 +139,10 @@ const styles = StyleSheet.create({
     marginLeft: 5
   },
 });
+
+PhotoScreen.propTypes = {
+  navigation: PropTypes.object.isRequired
+}
 
 
 export default PhotoScreen;

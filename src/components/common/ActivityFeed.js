@@ -11,7 +11,9 @@ const ActivityFeed = props => {
      {props.feed.map((feedItem, key) => {
        return (
         <View key={key}>
-          <Text>{feedItem.poster}</Text>
+          <View style={styles.userText}>
+            <Text>{feedItem.poster}</Text>
+          </View>
           <TouchableOpacity 
             onPress={() => props.onPhotoTap(key)}
             style={styles.imageContainer}>

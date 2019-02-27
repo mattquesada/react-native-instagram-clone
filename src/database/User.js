@@ -3,8 +3,7 @@
 
 import { ACCESS_KEY } from '../config/config';
 
-//const BASE_URL = 'https://ig-express-api.herokuapp.com';
-const BASE_URL = 'http://localhost:5000'
+const BASE_URL = 'https://ig-express-api.herokuapp.com';
 const headers = { 'access-key': ACCESS_KEY, 'Content-Type': 'application/json' };
 
 // add a user's data to the database after using the Register Form
