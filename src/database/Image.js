@@ -33,3 +33,15 @@ export const getImages = userID => {
     .then(res => res.json())
     .catch(err => console.log(err));
 }
+
+export const getImagesForMultipleUsers = userIDs => {
+  let endpoint = BASE_URL + `/imagesByIDs?userIDs=${userIDs.join()}`;
+  let options = {
+    headers: headers,
+    method: 'GET'
+  };
+
+  return fetch(endpoint, options)
+    .then(res => res.json())
+    .catch(err => console.log(err));
+}
