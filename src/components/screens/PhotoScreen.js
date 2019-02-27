@@ -48,10 +48,6 @@ class PhotoScreen extends React.Component {
         <View style={styles.userBar}>
           <View style={{ flexDirection: "row", alignItems: "center" }} >
             <Image style={styles.userPic}
-              source={{
-                uri:
-                  "https://i.pinimg.com/736x/fa/3f/13/fa3f13c259c27d7e0f7c79a2e5b157ee--outfits-with-black-converse-converse-fashion.jpg"
-              }}
             />
             <Text style={{ marginLeft: 10 }}>{this.state.imageInfo.poster}</Text>
           </View>

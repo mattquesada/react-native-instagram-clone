@@ -81,6 +81,14 @@ class ProfileScreen extends React.Component {
     navigate('Following', { username: this.state.username });
   }
 
+  handleImagePress = (index) => {
+    let { navigate } = this.props.navigation;
+    let imageInfo = this.state.images[index]; 
+    imageInfo['poster'] = this.state.username;
+    imageInfo['numLikes'] = imageInfo.likes;
+    navigate('Photo', { imageInfo: imageInfo });
+  }
+
   render() {
     return (
       <View>
@@ -134,12 +142,15 @@ class ProfileScreen extends React.Component {
         <View style={styles.imageGrid}>
           {this.state.images.map((image, key) => {
             return (
-              <View style={styles.imageContainer} key={key}>
+              <TouchableOpacity 
+                style={styles.imageContainer} key={key}
+                onPress={() => this.handleImagePress(key)}
+              >
                 <Image
                   style={styles.image}
                   source={{ uri: image.imageurl }}
                 />
-              </View>
+              </TouchableOpacity>
             );
           })}
         </View>

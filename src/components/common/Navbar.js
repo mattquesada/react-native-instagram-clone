@@ -43,8 +43,7 @@ const handleImageUpload = (currentUsername) => {
 const uploadToS3 = photoInfo => {
   const { uri, fileName, type } = photoInfo;
 
-  //const s3Address = `https://ig-express-api.herokuapp.com/sign-s3?file-name=${fileName}&file-type=${type}`;
-  const s3Address = 'http://localhost:5000/uploadImage';
+  const s3Address = 'https://ig-express-api.herokuapp.com/uploadImage';
 
   let data = new FormData();
   data.append('image', { uri, name: fileName, type });
