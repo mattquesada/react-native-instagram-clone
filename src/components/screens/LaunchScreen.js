@@ -1,4 +1,5 @@
 import React from 'react';
+
 import {
   View,
   Text,
@@ -10,22 +11,17 @@ import {
 import PropTypes from 'prop-types';
 import LaunchStyles from '../styles/LaunchStyles';
 import { screens } from '../../assets/config';
-import { createTables } from '../../database/Init';
 
 class LaunchScreen extends React.Component {
 
-
-  componentDidMount() {
-    createTables() // create the database tables if they don't exist yet
-    .then(success => console.log(success))
-    .catch(err => console.log(err));
-  }
-
   render() {
     const { navigate } = this.props.navigation;
+    
     return (
       <ImageBackground source={screens.MainScreen} style={{width: '100%', height: '100%'}}>
+      
         <View style={styles.container}>
+          
           <Text style={styles.titleText}>
             Instagram
           </Text>  
@@ -36,12 +32,14 @@ class LaunchScreen extends React.Component {
           <TouchableOpacity style={styles.button} onPress={ () => navigate('Login')}>
             <Text style={styles.buttonText}>Login</Text>
           </TouchableOpacity>
+          
           <TouchableOpacity style={styles.button} onPress={ () => navigate('Register')}>
             <Text style={styles.buttonText}>Register</Text>
           </TouchableOpacity>
+        
         </View>
+      
       </ImageBackground>
-
     )
   }
 };

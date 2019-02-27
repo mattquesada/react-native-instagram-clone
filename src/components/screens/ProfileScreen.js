@@ -81,6 +81,14 @@ class ProfileScreen extends React.Component {
     navigate('Following', { username: this.state.username });
   }
 
+  handleImagePress = (index) => {
+    let { navigate } = this.props.navigation;
+    let imageInfo = this.state.images[index]; 
+    imageInfo['poster'] = this.state.username;
+    imageInfo['numLikes'] = imageInfo.likes;
+    navigate('Photo', { imageInfo: imageInfo });
+  }
+
   render() {
     return (
       <View style = {{backgroundColor: 'black', paddingTop:30, width: 100 + '%', height: 100 + '%'}}>
@@ -89,7 +97,6 @@ class ProfileScreen extends React.Component {
             onNavbarSelect={this.onNavbarSelect}
             currentUsername={this.state.username}
           />
-
           <View style={styles.userInfoContainer}>
             <TouchableOpacity style={styles.profileImageContainer}>
               <Image 
@@ -107,7 +114,7 @@ class ProfileScreen extends React.Component {
                     <TextInput 
                       style={styles.biographyContainer}
                       placeholder="Type here to edit your bio!"
-                      placeholderTextColor="#fff"
+                      placeholderTextColor="#FFF"
                       onChangeText={(text) => this.setState({biography: text})}
                     />
                     <Button 
@@ -128,24 +135,31 @@ class ProfileScreen extends React.Component {
                   </View>
               }
             </View>
-        <View style={[{ width: "90%", margin: 10 }]}>
-          <Button
-            title="Following"
-            onPress={() => this.getFollowing()}
-            color='#3195F3'
-          />
-        </View>
-        <View style={styles.imageGrid}>
-          {this.state.images.map((image, key) => {
-            return (
-              <View style={styles.imageContainer} key={key}>
-                <Image
-                  style={styles.image}
-                  source={{ uri: image.imageurl }}
-                />
-              </View>
-            );
-          })}
+          </View>
+
+          <View style={[{ width: "90%", margin: 10 }]}>
+            <Button
+              title="Following"
+              onPress={() => this.getFollowing()}
+              color='#3195F3'
+            />
+          </View>
+
+          <View style={styles.imageGrid}>
+            {this.state.images.map((image, key) => {
+              return (
+                <TouchableOpacity 
+                  style={styles.imageContainer} key={key}
+                  onPress={() => this.handleImagePress(key)}
+                >
+                  <Image
+                    style={styles.image}
+                    source={{ uri: image.imageurl }}
+                  />
+                </TouchableOpacity>
+              );
+            })}
+          </View>
         </View>
       </View>
     );

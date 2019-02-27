@@ -64,7 +64,7 @@ class SearchScreen extends React.Component {
             <TextInput
               style={styles.textInput}
               placeholder='search for users...'
-              placeholderColor="#fff"
+              placeholderTextColor="#FFF"
               onChangeText={(text) => this.setState({ searchText: text })}
             />
             <Button

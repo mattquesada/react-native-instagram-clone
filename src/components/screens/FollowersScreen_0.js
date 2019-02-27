@@ -1,41 +1,29 @@
 import React from 'react';
 import { View, Text, Button } from 'react-native';
-import FollowingStyles from '../styles/FollowingStyles';
+import FollowersStyles from '../styles/FollowersStyles';
 import PropTypes from 'prop-types';
 
 // custom component imports
 import Navbar from '../common/Navbar';
 
 // SQLite database imports
-import { 
-  getUser,
-  getFollowing, 
-  removeFollow, 
-  getMultipleUsersByID
-} from '../../database/User';
+import { getFollowers, removeFollow } from '../../database/User';
 
-class FollowingScreen extends React.Component {
+class FollowersScreen extends React.Component {
 
   constructor(props) {
     super(props)
     this.state = {
       username: props.navigation.getParam('username', 'user'),
-      followedUsers: []
+      followers: []
     };
     this.onNavbarSelect.bind(this);
   }
 
   componentDidMount() {
-   this.getFollowedUsers();
-  }
-
-  getFollowedUsers = async () => {
-    let ownUsername = this.state.username;
-    let currentUser = await getUser(ownUsername);
-    let followedUserIDs = await getFollowing(currentUser.userid);
-    let followedUsers = await getMultipleUsersByID(followedUserIDs);
-
-    this.setState({ followedUsers });
+    getFollowers(this.state.username)
+      .then( followers => this.setState({followers}) )
+      .catch( err => console.log(err) );
   }
 
   // load the selected screen when the navbar is pressed 
@@ -57,11 +45,12 @@ class FollowingScreen extends React.Component {
     }
   }
 
-  removeFollow = async (followedUser) => {
-    let currentUser = await getUser(this.state.username);
+  removeFollower = async (follower) => {
+    let ownUsername = this.state.username;
     try {
-      let status = await removeFollow(currentUser.userid, followedUser.userid);
-      this.getFollowedUsers();
+      await removeFollow(ownUsername, follower);
+      let followers = await getFollowers(ownUsername);
+      await this.setState({followers});
     }
     catch { 
       err => console.log(err) 
@@ -71,42 +60,35 @@ class FollowingScreen extends React.Component {
   render() {
     return (
       <View style = {{backgroundColor: 'black', paddingTop:30, width: 100 + '%', height: 100 + '%'}}>
-        
+
         <View>
-          <Navbar 
-            onNavbarSelect={this.onNavbarSelect} 
-            currentUsername={this.state.username}
-          />
+          <Navbar onNavbarSelect={this.onNavbarSelect} />
           <View>
-            {this.state.followedUsers.map((followedUser, key) => {
+            {this.state.followers.map( (follower, key) => {
               return (
                 <View style={styles.userPanel} key={key}>
                   <Text style={styles.usernameText}>
-                    {followedUser.username}
+                    {follower}
                   </Text>
-                  <View style = {{paddingTop:2, right: 20, top: 7}}>
-                    <Button
-                      title="Unfollow"
-                      onPress={() => this.removeFollow(followedUser)}
-                      color='#3195F3'
-                    />
-                  </View>  
+                  <Button
+                    title="Unfollow"
+                    onPress={() => this.removeFollower(follower)}
+                    color='#3195F3'
+                  />
                 </View>
               );
             })}
-          </View>  
+          </View>
         </View>
-        
       </View>
     );
   }
 }
 
+const styles = FollowersStyles;
 
-const styles = FollowingStyles;
-
-FollowingScreen.propTypes = {
+FollowersScreen.propTypes = {
   navigation: PropTypes.object.isRequired
 };
 
-export default FollowingScreen;
+export default FollowersScreen;
