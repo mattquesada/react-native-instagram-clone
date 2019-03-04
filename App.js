@@ -8,6 +8,7 @@
  */
 
 import React from 'react';
+import { AppState } from 'react-native';
 import { createStackNavigator, createAppContainer } from 'react-navigation';
 
 // Import all screen components
@@ -20,8 +21,38 @@ import SearchScreen from './src/components/screens/SearchScreen';
 import FollowingScreen from './src/components/screens/FollowingScreen';
 import PhotoScreen from './src/components/screens/PhotoScreen';
 
+import PushController from './src/components/common/PushNotification';
+import PushNotification from 'react-native-push-notification';
+
+
 type Props = {};
 class App extends React.Component<Props> {
+
+  constructor() {
+    super();
+    this.state = {
+      appState: AppState.currentState
+    }
+  }
+
+  componentDidMount() {
+    AppState.addEventListener('change', this._handleAppStateChange);
+  }
+
+  componentWillUnmount() {
+    AppState.removeEventListener('change', this._handleAppStateChange);
+  }
+
+  _handleAppStateChange = appState => {
+    if (appState === 'background') {
+      console.log('app is in background');
+      PushNotification.localNotificationSchedule({
+        message: 'My Notification Message',
+        date: new Date(Date.now() + (5 * 1000))
+      });
+    }
+  }
+
   render() {
     return <AppContainer />
   }

@@ -28,8 +28,8 @@
 		8EAA1FAEB6B5D5FAB9E878EA /* libPods-ecs165InstagramTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 647DF2D2375EA7A62274467B /* libPods-ecs165InstagramTests.a */; };
 		ADBDB9381DFEBF1600ED6528 /* libRCTBlob.a in Frameworks */ = {isa = PBXBuildFile; fileRef = ADBDB9271DFEBF0700ED6528 /* libRCTBlob.a */; };
 		BD1C8CDA2222594700AC379C /* libRNImagePicker.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BD1C8CD92222591D00AC379C /* libRNImagePicker.a */; };
+		BD21893E222D80F300C8B074 /* libRCTPushNotification.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BD21893B222D80DD00C8B074 /* libRCTPushNotification.a */; };
 		BD4DC2B922001607007A99CE /* www in Resources */ = {isa = PBXBuildFile; fileRef = BD4DC29222001606007A99CE /* www */; };
-		BD4E77F12223613700C922FF /* libRNFetchBlob.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BD4E77EE2223612D00C922FF /* libRNFetchBlob.a */; };
 		D3108F3EA91C4D798873451B /* libRNGestureHandler.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CCB38AE7E123480EBF2207A2 /* libRNGestureHandler.a */; };
 		ED297163215061F000B7C4FE /* JavaScriptCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ED297162215061F000B7C4FE /* JavaScriptCore.framework */; };
 /* End PBXBuildFile section */
@@ -280,6 +280,20 @@
 			remoteGlobalIDString = 014A3B5C1C6CF33500B6D375;
 			remoteInfo = RNImagePicker;
 		};
+		BD21893A222D80DD00C8B074 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BD218935222D80DD00C8B074 /* RCTPushNotification.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 134814201AA4EA6300B7C361;
+			remoteInfo = RCTPushNotification;
+		};
+		BD21893C222D80DD00C8B074 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BD218935222D80DD00C8B074 /* RCTPushNotification.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 3D05745F1DE6004600184BB4;
+			remoteInfo = "RCTPushNotification-tvOS";
+		};
 		BD4DC1EB21FFE0D4007A99CE /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 146833FF1AC3E56700842450 /* React.xcodeproj */;
@@ -315,13 +329,6 @@
 			remoteGlobalIDString = 134814201AA4EA6300B7C361;
 			remoteInfo = RNGestureHandler;
 		};
-		BD4E77ED2223612D00C922FF /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = BD4E77C42223612D00C922FF /* RNFetchBlob.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = A15C300E1CD25C330074CB35;
-			remoteInfo = RNFetchBlob;
-		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
@@ -355,8 +362,9 @@
 		832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTText.xcodeproj; path = "../node_modules/react-native/Libraries/Text/RCTText.xcodeproj"; sourceTree = "<group>"; };
 		ADBDB91F1DFEBF0600ED6528 /* RCTBlob.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTBlob.xcodeproj; path = "../node_modules/react-native/Libraries/Blob/RCTBlob.xcodeproj"; sourceTree = "<group>"; };
 		BD1C8CD42222591D00AC379C /* RNImagePicker.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNImagePicker.xcodeproj; path = "../node_modules/react-native-image-picker/ios/RNImagePicker.xcodeproj"; sourceTree = "<group>"; };
+		BD218935222D80DD00C8B074 /* RCTPushNotification.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTPushNotification.xcodeproj; path = "../node_modules/react-native/Libraries/PushNotificationIOS/RCTPushNotification.xcodeproj"; sourceTree = "<group>"; };
+		BD218977222D8D1700C8B074 /* ecs165Instagram.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = ecs165Instagram.entitlements; path = ecs165Instagram/ecs165Instagram.entitlements; sourceTree = "<group>"; };
 		BD4DC29222001606007A99CE /* www */ = {isa = PBXFileReference; lastKnownFileType = folder; name = www; path = ecs165Instagram/www; sourceTree = "<group>"; };
-		BD4E77C42223612D00C922FF /* RNFetchBlob.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNFetchBlob.xcodeproj; path = "../node_modules/react-native-fetch-blob/ios/RNFetchBlob.xcodeproj"; sourceTree = "<group>"; };
 		CCB38AE7E123480EBF2207A2 /* libRNGestureHandler.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNGestureHandler.a; sourceTree = "<group>"; };
 		D6FCFE9426D6356E3701F104 /* Pods-ecs165Instagram.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ecs165Instagram.release.xcconfig"; path = "Pods/Target Support Files/Pods-ecs165Instagram/Pods-ecs165Instagram.release.xcconfig"; sourceTree = "<group>"; };
 		E52F834BD41844CD1DC3409D /* Pods-ecs165Instagram.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ecs165Instagram.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ecs165Instagram/Pods-ecs165Instagram.debug.xcconfig"; sourceTree = "<group>"; };
@@ -392,7 +400,7 @@
 				00C302EA1ABCBA2D00DB3ED1 /* libRCTVibration.a in Frameworks */,
 				139FDEF61B0652A700C62182 /* libRCTWebSocket.a in Frameworks */,
 				BD1C8CDA2222594700AC379C /* libRNImagePicker.a in Frameworks */,
-				BD4E77F12223613700C922FF /* libRNFetchBlob.a in Frameworks */,
+				BD21893E222D80F300C8B074 /* libRCTPushNotification.a in Frameworks */,
 				D3108F3EA91C4D798873451B /* libRNGestureHandler.a in Frameworks */,
 				806DE478C3CBE8E9083C2FA6 /* libPods-ecs165Instagram.a in Frameworks */,
 			);
@@ -483,6 +491,7 @@
 		13B07FAE1A68108700A75B9A /* ecs165Instagram */ = {
 			isa = PBXGroup;
 			children = (
+				BD218977222D8D1700C8B074 /* ecs165Instagram.entitlements */,
 				BD4DC29222001606007A99CE /* www */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
@@ -562,7 +571,7 @@
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
-				BD4E77C42223612D00C922FF /* RNFetchBlob.xcodeproj */,
+				BD218935222D80DD00C8B074 /* RCTPushNotification.xcodeproj */,
 				BD1C8CD42222591D00AC379C /* RNImagePicker.xcodeproj */,
 				5E91572D1DD0AC6500FF2AA8 /* RCTAnimation.xcodeproj */,
 				146833FF1AC3E56700842450 /* React.xcodeproj */,
@@ -632,6 +641,15 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		BD218936222D80DD00C8B074 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				BD21893B222D80DD00C8B074 /* libRCTPushNotification.a */,
+				BD21893D222D80DD00C8B074 /* libRCTPushNotification-tvOS.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		BD4DC1C521FFE0CD007A99CE /* Recovered References */ = {
 			isa = PBXGroup;
 			children = (
@@ -644,14 +662,6 @@
 			isa = PBXGroup;
 			children = (
 				BD4DC1F721FFE0D4007A99CE /* libRNGestureHandler.a */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
-		BD4E77C52223612D00C922FF /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				BD4E77EE2223612D00C922FF /* libRNFetchBlob.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -710,6 +720,14 @@
 						CreatedOnToolsVersion = 6.2;
 						TestTargetID = 13B07F861A680F5B00A75B9A;
 					};
+					13B07F861A680F5B00A75B9A = {
+						DevelopmentTeam = C997SMX5QV;
+						SystemCapabilities = {
+							com.apple.Push = {
+								enabled = 1;
+							};
+						};
+					};
 				};
 			};
 			buildConfigurationList = 83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "ecs165Instagram" */;
@@ -753,6 +771,10 @@
 					ProjectRef = 00C302D31ABCB9D200DB3ED1 /* RCTNetwork.xcodeproj */;
 				},
 				{
+					ProductGroup = BD218936222D80DD00C8B074 /* Products */;
+					ProjectRef = BD218935222D80DD00C8B074 /* RCTPushNotification.xcodeproj */;
+				},
+				{
 					ProductGroup = 139105B71AF99BAD00B5F7CC /* Products */;
 					ProjectRef = 139105B61AF99BAD00B5F7CC /* RCTSettings.xcodeproj */;
 				},
@@ -771,10 +793,6 @@
 				{
 					ProductGroup = 146834001AC3E56700842450 /* Products */;
 					ProjectRef = 146833FF1AC3E56700842450 /* React.xcodeproj */;
-				},
-				{
-					ProductGroup = BD4E77C52223612D00C922FF /* Products */;
-					ProjectRef = BD4E77C42223612D00C922FF /* RNFetchBlob.xcodeproj */;
 				},
 				{
 					ProductGroup = BD4DC1F321FFE0D4007A99CE /* Products */;
@@ -1032,6 +1050,20 @@
 			remoteRef = BD1C8CD82222591D00AC379C /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
+		BD21893B222D80DD00C8B074 /* libRCTPushNotification.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libRCTPushNotification.a;
+			remoteRef = BD21893A222D80DD00C8B074 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		BD21893D222D80DD00C8B074 /* libRCTPushNotification-tvOS.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = "libRCTPushNotification-tvOS.a";
+			remoteRef = BD21893C222D80DD00C8B074 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		BD4DC1EC21FFE0D4007A99CE /* libjsi.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
@@ -1065,13 +1097,6 @@
 			fileType = archive.ar;
 			path = libRNGestureHandler.a;
 			remoteRef = BD4DC1F621FFE0D4007A99CE /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		BD4E77EE2223612D00C922FF /* libRNFetchBlob.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libRNFetchBlob.a;
-			remoteRef = BD4E77ED2223612D00C922FF /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
@@ -1260,8 +1285,10 @@
 			baseConfigurationReference = E52F834BD41844CD1DC3409D /* Pods-ecs165Instagram.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = ecs165Instagram/ecs165Instagram.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = NO;
+				DEVELOPMENT_TEAM = C997SMX5QV;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/react-native-gesture-handler/ios/**",
@@ -1284,7 +1311,9 @@
 			baseConfigurationReference = D6FCFE9426D6356E3701F104 /* Pods-ecs165Instagram.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = ecs165Instagram/ecs165Instagram.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = C997SMX5QV;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/react-native-gesture-handler/ios/**",
