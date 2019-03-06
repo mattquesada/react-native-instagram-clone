@@ -57,3 +57,15 @@ export const incrementLikes = imageID => {
     .then(res => res.json())
     .catch(err => console.log(err));
 }
+
+export const countLikes = userID => {
+  let endpoint = BASE_URL + `/countLikes?userID=${userID}`;
+  let options = {
+    headers: headers,
+    method: 'GET'
+  };
+
+  return fetch(endpoint, options)
+    .then(res => res.json())
+    .catch(err => console.log(err));
+}

@@ -144,3 +144,15 @@ export const getFollowing = async (userID) => {
 
   return followedUserIDs;
 };
+
+export const countFollowers = userID => {
+  let endpoint = BASE_URL + `/countFollowers?userID=${userID}`;
+  let options = {
+    headers: headers,
+    method: 'GET',
+  };
+
+  return fetch(endpoint, options)
+    .then(res => res.json())
+    .catch(err => console.log(err));
+}
