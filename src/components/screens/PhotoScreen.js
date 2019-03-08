@@ -13,8 +13,8 @@ import PropTypes from 'prop-types';
 import { photoScreenIcons } from '../../assets/config';
 
 // postgres query imports
-import { incrementLikes, addComment, getComments } from '../../database/Image';
-import { getUser, getMultipleUsersByID } from '../../database/User';
+import { incrementLikes, addComment, getComments, getHashtags } from '../../database/Image';
+import { getUser } from '../../database/User';
 
 /// custom component imports
 import Navbar from '../common/Navbar';
@@ -32,13 +32,15 @@ class PhotoScreen extends React.Component {
       liked: false,
       comments: [], // array of strings
       isCommentDialogVisible: false,
-      isCaptionDialogVisible: false
+      isCaptionDialogVisible: false,
+      fullCaption: ''
     };
   }
 
   async componentDidMount() {
     let numLikes = this.state.imageInfo.numLikes;
     let comments = await getComments(this.state.imageInfo.imageid);
+    this.buildCaption();
     this.setState({ numLikes: numLikes, comments: comments });
   }
 
@@ -81,7 +83,18 @@ class PhotoScreen extends React.Component {
 
   // construct the full caption with the hashtags
   buildCaption = async () => {
-    
+    let hashtags = await getHashtags(this.state.imageInfo.imageid);
+    let baseCaption = this.state.imageInfo.caption;
+
+    // create an array which will be joined to string
+    let captionBuilder = []; 
+    for (let hashtag of hashtags) 
+      captionBuilder.push('#' + hashtag);
+
+    captionBuilder.push(baseCaption);
+
+    let fullCaption = captionBuilder.join(' ');
+    this.setState({ fullCaption });
   }
 
   // load the selected screen when the navbar is pressed 
@@ -159,10 +172,10 @@ class PhotoScreen extends React.Component {
               style={styles.captionContainer} 
               onPress={() => this.toggleCaptionDialogVisibility()}
             >
-              <Text>{this.state.imageInfo.caption}</Text>
+              <Text>{this.state.fullCaption}</Text>
             </TouchableOpacity>
           : <View style={styles.captionContainer}>
-              <Text>{this.state.imageInfo.caption}</Text>
+              <Text>{this.state.fullCaption}</Text>
             </View>
         }
 
@@ -256,7 +269,8 @@ const styles = StyleSheet.create({
     borderWidth: 0.5,
     borderColor: 'black',
     paddingTop: 5,
-    paddingBottom: 5
+    paddingBottom: 5,
+    paddingLeft: 10
   },
 
   commentsPanel: {

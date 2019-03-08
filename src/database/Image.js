@@ -94,3 +94,15 @@ export const getComments = imageID => {
     .then(res => res.json())
     .catch(err => console.log(err));
 }
+
+export const getHashtags = imageID => {
+  let endpoint = BASE_URL + `/hashtags?imageID=${imageID}`;
+  let options = {
+    headers: headers,
+    method: 'GET'
+  };
+
+  return fetch(endpoint, options)
+    .then(res => res.json())
+    .catch(err => console.log(err));
+}
