@@ -86,7 +86,10 @@ class ProfileScreen extends React.Component {
     let imageInfo = this.state.images[index]; 
     imageInfo['poster'] = this.state.username;
     imageInfo['numLikes'] = imageInfo.likes;
-    navigate('Photo', { imageInfo: imageInfo });
+    navigate('Photo', { 
+      imageInfo: imageInfo,
+      username: this.state.username
+     });
   }
 
   render() {

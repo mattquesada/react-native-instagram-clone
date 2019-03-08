@@ -36,7 +36,7 @@ class MainScreen extends React.Component {
 
   componentDidMount() {
     this.getActivityFeed();
-    this.getInitialState(this.state.username);
+    this.getInitialStats(this.state.username);
     AppState.addEventListener('change', this._handleAppStateChange);
     this.interval = setInterval(() => this.checkForUpdates(this.state.username), 5000); // check for updates every 5 seconds
   }
@@ -47,13 +47,7 @@ class MainScreen extends React.Component {
   }
 
   _handleAppStateChange = appState => {
-    if (appState === 'background') {
-      console.log('app is in background');
-      PushNotification.localNotificationSchedule({
-        message: 'My Notification Message',
-        date: new Date(Date.now() + (5 * 1000))
-      });
-    }
+    if (appState === 'background') { /* TODO */ }
   }
 
   getActivityFeed = async () => {
@@ -154,7 +148,10 @@ class MainScreen extends React.Component {
   // if a photo is tapped -> transition to the photo page
   onPhotoTap = (index) => {
     let { navigate } = this.props.navigation;
-    navigate('Photo', {imageInfo: this.state.activityFeed[index]});
+    navigate('Photo', {
+      imageInfo: this.state.activityFeed[index],
+      username: this.state.username
+    });
   }
 
   render() {

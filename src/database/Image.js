@@ -69,3 +69,28 @@ export const countLikes = userID => {
     .then(res => res.json())
     .catch(err => console.log(err));
 }
+
+export const addComment = (imageID, userID, commentText) => {
+  let endpoint = BASE_URL + '/comment';
+  let options = {
+    headers: headers,
+    method: 'POST',
+    body: JSON.stringify({ imageID, userID, commentText }),
+  };
+
+  return fetch(endpoint, options)
+    .then(res => res.json())
+    .catch(err => console.log(err));
+}
+
+export const getComments = imageID => {
+  let endpoint = BASE_URL + `/imageComments?imageID=${imageID}`;
+  let options = {
+    headers: headers,
+    method: 'GET'
+  };
+
+  return fetch(endpoint, options)
+    .then(res => res.json())
+    .catch(err => console.log(err));
+}
