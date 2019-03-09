@@ -24,6 +24,14 @@ const SearchStyles = StyleSheet.create({
     marginLeft: 20,
     flex: 1
   },
+  tagPanel: {
+    marginLeft: 20,
+    marginTop: 10,
+  },
+  tagText: {
+    color: 'black',
+    fontSize: 20
+  }
 });
 
 export default SearchStyles;

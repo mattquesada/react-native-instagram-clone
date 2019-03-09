@@ -4,34 +4,43 @@ import PropTypes from 'prop-types';
 
 const TabView = props => {
   return (
-    <View>
+    <View style={styles.tabViewContainer}>
       {props.tabOptions.map((option, key) => {
-        <TouchableOpacity 
-          key={key}
-          style={styles}
-          onPress={() => props.optionPressed(option)}
-        >
-          <Text style={styles.optionText}>{option}</Text>
-        </TouchableOpacity>
+        return (
+          <TouchableOpacity 
+            key={key}
+            style={styles.tabContainer}
+            onPress={() => props.optionPressed(option)}
+          >
+            <Text style={styles.optionText}>{option}</Text>
+          </TouchableOpacity> 
+        );
       })}
     </View>
   );
 };
 
-TabView.propTypes = {
-  tabOptions: PropTypes.array.isRequired,
-  optionPressed: PropTypes.func.isRequired
-}
-
 const styles = StyleSheet.create({
-  tabOption: {
+  tabViewContainer: {
     display: 'flex',
     flexDirection: 'row',
+    justifyContent: 'center',
+    marginTop: 20
+  },
+
+  tabContainer: {
+    marginLeft: 20,
+    marginRight: 20
   },
 
   optionText: {
     color: 'grey'
   }
-})
+});
+
+TabView.propTypes = {
+  tabOptions: PropTypes.array.isRequired,
+  optionPressed: PropTypes.func.isRequired
+}
 
 export default TabView;

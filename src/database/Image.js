@@ -106,3 +106,15 @@ export const getHashtags = imageID => {
     .then(res => res.json())
     .catch(err => console.log(err));
 }
+
+export const searchHashtags = input => {
+  let endpoint = BASE_URL + `/searchHashtags?hashtagText=${input}`;
+  let options = {
+    headers: headers,
+    method: 'GET'
+  };
+
+  return fetch(endpoint, options)
+    .then(res => res.json())
+    .catch(err => console.log(err));
+}
