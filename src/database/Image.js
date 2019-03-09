@@ -83,6 +83,19 @@ export const addComment = (imageID, userID, commentText) => {
     .catch(err => console.log(err));
 }
 
+export const updateCaption = (caption, imageID) => {
+  let endpoint = BASE_URL + '/caption';
+  let options = {
+    headers: headers,
+    method: 'POST',
+    body: JSON.stringify({ caption, imageID }),
+  };
+
+  return fetch(endpoint, options)
+    .then(res => res.json())
+    .catch(err => console.log(err));
+}
+
 export const getComments = imageID => {
   let endpoint = BASE_URL + `/imageComments?imageID=${imageID}`;
   let options = {

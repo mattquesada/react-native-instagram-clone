@@ -13,7 +13,7 @@ import PropTypes from 'prop-types';
 import { photoScreenIcons } from '../../assets/config';
 
 // postgres query imports
-import { incrementLikes, addComment, getComments, getHashtags } from '../../database/Image';
+import { incrementLikes, addComment, getComments, getHashtags, updateCaption } from '../../database/Image';
 import { getUser } from '../../database/User';
 
 /// custom component imports
@@ -40,7 +40,7 @@ class PhotoScreen extends React.Component {
   async componentDidMount() {
     let numLikes = this.state.imageInfo.numLikes;
     let comments = await getComments(this.state.imageInfo.imageid);
-    this.buildCaption();
+    this.buildCaption(this.state.imageInfo.caption);
     this.setState({ numLikes: numLikes, comments: comments });
   }
 
@@ -78,13 +78,17 @@ class PhotoScreen extends React.Component {
   }
 
   addCaption = async (caption) => {
-    console.log(caption);
+    let imageID = this.state.imageInfo.imageid;
+    
+    // update the caption in postgres
+    await updateCaption(caption, imageID);
+
+    this.setState({ fullCaption: caption });
   }
 
   // construct the full caption with the hashtags
-  buildCaption = async () => {
+  buildCaption = async (baseCaption) => {
     let hashtags = await getHashtags(this.state.imageInfo.imageid);
-    let baseCaption = this.state.imageInfo.caption;
 
     // create an array which will be joined to string
     let captionBuilder = []; 
