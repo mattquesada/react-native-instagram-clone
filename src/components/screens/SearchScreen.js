@@ -71,6 +71,14 @@ class SearchScreen extends React.Component {
     this.setState({ tabSelected: tab });
   }
 
+  onHashtagSelect = (hashtag) => {
+    let { navigate } = this.props.navigation;
+    navigate('HashtagFeed', { 
+      hashtag,
+      username: this.state.username 
+    });
+  }
+
   render() {
     return (
       <View>
@@ -132,7 +140,11 @@ class SearchScreen extends React.Component {
             <ScrollView style={{ marginTop: 5 }}>
               {this.state.foundTags.map((hashtag, key) => {
                 return (
-                  <TouchableOpacity style={styles.tagPanel} key={key}>
+                  <TouchableOpacity 
+                    style={styles.tagPanel}
+                    onPress={() => this.onHashtagSelect(hashtag)} 
+                    key={key}
+                  >
                     <Text style={styles.tagText}>
                       #{hashtag.hashtag_text}
                     </Text>

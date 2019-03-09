@@ -118,3 +118,15 @@ export const searchHashtags = input => {
     .then(res => res.json())
     .catch(err => console.log(err));
 }
+
+export const getImagesByHashtag = hashtag => {
+  let endpoint = BASE_URL + `/imagesByHashtag?hashtag=${hashtag}`;
+  let options = {
+    headers: headers,
+    method: 'GET'
+  };
+
+  return fetch(endpoint, options)
+    .then(res => res.json())
+    .catch(err => console.log(err));
+}
