@@ -2,16 +2,23 @@ import React from 'react';
 import {
   StyleSheet,
   View,
+  ScrollView,
   Text,
   Image,
   Dimensions,
-  TouchableOpacity
+  TouchableOpacity,
+  TouchableHighlight
 } from 'react-native';
 import PropTypes from 'prop-types';
 import { photoScreenIcons } from '../../assets/config';
 
 // postgres query imports
-import { incrementLikes } from '../../database/Image';
+import { incrementLikes, addComment, getComments, getHashtags } from '../../database/Image';
+import { getUser } from '../../database/User';
+
+/// custom component imports
+import Navbar from '../common/Navbar';
+import DialogInput from 'react-native-dialog-input';
 
 class PhotoScreen extends React.Component {
 
@@ -19,10 +26,22 @@ class PhotoScreen extends React.Component {
     super(props);
     this.state = {
       imageInfo: props.navigation.getParam('imageInfo', 'oops'),
+      username: props.navigation.getParam('username', 'user'),
       numLikes: 0,
       screenWidth: Dimensions.get("window").width, // return the width of the current device
-      liked: false
+      liked: false,
+      comments: [], // array of strings
+      isCommentDialogVisible: false,
+      isCaptionDialogVisible: false,
+      fullCaption: ''
     };
+  }
+
+  async componentDidMount() {
+    let numLikes = this.state.imageInfo.numLikes;
+    let comments = await getComments(this.state.imageInfo.imageid);
+    this.buildCaption();
+    this.setState({ numLikes: numLikes, comments: comments });
   }
 
   async likeToggled() {
@@ -35,16 +54,78 @@ class PhotoScreen extends React.Component {
     console.log(status);
   }
 
-  componentDidMount() {
-    numLikes = this.state.imageInfo.numLikes;
-    this.setState({ numLikes: numLikes });
+  toggleCommentDialogVisibility = () => {
+    this.setState({ isCommentDialogVisible: !this.state.isCommentDialogVisible });
   }
+
+  toggleCaptionDialogVisibility = () => {
+    this.setState({ isCaptionDialogVisible: !this.state.isCaptionDialogVisible });
+  }
+
+  addComment = async (comment) => {
+    let imageID = this.state.imageInfo.imageid;
+    let currentUser = await getUser(this.state.username);
+
+    await addComment(imageID, currentUser.userid, comment);
+
+    let newComments = this.state.comments;
+    newComments.push({ comment_text: comment, username: currentUser.username });
+
+    this.setState({ 
+      isCommentDialogVisible: !this.state.isCommentDialogVisible,
+      comments: newComments 
+    });
+  }
+
+  addCaption = async (caption) => {
+    console.log(caption);
+  }
+
+  // construct the full caption with the hashtags
+  buildCaption = async () => {
+    let hashtags = await getHashtags(this.state.imageInfo.imageid);
+    let baseCaption = this.state.imageInfo.caption;
+
+    // create an array which will be joined to string
+    let captionBuilder = []; 
+    for (let hashtag of hashtags) 
+      captionBuilder.push('#' + hashtag);
+
+    captionBuilder.push(baseCaption);
+
+    let fullCaption = captionBuilder.join(' ');
+    this.setState({ fullCaption });
+  }
+
+  // load the selected screen when the navbar is pressed 
+  onNavbarSelect = (selectedIcon) => {
+    let { navigate } = this.props.navigation;
+    switch (selectedIcon) {
+      case 'profile':
+        navigate('Profile', { username: this.state.username });
+        break;
+      case 'search':
+        navigate('Search', { username: this.state.username });
+        break;
+      case 'home': 
+        navigate('Home', { username: this.state.username });
+        break;
+      default:
+        console.log('navbar selection error');
+        break;
+    }
+  }
+
 
   render() {
     const heartIconColor = (this.state.liked) ? "rgb(252, 61, 57)" : null;
 
     return (
-      <View style={styles.mainWrapper}>
+      <ScrollView style={styles.mainWrapper}>
+        <Navbar 
+          onNavbarSelect={this.onNavbarSelect}
+          currentUsername={this.state.username}
+        />
         <View style={styles.userBar}>
           <View style={{ flexDirection: "row", alignItems: "center" }} >
             <Image style={styles.userPic}
@@ -71,20 +152,65 @@ class PhotoScreen extends React.Component {
           <Image style={[styles.icon, { height: 40, width: 40, tintColor: heartIconColor }]}
             source={photoScreenIcons.heartIcon} />
 
-          <Image style={[styles.icon, { height: 36, width: 36 }]}
-            source={photoScreenIcons.commentIcon} />
+          <TouchableHighlight onPress={() => this.toggleCommentDialogVisibility()} >         
+            <Image style={[styles.icon, { height: 36, width: 36 }]}
+              source={photoScreenIcons.commentIcon} />
+          </TouchableHighlight>   
 
           <Image resizeMode="stretch"
             style={[styles.icon, { height: 50, width: 40 }]}
-            source={photoScreenIcons.arrowIcon} />
-        </View>
-        <View style={styles.iconBar}>
-          <Image style={[styles.icon, { height: 30, width: 30 }]}
-            source={photoScreenIcons.heartIcon}
+            source={photoScreenIcons.arrowIcon} 
           />
-          <Text style={{ paddingLeft: 5 }}>{this.state.numLikes} Likes</Text>
+          <View style={styles.likeCounter}>
+            <Text style={{ paddingLeft: 5 }}>{this.state.numLikes} Likes</Text>
+          </View>
         </View>
-      </View>
+          
+        {
+          this.state.username === this.state.imageInfo.poster 
+          ? <TouchableOpacity 
+              style={styles.captionContainer} 
+              onPress={() => this.toggleCaptionDialogVisibility()}
+            >
+              <Text>{this.state.fullCaption}</Text>
+            </TouchableOpacity>
+          : <View style={styles.captionContainer}>
+              <Text>{this.state.fullCaption}</Text>
+            </View>
+        }
+
+        <View style={styles.commentsPanel}>
+          {this.state.comments.map((comment, key) => {
+            return (
+              <View style={styles.commentRow} key={key}>
+                <View style={styles.commentOwner}>
+                  <Text>{comment.username}</Text>
+                </View>
+                <View style={styles.commentText}>
+                  <Text>{comment.comment_text}</Text>
+                </View>
+              </View>
+            );
+          })}
+        </View>
+        
+        <DialogInput isDialogVisible={this.state.isCommentDialogVisible}
+          title={"Add Comment"}
+          message={"Say something about this photo"}
+          hintInput={"Type Here"}
+          submitInput={(inputText) => { this.addComment(inputText) }}
+          closeDialog={() => this.toggleCommentDialogVisibility()}>
+        </DialogInput>
+
+        <DialogInput isDialogVisible={this.state.isCaptionDialogVisible}
+          title={"Add Caption"}
+          message={"Say something about this photo"}
+          hintInput={"Type Here"}
+          submitInput={(inputText) => { this.addCaption(inputText) }}
+          closeDialog={() => this.toggleCaptionDialogVisibility()}>
+        </DialogInput>
+
+      </ScrollView>
     );
   }
 }
@@ -134,6 +260,40 @@ const styles = StyleSheet.create({
   icon: {
     marginLeft: 5
   },
+
+  likeCounter: {
+    marginLeft: 160
+  },
+
+  captionContainer: {
+    borderWidth: 0.5,
+    borderColor: 'black',
+    paddingTop: 5,
+    paddingBottom: 5,
+    paddingLeft: 10
+  },
+
+  commentsPanel: {
+  },
+
+  commentRow: {
+    display: 'flex',
+    flexDirection: 'row',
+    borderWidth: 0.2,
+    borderColor: 'grey',
+    paddingTop: 5,
+    paddingBottom: 5
+  },
+
+  commentOwner: {
+    marginLeft: 10,
+    width: 50
+  },
+
+  commentText: {
+
+  }
+
 });
 
 PhotoScreen.propTypes = {

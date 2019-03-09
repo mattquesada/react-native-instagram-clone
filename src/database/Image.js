@@ -57,3 +57,76 @@ export const incrementLikes = imageID => {
     .then(res => res.json())
     .catch(err => console.log(err));
 }
+
+export const countLikes = userID => {
+  let endpoint = BASE_URL + `/countLikes?userID=${userID}`;
+  let options = {
+    headers: headers,
+    method: 'GET'
+  };
+
+  return fetch(endpoint, options)
+    .then(res => res.json())
+    .catch(err => console.log(err));
+}
+
+export const addComment = (imageID, userID, commentText) => {
+  let endpoint = BASE_URL + '/comment';
+  let options = {
+    headers: headers,
+    method: 'POST',
+    body: JSON.stringify({ imageID, userID, commentText }),
+  };
+
+  return fetch(endpoint, options)
+    .then(res => res.json())
+    .catch(err => console.log(err));
+}
+
+export const getComments = imageID => {
+  let endpoint = BASE_URL + `/imageComments?imageID=${imageID}`;
+  let options = {
+    headers: headers,
+    method: 'GET'
+  };
+
+  return fetch(endpoint, options)
+    .then(res => res.json())
+    .catch(err => console.log(err));
+}
+
+export const getHashtags = imageID => {
+  let endpoint = BASE_URL + `/hashtags?imageID=${imageID}`;
+  let options = {
+    headers: headers,
+    method: 'GET'
+  };
+
+  return fetch(endpoint, options)
+    .then(res => res.json())
+    .catch(err => console.log(err));
+}
+
+export const searchHashtags = input => {
+  let endpoint = BASE_URL + `/searchHashtags?hashtagText=${input}`;
+  let options = {
+    headers: headers,
+    method: 'GET'
+  };
+
+  return fetch(endpoint, options)
+    .then(res => res.json())
+    .catch(err => console.log(err));
+}
+
+export const getImagesByHashtag = hashtag => {
+  let endpoint = BASE_URL + `/imagesByHashtag?hashtag=${hashtag}`;
+  let options = {
+    headers: headers,
+    method: 'GET'
+  };
+
+  return fetch(endpoint, options)
+    .then(res => res.json())
+    .catch(err => console.log(err));
+}

@@ -8,6 +8,7 @@
  */
 
 import React from 'react';
+import { AppState } from 'react-native';
 import { createStackNavigator, createAppContainer } from 'react-navigation';
 
 // Import all screen components
@@ -19,6 +20,7 @@ import ProfileScreen from './src/components/screens/ProfileScreen';
 import SearchScreen from './src/components/screens/SearchScreen';
 import FollowingScreen from './src/components/screens/FollowingScreen';
 import PhotoScreen from './src/components/screens/PhotoScreen';
+import HashtagScreen from './src/components/screens/HashtagScreen';
 
 type Props = {};
 class App extends React.Component<Props> {
@@ -37,7 +39,8 @@ const Routes = createStackNavigator(
     Profile: ProfileScreen,
     Search: SearchScreen,
     Following: FollowingScreen,
-    Photo: PhotoScreen
+    Photo: PhotoScreen,
+    HashtagFeed: HashtagScreen
   },
   {
     initialRouteName: 'Launch'
