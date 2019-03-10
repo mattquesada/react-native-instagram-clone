@@ -3,11 +3,13 @@ import {
   View,
   Text,
   TouchableOpacity,
-  ImageBackground
+  ImageBackground,
+  Image
 } from 'react-native';
 import PropTypes from 'prop-types';
 import LaunchStyles from '../styles/LaunchStyles';
-import LaunchBackground from '../../assets/images/main-screen.png'
+import LaunchBackground from '../../assets/images/main-screen.png';
+import Logo from '../../assets/images/logo.png';
 
 class LaunchScreen extends React.Component {
   render() {
@@ -17,13 +19,16 @@ class LaunchScreen extends React.Component {
         <View style={styles.container}>
           <Text style={styles.titleText}>
             Instagram
-        </Text>
-          <TouchableOpacity style={styles.button} onPress={() => navigate('Login')}>
-            <Text style={styles.buttonText}>Login</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.button} onPress={() => navigate('Register')}>
-            <Text style={styles.buttonText}>Register</Text>
-          </TouchableOpacity>
+          </Text>
+          <Image source={Logo} style={styles.logo} />
+          <View style={styles.buttonContainer}>
+            <TouchableOpacity style={styles.button} onPress={() => navigate('Login')}>
+              <Text style={styles.buttonText}>Login</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.button} onPress={() => navigate('Register')}>
+              <Text style={styles.buttonText}>Register</Text>
+            </TouchableOpacity>
+          </View>
         </View>
       </ImageBackground>
     );
