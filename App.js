@@ -8,7 +8,6 @@
  */
 
 import React from 'react';
-import { AppState } from 'react-native';
 import { createStackNavigator, createAppContainer } from 'react-navigation';
 
 // Import all screen components
@@ -43,7 +42,8 @@ const Routes = createStackNavigator(
     HashtagFeed: HashtagScreen
   },
   {
-    initialRouteName: 'Launch'
+    initialRouteName: 'Launch',
+    defaultNavigationOptions: { header: null }
   }
 );
 
