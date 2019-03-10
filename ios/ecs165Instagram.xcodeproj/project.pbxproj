@@ -5,7 +5,6 @@
 	};
 	objectVersion = 46;
 	objects = {
-
 /* Begin PBXBuildFile section */
 		00C302E51ABCBA2D00DB3ED1 /* libRCTActionSheet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302AC1ABCB8CE00DB3ED1 /* libRCTActionSheet.a */; };
 		00C302E71ABCBA2D00DB3ED1 /* libRCTGeolocation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302BA1ABCB90400DB3ED1 /* libRCTGeolocation.a */; };
@@ -32,6 +31,11 @@
 		BD4DC2B922001607007A99CE /* www in Resources */ = {isa = PBXBuildFile; fileRef = BD4DC29222001606007A99CE /* www */; };
 		D3108F3EA91C4D798873451B /* libRNGestureHandler.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CCB38AE7E123480EBF2207A2 /* libRNGestureHandler.a */; };
 		ED297163215061F000B7C4FE /* JavaScriptCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ED297162215061F000B7C4FE /* JavaScriptCore.framework */; };
+		73708C9043B1463A8EBBFD14 /* cac_champagne.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 36F704AC3A9A44E691526E55 /* cac_champagne.ttf */; };
+		0BD02306C26F46679CEEAAA0 /* Infinite_Stroke_Bolder_Cond.otf in Resources */ = {isa = PBXBuildFile; fileRef = 31040F468E914B40A8B7F2EA /* Infinite_Stroke_Bolder_Cond.otf */; };
+		3330594522D542668871E805 /* Infinite_Stroke_Bolder.otf in Resources */ = {isa = PBXBuildFile; fileRef = 305BC0F7CD044DA29591F33C /* Infinite_Stroke_Bolder.otf */; };
+		26E24F935F6F40558B250AE9 /* Infinite_Stroke_Cond.otf in Resources */ = {isa = PBXBuildFile; fileRef = 31EC1B05FCEB413494E5A030 /* Infinite_Stroke_Cond.otf */; };
+		17CA30C9ED6D4D038DE6DC80 /* Infinite_Stroke.otf in Resources */ = {isa = PBXBuildFile; fileRef = 38A001E837BF4D009A57EE1B /* Infinite_Stroke.otf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -370,6 +374,11 @@
 		E52F834BD41844CD1DC3409D /* Pods-ecs165Instagram.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ecs165Instagram.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ecs165Instagram/Pods-ecs165Instagram.debug.xcconfig"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		ED2971642150620600B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS12.0.sdk/System/Library/Frameworks/JavaScriptCore.framework; sourceTree = DEVELOPER_DIR; };
+		36F704AC3A9A44E691526E55 /* cac_champagne.ttf */ = {isa = PBXFileReference; name = "cac_champagne.ttf"; path = "../src/assets/fonts/cac_champagne.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		31040F468E914B40A8B7F2EA /* Infinite_Stroke_Bolder_Cond.otf */ = {isa = PBXFileReference; name = "Infinite_Stroke_Bolder_Cond.otf"; path = "../src/assets/fonts/Infinite_Stroke_Bolder_Cond.otf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		305BC0F7CD044DA29591F33C /* Infinite_Stroke_Bolder.otf */ = {isa = PBXFileReference; name = "Infinite_Stroke_Bolder.otf"; path = "../src/assets/fonts/Infinite_Stroke_Bolder.otf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		31EC1B05FCEB413494E5A030 /* Infinite_Stroke_Cond.otf */ = {isa = PBXFileReference; name = "Infinite_Stroke_Cond.otf"; path = "../src/assets/fonts/Infinite_Stroke_Cond.otf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		38A001E837BF4D009A57EE1B /* Infinite_Stroke.otf */ = {isa = PBXFileReference; name = "Infinite_Stroke.otf"; path = "../src/assets/fonts/Infinite_Stroke.otf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -609,6 +618,7 @@
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
 				BD4DC1C521FFE0CD007A99CE /* Recovered References */,
 				6171BC4552B9DA4DD4AC29FD /* Pods */,
+				E7D070FBDCA94AD2839F94A0 /* Resources */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -665,6 +675,19 @@
 			);
 			name = Products;
 			sourceTree = "<group>";
+		};
+		E7D070FBDCA94AD2839F94A0 /* Resources */ = {
+			isa = "PBXGroup";
+			children = (
+				36F704AC3A9A44E691526E55 /* cac_champagne.ttf */,
+				31040F468E914B40A8B7F2EA /* Infinite_Stroke_Bolder_Cond.otf */,
+				305BC0F7CD044DA29591F33C /* Infinite_Stroke_Bolder.otf */,
+				31EC1B05FCEB413494E5A030 /* Infinite_Stroke_Cond.otf */,
+				38A001E837BF4D009A57EE1B /* Infinite_Stroke.otf */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+			path = "";
 		};
 /* End PBXGroup section */
 
@@ -1116,6 +1139,11 @@
 				BD4DC2B922001607007A99CE /* www in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
+				73708C9043B1463A8EBBFD14 /* cac_champagne.ttf in Resources */,
+				0BD02306C26F46679CEEAAA0 /* Infinite_Stroke_Bolder_Cond.otf in Resources */,
+				3330594522D542668871E805 /* Infinite_Stroke_Bolder.otf in Resources */,
+				26E24F935F6F40558B250AE9 /* Infinite_Stroke_Cond.otf in Resources */,
+				17CA30C9ED6D4D038DE6DC80 /* Infinite_Stroke.otf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
