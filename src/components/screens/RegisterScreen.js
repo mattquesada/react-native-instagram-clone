@@ -1,11 +1,11 @@
 import React from 'react';
 import {
   View, 
-  Button,
-  ToastAndroid
+  Text,
+  TouchableOpacity
 } from 'react-native';
 import PropTypes from 'prop-types';
-import RegisterStyles from '../styles/LoginStyles';
+import RegisterStyles from '../styles/RegisterStyles';
 import formBuilder from 'tcomb-form-native';
 import { getUser, addUser } from '../../database/User';
 
@@ -15,9 +15,12 @@ const RegisterForm = formBuilder.form.Form;
 
 // User object to capture the inputs from the Login Form
 const User = formBuilder.struct({
-  email: formBuilder.String,
-  username: formBuilder.String,
-  password: formBuilder.String
+  'Full Name': formBuilder.String,
+  'Email': formBuilder.String,
+  'Username': formBuilder.String,
+  'Password': formBuilder.String,
+  'Confirm Password': formBuilder.String,
+  'Birthday': formBuilder.String
 });
 
 // Customize form
@@ -46,7 +49,16 @@ class RegisterScreen extends React.Component {
     return (
       <View style={styles.container}>
         <RegisterForm ref='form' type={User} options={FormOptions}/>
-        <Button title="Sign Up" onPress={this.handleSubmit} />
+        <TouchableOpacity 
+          title="Sign Up"
+          onPress={this.handleSubmit} 
+          style={styles.signupButton}  
+        >
+          <Text style={styles.buttonText}>Sign Up</Text>
+        </TouchableOpacity>
+        <View style={{alignItems: 'center'}}>
+          <Text style={styles.hasAccount}>Already have an account?</Text>
+        </View>
       </View>
     )
   }

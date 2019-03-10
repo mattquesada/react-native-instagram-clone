@@ -1,7 +1,8 @@
 import React from 'react';
 import {
   View,
-  Button,
+  Text,
+  TouchableOpacity,
   Alert
 } from 'react-native';
 import PropTypes from 'prop-types';
@@ -55,8 +56,21 @@ class LoginScreen extends React.Component {
   render() {
     return (  
       <View style={styles.container}>
-        <LoginForm ref='form' type={User} options={FormOptions} />
-        <Button title="Login" onPress={this.handleSubmit} />
+        <Text style={styles.banner}>Welcome Back</Text>
+        <View style={styles.loginForm}>
+          <LoginForm ref='form' type={User} options={FormOptions} />
+        </View>
+        <TouchableOpacity
+          title="Login" 
+          onPress={this.handleSubmit} 
+          style={styles.loginButton}  
+        >
+          <Text style={styles.buttonText}>Sign In</Text>
+        </TouchableOpacity>
+        <View style={styles.optionsContainer}>
+          <Text style={styles.forgotPassword}>Forgot Password?</Text>
+          <Text style={styles.notRegistered}>Not Registered?</Text>
+        </View>
       </View>
     );
   }
