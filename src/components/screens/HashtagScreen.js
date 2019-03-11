@@ -65,7 +65,7 @@ class HashtagScreen extends React.Component {
   render() {
     const username = this.state.username;
     return (
-      <View>
+      <View style={styles.container}>
         <NavBar
           onNavbarSelect={this.onNavbarSelect}
           currentUsername={this.state.username}

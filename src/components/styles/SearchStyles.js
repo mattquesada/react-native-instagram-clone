@@ -1,6 +1,10 @@
 import { StyleSheet } from 'react-native';
 
 const SearchStyles = StyleSheet.create({
+  screenContainer: {
+    backgroundColor: '#000',
+    height: 100 + '%'
+  },
   textInputContainer: {
     display: 'flex',
     flexDirection: 'row',
@@ -12,6 +16,7 @@ const SearchStyles = StyleSheet.create({
     height: 90,
     marginLeft: 20,
     marginTop: 5,
+    color: '#FFF'
   },
   userPanel: {
     width: 100 + '%',
@@ -20,17 +25,30 @@ const SearchStyles = StyleSheet.create({
     flexDirection: 'row',
   },
   usernameText: {
-    marginTop: 15,
     marginLeft: 20,
-    flex: 1
+    flex: 1,
+    color: '#FFF'
   },
   tagPanel: {
     marginLeft: 20,
     marginTop: 10,
   },
   tagText: {
-    color: 'black',
-    fontSize: 20
+    color: 'white',
+    fontSize: 24
+  },
+  imageCount: {
+    color: 'white',
+    fontSize: 14
+  },  
+  button: {
+    height: 30,
+    width: 80,
+    backgroundColor: '#EBE0E0',
+    marginRight: 20,
+    borderRadius: 15,
+    alignItems: 'center',
+    justifyContent: 'center'
   }
 });
 

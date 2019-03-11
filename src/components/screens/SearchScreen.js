@@ -3,7 +3,6 @@ import {
   View, 
   ScrollView, 
   Text, 
-  Button, 
   TextInput,
   TouchableOpacity
  } from 'react-native';
@@ -48,7 +47,7 @@ class SearchScreen extends React.Component {
   saveFollow = async (toFollowUser) => {
     let ownUsername = this.state.username;
     let currentUser = await getUser(ownUsername);
-    let success = await addFollow(currentUser.userid, toFollowUser.userid);
+    await addFollow(currentUser.userid, toFollowUser.userid);
   }
 
   // load the selected screen when the navbar is pressed 
@@ -81,7 +80,7 @@ class SearchScreen extends React.Component {
 
   render() {
     return (
-      <View>
+      <View style={styles.screenContainer}>
         <Navbar
           onNavbarSelect={this.onNavbarSelect}
           currentUsername={this.state.username}
@@ -97,13 +96,12 @@ class SearchScreen extends React.Component {
               <TextInput
                 style={styles.textInput}
                 placeholder='search for users...'
+                placeholderTextColor='#FFF'
                 onChangeText={(text) => this.setState({ searchText: text })}
               />
-              <Button
-                title="Search"
-                onPress={() => this.findUsers()}
-                color='#3195F3'
-              />
+              <TouchableOpacity style={styles.button} onPress={() => this.findUsers()}>
+                <Text>Search</Text>
+              </TouchableOpacity>
             </View>
             <ScrollView style={{ marginTop: 5 }}>
               {this.state.foundUsers.map((user, key) => {
@@ -112,11 +110,9 @@ class SearchScreen extends React.Component {
                     <Text style={styles.usernameText}>
                       {user.username}
                     </Text>
-                    <Button
-                      title="Follow"
-                      onPress={() => this.saveFollow(user)}
-                      color='#3195F3'
-                    />
+                    <TouchableOpacity style={styles.button} onPress={() => this.saveFollow(user)}>
+                      <Text>Follow</Text>
+                    </TouchableOpacity>
                   </View>
                 );
               })
@@ -129,13 +125,12 @@ class SearchScreen extends React.Component {
               <TextInput
                 style={styles.textInput}
                 placeholder='search for hashtags...'
+                placeholderTextColor='#FFF'
                 onChangeText={(text) => this.setState({ searchText: text })}
               />
-              <Button
-                title="Search"
-                onPress={() => this.findHashtags()}
-                color='#3195F3'
-              />
+              <TouchableOpacity style={styles.button} onPress={() => this.findHashtags()}>
+                <Text>Search</Text>
+              </TouchableOpacity>
             </View>
             <ScrollView style={{ marginTop: 5 }}>
               {this.state.foundTags.map((hashtag, key) => {
@@ -148,7 +143,7 @@ class SearchScreen extends React.Component {
                     <Text style={styles.tagText}>
                       #{hashtag.hashtag_text}
                     </Text>
-                    <Text>
+                    <Text style={styles.imageCount}>
                       {hashtag.count}
                     </Text>
                   </TouchableOpacity>

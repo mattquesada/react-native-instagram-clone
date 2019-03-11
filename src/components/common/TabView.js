@@ -34,7 +34,7 @@ const styles = StyleSheet.create({
   },
 
   optionText: {
-    color: 'grey'
+    color: '#FFF'
   }
 });
 
