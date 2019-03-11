@@ -75,6 +75,7 @@ class MainScreen extends React.Component {
         imageid: image.imageid,
         imageurl: image.imageurl,
         poster: imageOwner.username,
+        profileimage: imageOwner.profileimageurl,
         caption: image.caption,
         numLikes: image.likes
       })

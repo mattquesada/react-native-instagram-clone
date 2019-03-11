@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 import ProfileStyles from '../styles/ProfileStyles';
 import PropTypes from 'prop-types';
+import ImagePicker from 'react-native-image-picker';
 
 // custom component imports
 import Navbar from '../common/Navbar';
@@ -17,10 +18,43 @@ import Navbar from '../common/Navbar';
 import { 
   getUser,
   updateBiography,
+  updateProfileImage
 } from '../../database/User';
 import { getImages } from '../../database/Image';
 
 import { profileIcons } from '../../assets/config';
+
+import { ACCESS_KEY } from '../../config/config';
+
+const uploadOptions = {
+  title: 'Select a photo',
+  storageOptions: {
+    skipBackup: true,
+    path: 'images',
+  },
+  quality: 0.5
+};
+
+const uploadToS3 = photoInfo => {
+  const { uri, fileName, type } = photoInfo;
+
+  const s3Address = 'https://ig-express-api.herokuapp.com/uploadImage';
+
+  let data = new FormData();
+  data.append('image', { uri, name: fileName, type });
+
+  return fetch(s3Address, {
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'multipart/form-data',
+      'access-key': ACCESS_KEY
+    },
+    method: 'POST',
+    body: data
+  })
+    .then(res => res.json())
+    .catch(err => console.log(err));
+};
 
 class ProfileScreen extends React.Component {
 
@@ -30,17 +64,19 @@ class ProfileScreen extends React.Component {
       username: props.navigation.getParam('username', 'user'),
       biography: '',
       editingBiography: false,
+      profileImageURL: "",
       images: [] // array of urls
     };
     this.onNavbarSelect.bind(this);
   }
 
   async componentDidMount() {
-    let currentUser = await getUser(this.state.username) 
+    let currentUser = await getUser(this.state.username); 
     let currentUserImages = await getImages(currentUser.userid);
 
     this.setState({
       biography: currentUser.biography,
+      profileImageURL: currentUser.profileimageurl,
       images: currentUserImages
     });
   }
@@ -92,6 +128,25 @@ class ProfileScreen extends React.Component {
      });
   }
 
+  handleImageUpload = (currentUsername) => {
+    ImagePicker.showImagePicker(uploadOptions, async (response) => {
+      console.log('Response = ', response);
+
+      if (response.didCancel) {
+        console.log('User cancelled image picker');
+      } else if (response.error) {
+        console.log('ImagePicker Error: ', response.error);
+      } else if (response.customButton) {
+        console.log('User tapped custom button: ', response.customButton);
+      } else {
+        let awsResponse = await uploadToS3(response) // AWS returns the URL to the image
+        let currentUser = await getUser(currentUsername);
+        await updateProfileImage(currentUser.userid, awsResponse.imageUrl); // add the image URL to postgres
+        this.setState({ profileImageURL: awsResponse.imageUrl })
+      }
+    });
+  }
+
   render() {
     return (
       <View style={styles.profileScreenContainer}>
@@ -100,11 +155,14 @@ class ProfileScreen extends React.Component {
           currentUsername={this.state.username}
         />
         <View style={styles.userInfoContainer}>
-          <TouchableOpacity style={styles.profileImageContainer}>
-            <Image 
-              source={profileIcons.userPlaceholder}
-              style={styles.profileImage}
-            />
+          <TouchableOpacity 
+            style={styles.profileImageContainer}
+            onPress={() => this.handleImageUpload(this.state.username)}
+          >
+            {this.state.profileImageURL 
+              ? <Image source={{ uri: this.state.profileImageURL }} style={styles.profileImage} />
+              : <Image source={profileIcons.userPlaceholder} style={styles.profileImagePlaceholder} />
+            }
           </TouchableOpacity>
           <View>
             <TouchableOpacity

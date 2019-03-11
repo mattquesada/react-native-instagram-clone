@@ -17,8 +17,17 @@ const ProfileStyles = StyleSheet.create({
     borderRadius: 70,
     borderWidth: 0.5,
     borderColor: '#FFF',
+    alignItems: 'center',
+    justifyContent: 'center'
   },
   profileImage: {
+    width: 133,
+    height: 133,
+    borderRadius: 70,
+    borderWidth: 0.5,
+    paddingBottom: 5,
+  },
+  profileImagePlaceholder: {
     width: 70 + '%',
     height: 70 + '%',
     margin: 20,

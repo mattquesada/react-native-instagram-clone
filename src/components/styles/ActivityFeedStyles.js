@@ -11,6 +11,13 @@ const ActivityFeedStyles = StyleSheet.create({
   profileIcon: {
     height: 40,
     width: 40,
+    borderColor: '#FFF',
+    borderRadius: 70,
+    borderWidth: 0.5,
+  },
+  profileIconPlaceholder: {
+    height: 40,
+    width: 40,
     tintColor: '#FFF'
   },
   username: {

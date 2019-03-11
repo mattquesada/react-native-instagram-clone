@@ -156,3 +156,20 @@ export const countFollowers = userID => {
     .then(res => res.json())
     .catch(err => console.log(err));
 }
+
+// update a user's profile image
+export const updateProfileImage = (userID, imageURL) => {
+  console.log(userID);
+  console.log(imageURL);
+  
+  let endpoint = BASE_URL + '/profileImage';
+  let options = {
+    headers: headers,
+    method: 'POST',
+    body: JSON.stringify({ userID, imageURL }),
+  };
+
+  return fetch(endpoint, options)
+    .then(res => res.json())
+    .catch(err => console.log(err));
+};

@@ -13,10 +13,10 @@ const ActivityFeed = props => {
        return (
         <View key={key}>
           <View style={styles.userPanel}>
-            <Image 
-              source={profileIcons.userPlaceholder} 
-              style={styles.profileIcon}  
-            />
+          {feedItem.profileimage 
+            ? <Image source={{ uri: feedItem.profileimage }} style={styles.profileIcon} />
+            : <Image source={profileIcons.userPlaceholder} style={styles.profileIconPlaceholder} />
+          }
             <Text style={styles.username}>{feedItem.poster}</Text>
           </View>
           <TouchableOpacity 

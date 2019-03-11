@@ -31,6 +31,7 @@ class HashtagScreen extends React.Component {
 
   buildHashtagFeed = async (hashtag) => {
     let images = await getImagesByHashtag(hashtag);
+    console.log(images);
     this.setState({ images, feedLoaded: !this.state.feedLoaded });
   }
 
@@ -45,7 +46,7 @@ class HashtagScreen extends React.Component {
         navigate('Search', { username: this.state.username });
         break;
       case 'home':
-        navigate('Home', {username: this.state.username });
+        navigate('Main', {username: this.state.username });
         break;
       default:
         console.log('navbar selection error');

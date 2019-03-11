@@ -135,7 +135,10 @@ class PhotoScreen extends React.Component {
         />
         <View style={styles.userBar}>
           <View style={{ flexDirection: "row", alignItems: "center" }} >
-            <Image style={styles.userPic} source={profileIcons.userPlaceholder}/>
+            {this.state.imageInfo.profileImage 
+              ? <Image style={styles.userPic} source={{ uri: this.state.imageInfo.profileImage }} />
+              : <Image style={styles.userPicPlaceholder} source={profileIcons.userPlaceholder} />
+            }
             <Text style={styles.username}>{this.state.imageInfo.poster}</Text>
           </View>
         </View>

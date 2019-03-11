@@ -32,6 +32,14 @@ const PhotoStyles = StyleSheet.create({
     borderRadius: 20,
     borderWidth: 1,
     borderColor: '#FFF',
+  },
+
+  userPicPlaceholder: {
+    height: 30,
+    width: 30,
+    borderRadius: 20,
+    borderWidth: 1,
+    borderColor: '#FFF',
     tintColor: '#FFF'
   },
 
