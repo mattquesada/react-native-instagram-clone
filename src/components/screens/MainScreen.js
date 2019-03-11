@@ -172,8 +172,8 @@ class MainScreen extends React.Component {
             </ScrollView>
           : <View>
               <View style={{ margin: 10, alignItems: 'center' }}>
-                <Text style={{ margin: 10 }}>Hello {username}!</Text>
-                <Text style={{ margin: 10 }}>Fetching your feed...</Text>
+                <Text style={{ margin: 10, color: '#FFF' }}>Hello {username}!</Text>
+                <Text style={{ margin: 10, color: '#FFF' }}>Fetching your feed...</Text>
               </View>
               <LoadingAnimation />
             </View> 

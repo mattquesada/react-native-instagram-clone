@@ -94,7 +94,7 @@ class ProfileScreen extends React.Component {
 
   render() {
     return (
-      <View>
+      <View style={styles.profileScreenContainer}>
         <Navbar
           onNavbarSelect={this.onNavbarSelect}
           currentUsername={this.state.username}
@@ -107,6 +107,12 @@ class ProfileScreen extends React.Component {
             />
           </TouchableOpacity>
           <View>
+            <TouchableOpacity
+              onPress={() => this.getFollowing()}
+              style={styles.followingButtonContainer}
+            >
+              <Text style={styles.followingButton}>Following</Text>
+            </TouchableOpacity>
             <Text style={styles.usernameContainer}>
               {this.state.username}
             </Text>
@@ -116,6 +122,7 @@ class ProfileScreen extends React.Component {
                   <TextInput 
                     style={styles.biographyContainer}
                     placeholder="Type here to edit your bio!"
+                    placeholderTextColor='#FFF'
                     onChangeText={(text) => this.setState({biography: text})}
                   />
                   <Button 
@@ -129,7 +136,7 @@ class ProfileScreen extends React.Component {
                     style={styles.biographyContainer}
                     onPress={() => this.setState({editingBiography: true})}
                   >
-                    <Text style={{padding: 10}}>
+                    <Text style={styles.biographyText}>
                       {this.state.biography}
                     </Text>
                   </TouchableOpacity>
@@ -137,11 +144,6 @@ class ProfileScreen extends React.Component {
             }
           </View>
         </View>
-        <Button
-          title="Following"
-          onPress={() => this.getFollowing()}
-          color='#3195F3'
-        />
         <View style={styles.imageGrid}>
           {this.state.images.map((image, key) => {
             return (
