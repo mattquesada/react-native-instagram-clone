@@ -10,16 +10,19 @@ const NavbarStyles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
+    backgroundColor: '#000'
   },
   iconFirst: { // first icon in row should not not have margin 
     width: 40,
-    height: 40
+    height: 40,
+    tintColor: "#FFF"
   },
   icon: {
     marginLeft: 40,
     width: 40,
-    height: 40
+    height: 40,
+    tintColor: "#FFF"
   }
 });
 
