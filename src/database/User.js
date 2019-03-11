@@ -10,9 +10,9 @@ const headers = { 'access-key': ACCESS_KEY, 'Content-Type': 'application/json' }
 // TODO: password should be encrypted 
 export const addUser = user => {
   let userObj = { // unpack user of type struct to javascript object
-    username: user.username,
-    email: user.email,
-    password: user.password
+    username: user['Username'],
+    email: user['Email'],
+    password: user['Password']
   };
   let endpoint = BASE_URL + '/user';
   let options = {

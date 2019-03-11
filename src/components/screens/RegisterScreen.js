@@ -1,6 +1,7 @@
 import React from 'react';
 import {
   View, 
+  ScrollView,
   Text,
   TouchableOpacity
 } from 'react-native';
@@ -26,7 +27,10 @@ const User = formBuilder.struct({
 // Customize form
 const FormOptions = {
   fields: {
-    password: {
+    'Password': {
+      secureTextEntry: true
+    },
+    'Confirm Password': {
       secureTextEntry: true
     }
   }
@@ -40,15 +44,17 @@ class RegisterScreen extends React.Component {
     // create new user row in the users table
     await addUser(input);
 
-    let user = await getUser(input.username); // look up the username in the database
+    let user = await getUser(input['Username']); // look up the username in the database
 
     navigate('Main', { username: user.username }); // transition to the MainScreen component
   }
 
   render() {
     return (
-      <View style={styles.container}>
-        <RegisterForm ref='form' type={User} options={FormOptions}/>
+      <ScrollView style={styles.container}>
+        <View style={styles.formContainer}>
+          <RegisterForm ref='form' type={User} options={FormOptions} />
+        </View>
         <TouchableOpacity 
           title="Sign Up"
           onPress={this.handleSubmit} 
@@ -59,8 +65,8 @@ class RegisterScreen extends React.Component {
         <View style={{alignItems: 'center'}}>
           <Text style={styles.hasAccount}>Already have an account?</Text>
         </View>
-      </View>
-    )
+      </ScrollView>
+    );
   }
 };
 

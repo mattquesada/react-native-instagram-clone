@@ -7,14 +7,19 @@ const LoginStyles = StyleSheet.create({
     backgroundColor: '#000',
     height: 100 + '%'
   }, 
+  bannerContainer: {
+    alignItems: 'center'
+  },
   banner: {
     fontSize: 40,
     fontWeight: 'bold',
-    marginLeft: 13 + '%',
     color: '#FFF'
   },
   loginForm: {
     marginTop: 30
+  },
+  buttonContainer: {
+    alignItems: 'center'
   },
   loginButton: {
     backgroundColor: '#EBE0E0', // the same color as actual instagram login buttons
@@ -26,7 +31,6 @@ const LoginStyles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#fff',
     marginTop: 20,
-    marginLeft: 20 + '%',
     width: 210,
     height: 63
   },

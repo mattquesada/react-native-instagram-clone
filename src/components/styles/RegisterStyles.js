@@ -2,10 +2,12 @@ import { StyleSheet } from 'react-native';
 
 const RegisterStyles = StyleSheet.create({
   container: {
-    padding: 20,
-    paddingTop: 25,
     backgroundColor: '#000',
-    height: 100 + '%'
+  },
+  formContainer: {
+    paddingLeft: 20,
+    paddingRight: 20,
+    marginTop: 50
   },
   signupButton: {
     backgroundColor: '#EBE0E0', // the same color as actual instagram login buttons
@@ -29,7 +31,9 @@ const RegisterStyles = StyleSheet.create({
   },
   hasAccount: {
     marginTop: 30,
-    color: '#FFF'
+    marginBottom: 50,
+    color: '#FFF',
+    fontSize: 20
   }
 });
 

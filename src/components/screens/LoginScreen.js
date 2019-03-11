@@ -56,17 +56,21 @@ class LoginScreen extends React.Component {
   render() {
     return (  
       <View style={styles.container}>
-        <Text style={styles.banner}>Welcome Back</Text>
+        <View style={styles.bannerContainer}>
+          <Text style={styles.banner}>Welcome Back</Text>
+        </View>
         <View style={styles.loginForm}>
           <LoginForm ref='form' type={User} options={FormOptions} />
         </View>
-        <TouchableOpacity
-          title="Login" 
-          onPress={this.handleSubmit} 
-          style={styles.loginButton}  
-        >
-          <Text style={styles.buttonText}>Sign In</Text>
-        </TouchableOpacity>
+        <View style={styles.buttonContainer}>
+          <TouchableOpacity
+            title="Login"
+            onPress={this.handleSubmit}
+            style={styles.loginButton}
+          >
+            <Text style={styles.buttonText}>Sign In</Text>
+          </TouchableOpacity>
+        </View>
         <View style={styles.optionsContainer}>
           <Text style={styles.forgotPassword}>Forgot Password?</Text>
           <Text style={styles.notRegistered}>Not Registered?</Text>
