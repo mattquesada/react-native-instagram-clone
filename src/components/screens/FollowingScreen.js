@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, Button } from 'react-native';
+import { View, Text, TouchableOpacity } from 'react-native';
 import FollowingStyles from '../styles/FollowingStyles';
 import PropTypes from 'prop-types';
 
@@ -70,7 +70,7 @@ class FollowingScreen extends React.Component {
 
   render() {
     return (
-      <View>
+      <View style={styles.followingScreenContainer}>
         <Navbar 
           onNavbarSelect={this.onNavbarSelect} 
           currentUsername={this.state.username}
@@ -82,11 +82,12 @@ class FollowingScreen extends React.Component {
                 <Text style={styles.usernameText}>
                   {followedUser.username}
                 </Text>
-                <Button
-                  title="Unfollow"
+                <TouchableOpacity
                   onPress={() => this.removeFollow(followedUser)}
-                  color='#3195F3'
-                />
+                  style={styles.unfollowButton}
+                >
+                  <Text>Unfollow</Text>
+                </TouchableOpacity>
               </View>
             );
           })}
