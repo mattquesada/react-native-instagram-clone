@@ -1,6 +1,5 @@
 import React from 'react';
 import {
-  StyleSheet,
   View,
   ScrollView,
   Text,
@@ -10,7 +9,9 @@ import {
   TouchableHighlight
 } from 'react-native';
 import PropTypes from 'prop-types';
+import PhotoStyles from '../styles/PhotoStyles';
 import { photoScreenIcons } from '../../assets/config';
+import { profileIcons } from '../../assets/config';
 
 // postgres query imports
 import { incrementLikes, addComment, getComments, getHashtags, updateCaption } from '../../database/Image';
@@ -19,6 +20,8 @@ import { getUser } from '../../database/User';
 /// custom component imports
 import Navbar from '../common/Navbar';
 import DialogInput from 'react-native-dialog-input';
+
+const styles = PhotoStyles;
 
 class PhotoScreen extends React.Component {
 
@@ -122,7 +125,7 @@ class PhotoScreen extends React.Component {
 
 
   render() {
-    const heartIconColor = (this.state.liked) ? "rgb(252, 61, 57)" : null;
+    const heartIconColor = (this.state.liked) ? "rgb(252, 61, 57)" : "#FFF";
 
     return (
       <ScrollView style={styles.mainWrapper}>
@@ -132,12 +135,8 @@ class PhotoScreen extends React.Component {
         />
         <View style={styles.userBar}>
           <View style={{ flexDirection: "row", alignItems: "center" }} >
-            <Image style={styles.userPic}
-            />
-            <Text style={{ marginLeft: 10 }}>{this.state.imageInfo.poster}</Text>
-          </View>
-          <View style={{ alignItems: "center" }}>
-            <Text style={{ fontSize: 28 }}>...</Text>
+            <Image style={styles.userPic} source={profileIcons.userPlaceholder}/>
+            <Text style={styles.username}>{this.state.imageInfo.poster}</Text>
           </View>
         </View>
         <TouchableOpacity
@@ -166,7 +165,7 @@ class PhotoScreen extends React.Component {
             source={photoScreenIcons.arrowIcon} 
           />
           <View style={styles.likeCounter}>
-            <Text style={{ paddingLeft: 5 }}>{this.state.numLikes} Likes</Text>
+            <Text style={{ paddingLeft: 5, color: '#FFF' }}>{this.state.numLikes} Likes</Text>
           </View>
         </View>
           
@@ -176,10 +175,10 @@ class PhotoScreen extends React.Component {
               style={styles.captionContainer} 
               onPress={() => this.toggleCaptionDialogVisibility()}
             >
-              <Text>{this.state.fullCaption}</Text>
+              <Text style={styles.captionText}>{this.state.fullCaption}</Text>
             </TouchableOpacity>
           : <View style={styles.captionContainer}>
-              <Text>{this.state.fullCaption}</Text>
+              <Text style={styles.captionText}>{this.state.fullCaption}</Text>
             </View>
         }
 
@@ -188,11 +187,11 @@ class PhotoScreen extends React.Component {
             return (
               <View style={styles.commentRow} key={key}>
                 <View style={styles.commentOwner}>
-                  <Text>{comment.username}</Text>
+                  <Text style={styles.commentText}>{comment.username}</Text>
                 </View>
-                <View style={styles.commentText}>
-                  <Text>{comment.comment_text}</Text>
-                </View>
+                <ScrollView horizontal={true} style={styles.commentTextContainer}>
+                  <Text style={styles.commentText}>{comment.comment_text}</Text>
+                </ScrollView>
               </View>
             );
           })}
@@ -219,90 +218,9 @@ class PhotoScreen extends React.Component {
   }
 }
 
-const styles = StyleSheet.create({
-  mainWrapper: {
-    flex: 1,
-    width: 100 + "%",
-    height: 100 + "%"
-  },
-
-  tempNav: {
-    width: 100 + "%",
-    height: 50,
-    backgroundColor: "rgb(250, 250, 250)",
-    borderBottomColor: "rgb(233, 233, 233)",
-    borderBottomWidth: StyleSheet.hairlineWidth,
-    justifyContent: "center",
-    alignItems: "center"
-  },
-
-  userBar: {
-    width: 100 + "%",
-    height: 50,
-    backgroundColor: "rgb(255, 255, 255)",
-    flexDirection: "row",
-    paddingHorizontal: 10,
-    justifyContent: "space-between"
-  },
-
-  userPic: {
-    height: 40,
-    width: 40,
-    borderRadius: 20
-  },
-
-  iconBar: {
-    height: 50,
-    width: 100 + "%",
-    borderTopWidth: StyleSheet.hairlineWidth,
-    borderBottomWidth: StyleSheet.hairlineWidth,
-    borderColor: "rgb(233, 233, 233)",
-    flexDirection: "row",
-    alignItems: "center"
-  },
-
-  icon: {
-    marginLeft: 5
-  },
-
-  likeCounter: {
-    marginLeft: 160
-  },
-
-  captionContainer: {
-    borderWidth: 0.5,
-    borderColor: 'black',
-    paddingTop: 5,
-    paddingBottom: 5,
-    paddingLeft: 10
-  },
-
-  commentsPanel: {
-  },
-
-  commentRow: {
-    display: 'flex',
-    flexDirection: 'row',
-    borderWidth: 0.2,
-    borderColor: 'grey',
-    paddingTop: 5,
-    paddingBottom: 5
-  },
-
-  commentOwner: {
-    marginLeft: 10,
-    width: 50
-  },
-
-  commentText: {
-
-  }
-
-});
 
 PhotoScreen.propTypes = {
   navigation: PropTypes.object.isRequired
 }
-
 
 export default PhotoScreen;

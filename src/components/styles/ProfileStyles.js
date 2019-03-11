@@ -60,14 +60,16 @@ const ProfileStyles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     flexWrap: 'wrap',
-    marginTop: 10
+    marginTop: 10,
+    marginLeft: 10,
+    marginRight: 10
   },
   imageContainer: {
     backgroundColor: '#FFF',
+    borderWidth: 1,
+    borderColor: '#FFF',
     height: 100,
-    width: 100,
-    marginLeft: 10,
-    marginRight: 10
+    width: 33 + '%',
   },
   image: {
     width: 100 + '%',
