@@ -17,7 +17,7 @@ const LoginStyles = StyleSheet.create({
     color: '#FFF'
   },
   loginForm: {
-    marginTop: 30
+    marginTop: 10
   },
   buttonContainer: {
     alignItems: 'center'
@@ -31,6 +31,7 @@ const LoginStyles = StyleSheet.create({
     borderRadius: 16,
     borderWidth: 1,
     borderColor: '#fff',
+    bottom: 50,
     marginTop: 60,
     width: 210,
     height: 63

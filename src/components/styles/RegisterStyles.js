@@ -7,10 +7,11 @@ const RegisterStyles = StyleSheet.create({
   formContainer: {
     paddingLeft: 20,
     paddingRight: 20,
-    marginTop: 50
+    marginTop: 40,
+    marginBottom: 10
   },
   signupButton: {
-    backgroundColor: '#EBE0E0', // the same color as actual instagram login buttons
+    backgroundColor: '#1D83FF', // the same color as actual instagram login buttons
     paddingTop: 8,
     paddingBottom: 10,
     paddingLeft: 15,
@@ -18,20 +19,27 @@ const RegisterStyles = StyleSheet.create({
     borderRadius: 30,
     borderWidth: 1,
     borderColor: '#fff',
-    marginTop: 20,
-    marginLeft: 20 + '%',
-    width: 210,
-    height: 63
+    marginTop: 4,
+    bottom: 4,
+    width: 193,
+    justifyContent: 'center',
+    alignItems: 'center',
+    alignSelf: 'center',
+    height: 66
   },
   buttonText: {
-    color: '#504C4C',
+    color: '#FFF',
     textAlign: 'center',
-    fontWeight: 'bold',
-    fontSize: 30
+    fontFamily: 'JosefinSans_Regular',
+    fontSize: 26,
+    bottom: 3
   },
   hasAccount: {
-    marginTop: 30,
-    marginBottom: 50,
+    marginTop: 9,
+    fontFamily: 'JosefinSans_Regular',
+    textAlign: 'center',
+    bottom: 0,
+    marginBottom: 20,
     color: '#FFF',
     fontSize: 20
   }
