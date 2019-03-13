@@ -36,6 +36,10 @@
 		3330594522D542668871E805 /* Infinite_Stroke_Bolder.otf in Resources */ = {isa = PBXBuildFile; fileRef = 305BC0F7CD044DA29591F33C /* Infinite_Stroke_Bolder.otf */; };
 		26E24F935F6F40558B250AE9 /* Infinite_Stroke_Cond.otf in Resources */ = {isa = PBXBuildFile; fileRef = 31EC1B05FCEB413494E5A030 /* Infinite_Stroke_Cond.otf */; };
 		17CA30C9ED6D4D038DE6DC80 /* Infinite_Stroke.otf in Resources */ = {isa = PBXBuildFile; fileRef = 38A001E837BF4D009A57EE1B /* Infinite_Stroke.otf */; };
+		67077A2A52BF4DE3808B81BD /* JosefinSans_Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FAA7E8E5A53D47448A84D843 /* JosefinSans_Light.ttf */; };
+		B5437EEC2CFE4FE486A1B8DB /* JosefinSans_Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0281A999FD0549B0BBF83F11 /* JosefinSans_Regular.ttf */; };
+		DDE92604B28A4F6080697BE0 /* JosefinSans_Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2D470AFF2AB24AA38EE9672B /* JosefinSans_Light.ttf */; };
+		F184B0BD5DB544A2A099A6CF /* JosefinSans_Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9F356D1165CE46B990ADFB57 /* JosefinSans_Regular.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -379,6 +383,10 @@
 		305BC0F7CD044DA29591F33C /* Infinite_Stroke_Bolder.otf */ = {isa = PBXFileReference; name = "Infinite_Stroke_Bolder.otf"; path = "../src/assets/fonts/Infinite_Stroke_Bolder.otf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 		31EC1B05FCEB413494E5A030 /* Infinite_Stroke_Cond.otf */ = {isa = PBXFileReference; name = "Infinite_Stroke_Cond.otf"; path = "../src/assets/fonts/Infinite_Stroke_Cond.otf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 		38A001E837BF4D009A57EE1B /* Infinite_Stroke.otf */ = {isa = PBXFileReference; name = "Infinite_Stroke.otf"; path = "../src/assets/fonts/Infinite_Stroke.otf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		FAA7E8E5A53D47448A84D843 /* JosefinSans_Light.ttf */ = {isa = PBXFileReference; name = "JosefinSans_Light.ttf"; path = "../src/assets/fonts/JosefinSans_Light.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		0281A999FD0549B0BBF83F11 /* JosefinSans_Regular.ttf */ = {isa = PBXFileReference; name = "JosefinSans_Regular.ttf"; path = "../src/assets/fonts/JosefinSans_Regular.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		2D470AFF2AB24AA38EE9672B /* JosefinSans_Light.ttf */ = {isa = PBXFileReference; name = "JosefinSans_Light.ttf"; path = "../assets/fonts/JosefinSans_Light.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		9F356D1165CE46B990ADFB57 /* JosefinSans_Regular.ttf */ = {isa = PBXFileReference; name = "JosefinSans_Regular.ttf"; path = "../assets/fonts/JosefinSans_Regular.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -684,6 +692,10 @@
 				305BC0F7CD044DA29591F33C /* Infinite_Stroke_Bolder.otf */,
 				31EC1B05FCEB413494E5A030 /* Infinite_Stroke_Cond.otf */,
 				38A001E837BF4D009A57EE1B /* Infinite_Stroke.otf */,
+				FAA7E8E5A53D47448A84D843 /* JosefinSans_Light.ttf */,
+				0281A999FD0549B0BBF83F11 /* JosefinSans_Regular.ttf */,
+				2D470AFF2AB24AA38EE9672B /* JosefinSans_Light.ttf */,
+				9F356D1165CE46B990ADFB57 /* JosefinSans_Regular.ttf */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -1144,6 +1156,10 @@
 				3330594522D542668871E805 /* Infinite_Stroke_Bolder.otf in Resources */,
 				26E24F935F6F40558B250AE9 /* Infinite_Stroke_Cond.otf in Resources */,
 				17CA30C9ED6D4D038DE6DC80 /* Infinite_Stroke.otf in Resources */,
+				67077A2A52BF4DE3808B81BD /* JosefinSans_Light.ttf in Resources */,
+				B5437EEC2CFE4FE486A1B8DB /* JosefinSans_Regular.ttf in Resources */,
+				DDE92604B28A4F6080697BE0 /* JosefinSans_Light.ttf in Resources */,
+				F184B0BD5DB544A2A099A6CF /* JosefinSans_Regular.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

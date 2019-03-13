@@ -9,7 +9,8 @@ const LaunchStyles = StyleSheet.create({
   titleText: {
     fontSize: 58,
     fontFamily: 'InfiniteStroke',
-    color: '#FFF'
+    color: '#F74C4E',
+    textDecorationLine: 'underline'
   },
   logo: {
     marginTop: 20,
@@ -20,7 +21,7 @@ const LaunchStyles = StyleSheet.create({
     marginTop: 60
   },
   button: {
-    backgroundColor: '#EBE0E0', // the same color as actual instagram login buttons
+    backgroundColor: '#1D83FF', // the same color as actual instagram login buttons
     paddingTop: 8,
     paddingBottom: 10,
     paddingLeft: 15,
@@ -29,14 +30,14 @@ const LaunchStyles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#fff',
     marginTop: 10,
-    width: 210,
-    height: 63
+    width: 140,
+    height: 52
   },
   buttonText: {
-    color: '#504C4C',
+    color: '#FFF',
+    fontFamily: 'JosefinSans_Regular',
     textAlign: 'center',
-    fontWeight: 'bold',
-    fontSize: 30
+    fontSize: 18,
   }
 })
 

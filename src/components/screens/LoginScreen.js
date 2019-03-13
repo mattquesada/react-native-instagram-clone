@@ -57,7 +57,7 @@ class LoginScreen extends React.Component {
     return (  
       <View style={styles.container}>
         <View style={styles.bannerContainer}>
-          <Text style={styles.banner}>Welcome Back</Text>
+          <Text style={styles.banner}>Welcome Back!</Text>
         </View>
         <View style={styles.loginForm}>
           <LoginForm ref='form' type={User} options={FormOptions} />

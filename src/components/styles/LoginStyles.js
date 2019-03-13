@@ -11,8 +11,9 @@ const LoginStyles = StyleSheet.create({
     alignItems: 'center'
   },
   banner: {
-    fontSize: 40,
-    fontWeight: 'bold',
+    marginTop: 30,
+    fontSize: 45,
+    fontFamily: 'JosefsinSans_Regular',
     color: '#FFF'
   },
   loginForm: {
@@ -22,23 +23,23 @@ const LoginStyles = StyleSheet.create({
     alignItems: 'center'
   },
   loginButton: {
-    backgroundColor: '#EBE0E0', // the same color as actual instagram login buttons
+    backgroundColor: '#1D83FF', // the same color as actual instagram login buttons
     paddingTop: 8,
     paddingBottom: 10,
     paddingLeft: 15,
     paddingRight: 15,
-    borderRadius: 30,
+    borderRadius: 16,
     borderWidth: 1,
     borderColor: '#fff',
-    marginTop: 20,
+    marginTop: 60,
     width: 210,
     height: 63
   },
   buttonText: {
-    color: '#504C4C',
+    color: '#FFF',
     textAlign: 'center',
-    fontWeight: 'bold',
-    fontSize: 30
+    fontSize: 25,
+    fontFamily: 'JosefinSans_Regular'
   },
   optionsContainer: {
     marginTop: 30,
