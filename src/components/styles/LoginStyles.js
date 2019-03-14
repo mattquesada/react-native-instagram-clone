@@ -28,12 +28,12 @@ const LoginStyles = StyleSheet.create({
     paddingBottom: 10,
     paddingLeft: 15,
     paddingRight: 15,
-    borderRadius: 16,
+    borderRadius: 30,
     borderWidth: 1,
     borderColor: '#fff',
     bottom: 50,
     marginTop: 60,
-    width: 210,
+    width: 170,
     height: 63
   },
   buttonText: {

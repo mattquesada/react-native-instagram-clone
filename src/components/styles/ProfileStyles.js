@@ -55,16 +55,18 @@ const ProfileStyles = StyleSheet.create({
     color: '#FFF'
   },
   followingButton: {
-    color: '#000',
-    textAlign: 'center'
+    color: 'grey',
+    textAlign: 'center',
+    bottom: -2
   },
   followingButtonContainer: {
     borderWidth: 0.5,
     borderColor: '#FFF',
     borderRadius: 25,
-    backgroundColor: '#FFF',
+    backgroundColor: '#EBE0E0',
     marginLeft: 20,
     width: 90,
+    height: 25,
     alignItems: 'center'
   },
   imageGrid: {
