@@ -9,7 +9,7 @@ const LaunchStyles = StyleSheet.create({
   titleText: {
     fontSize: 58,
     fontFamily: 'InfiniteStroke',
-    color: '#F74C4E',
+    color: '#F9D342',
     textDecorationLine: 'underline'
   },
   logo: {
